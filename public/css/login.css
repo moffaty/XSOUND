@@ -1,0 +1,40 @@
+html, body, .sea-cover, .modal { 
+    height: 100%;
+}
+
+.modal-header {
+    justify-content: center;
+}
+
+.sea-cover {
+    background-image: url('/img/vintage-mood.gif');
+    background-size: cover;
+}
+
+
+.modal {
+    background-color: rgba(0, 0, 0, 0.6) !important;
+}
+
+.modal-header {
+    padding-bottom: 0px !important
+}
+
+.alert {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-bottom: 0;
+}
+
+.modal-content {
+    background-image: url('/img/neon-gree');
+    background-size: auto 100%; /* Ширина изображения автоматически масштабируется, а высота увеличивается вдвое */
+    background-repeat: no-repeat;
+    background-position: right -30px bottom -30px; /* Устанавливаем позицию в правом нижнем углу */
+}
+
+/* Стили для заголовка */
+.modal-header {
+    background-color: transparent !important; /* Делаем фон заголовка прозрачным */
+}

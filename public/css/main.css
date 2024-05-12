@@ -1,0 +1,103 @@
+.transparent {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0s linear 0.1s;
+}
+
+.untransparent {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.5s ease;
+}
+
+#start {
+    user-select: none;
+}
+
+#start h1 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+}
+
+#scroll-indicator {
+    z-index: 5;
+    position: absolute;
+    bottom: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-size: 24px;
+}
+
+#scroll-indicator span {
+    cursor: pointer;
+    font-size: 36px;
+}
+
+#scroll-indicator span:hover {
+    color: black;
+}
+
+#start {
+    position: relative;
+}
+
+#start h1::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    z-index: -1; /* Устанавливаем под текстом */
+    opacity: 0; /* Начальная прозрачность */
+    animation: revealBackground 0.5s 1.0s forwards; /* Анимация для появления заднего фона после 1.5 секунды */
+}
+
+@keyframes revealBackground {
+    from {
+        opacity: 0; /* Начальная прозрачность */
+    }
+    to {
+        opacity: 1; /* Конечная прозрачность */
+    }
+}
+
+body {
+    font-family: 'Oswald-Medium', sans-serif !important;
+}
+
+footer {
+    user-select: none;
+}
+
+#line-container {
+    background-color: black;
+    color: white;
+    overflow: hidden;
+}
+
+#line {
+    display: inline-block;
+    white-space: nowrap;
+    animation: moveLine 20s linear infinite; /* Измените 5s на время, которое вы хотите, чтобы линия прошла через всю ширину экрана */
+}
+
+#line p {
+    margin: 0;
+    display: inline-block;
+    margin-right: 10px; /* Расстояние между буквами */
+}
+
+@keyframes moveLine {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
