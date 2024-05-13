@@ -18,7 +18,7 @@ window.addEventListener('load', function() {
     })
 });
 
-window.onscroll = function() {scrollFunction()};
+window.onscroll = function() { scrollFunction() };
 
 function scrollFunction() {
     const headder = document.querySelector(".navbar");

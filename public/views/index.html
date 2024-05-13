@@ -37,11 +37,10 @@
                 <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
                 </li>
                 <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="dropdown08" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</a>
+                <a class="nav-link dropdown-toggle" href="#" id="dropdown08" data-bs-toggle="dropdown" aria-expanded="false">Зайти в аккаунт</a>
                 <ul class="dropdown-menu" aria-labelledby="dropdown08">
-                    <li><a class="dropdown-item" href="#">Action</a></li>
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    <li><a class="dropdown-item" href="/login">Авторизация</a></li>
+                    <li><a class="dropdown-item" href="/register">Регистрация</a></li>
                 </ul>
                 </li>
             </ul>
@@ -53,7 +52,7 @@
         <img id="gif" class="transparent" src="/img/vintage-mood.gif" width="100%" height="100%">
         <h1>WELCOME TO XSOUND!</h1>
 
-        <div id="scroll-indicator" class="transparent">
+        <div id="scroll-indicator">
             <span>&#8595;</span>
         </div>
         <script src="/js/anim.js"></script>
@@ -104,23 +103,22 @@
             <img src="/img/logo-no-background.png" width="100%">
           </div>
           <div class="col-md-10 mx-auto col-lg-5">
-            <form class="p-4 p-md-5 border rounded-3 bg-light">
+            <form method="POST" action="/register" class="login p-4 p-md-5 border rounded-3 bg-light">
               <div class="form-floating mb-3">
-                <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                <input name="email" type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
                 <label for="floatingInput">Email адрес</label>
               </div>
               <div class="form-floating mb-3">
-                <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+                <input name="password" type="password" class="form-control" id="floatingPassword" placeholder="Пароль">
                 <label for="floatingPassword">Пароль</label>
               </div>
-              <div class="checkbox mb-3">
-                <label>
-                  <input type="checkbox" value="remember-me"> Запомнить меня
-                </label>
+              <div class="form-floating mb-3">
+                <input name="confirm-password" type="password" class="form-control" id="floatingPassword" placeholder="Повторите пароль">
+                <label for="floatingPassword">Повторите пароль</label>
               </div>
-              <button class="w-100 btn btn-lg btn-primary" type="submit">Регистрация</button>
+              <button class="w-100 btn btn-lg btn-primary" type="submit">Зарегистрироваться</button>
               <hr class="my-4">
-              <small class="text-muted">By clicking Sign up, you agree to the terms of use.</small>
+              <small class="text-muted">Нажимая кнопку зарегистрироваться, вы соглашаетесь с условиями использования.</small>
             </form>
           </div>
         </div>
@@ -148,5 +146,6 @@
             </div>
         </footer>
     </div>
+    <script src="/js/register.js"></script>
 </body>
 </html>

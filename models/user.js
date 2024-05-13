@@ -32,7 +32,4 @@ const User = sequelize.define('User', {
   }
 });
 
-// Устанавливаем связь между пользователем и его ролью
-User.belongsTo(Role, { foreignKey: 'role_id' }); // Каждый пользователь принадлежит одной роли
-
 module.exports = User;
