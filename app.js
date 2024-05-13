@@ -45,8 +45,14 @@ app.route('/login')
 .get((req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'views', 'login.html'));
 })
-.post((req, res) => {
-    console.log(req.body);
+.post(async (req, res) => {
+    const user = await User.findOne({ where: { email: req.body.email, password: req.body.password }});
+    if (user === null) {
+        res.json({ message: 'Аккаунт не найден. Неверно введенные учетные данные' });
+    }
+    else {
+        res.json({ message: 'Аккаунт с этой почтой уже существует' });
+    }
 });
 
 app.route('/map')
@@ -61,12 +67,18 @@ app.route('/register')
 .post(async (req, res) => {
     const user = await User.findOne({ where: { email: req.body.email }});
     if (user === null) {
-        console.log('not found');
+        res.json({ message: 'Аккаунт зарегистрирован' });
     }
     else {
         res.json({ message: 'Аккаунт с этой почтой уже существует' });
     }
 });
+
+app.all('/logout', (req, res) => {
+    req.session.username = '';
+    res.redirect('/');
+})
+
 
 // Создание всех таблиц
 sequelize.sync().then(() => {

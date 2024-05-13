@@ -1,4 +1,21 @@
 const form = document.querySelector('.login');
+const alertField = document.querySelector('.alert');
+
+let isAnimating = false;
+
+function animateAlert(text) {
+    if (isAnimating) return; // Если уже идет анимация, не создавать новую
+    isAnimating = true;
+    alertField.classList.remove('transparent');
+    alertField.classList.add('untransparent');
+    alertField.innerHTML = text;
+    setTimeout(() => {
+        alertField.classList.remove('untransparent');
+        alertField.classList.add('transparent');
+        isAnimating = false; // Устанавливаем флаг обратно в false после завершения анимации
+    }, 5000);
+}
+
 form.addEventListener('submit', async e => {
     e.preventDefault();
     const email = form.elements['email'].value;
@@ -11,8 +28,9 @@ form.addEventListener('submit', async e => {
         body: JSON.stringify({ email, password })
     })
     const data = await response.json();
-    console.log(data);
+    animateAlert(data.message + '. <a href="/login" class="alert-link">Попробуйте авторизоваться.</a>');
 })
+
 
 const registerButton = document.querySelector('#register');
 registerButton.addEventListener('click', e => {
