@@ -3,6 +3,11 @@ form.addEventListener('submit', async e => {
     e.preventDefault();
     const email = form.elements['email'].value;
     const password = form.elements['password'].value;
+    const confirmPassword = form.elements['confirm-password'].value;
+    if (password != confirmPassword) {
+        alert('Пароли не совпадают');
+        return;
+    }
     const response = await fetch('/login', {
         method: 'POST',
         headers: {
@@ -14,7 +19,7 @@ form.addEventListener('submit', async e => {
     console.log(data);
 })
 
-const registerButton = document.querySelector('#register');
-registerButton.addEventListener('click', e => {
-    window.location = '/register';
+const loginButton = document.querySelector('#login');
+loginButton.addEventListener('click', e => {
+    window.location = '/login';
 })

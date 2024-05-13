@@ -7,7 +7,7 @@
     <link href="/css/login.css" rel="stylesheet">
     <link rel="icon" type="image/png" href="/img/icon.png">
     <script src="/dist/js/bootstrap.bundle.min.js"></script>
-    <title>Авторизация</title>
+    <title>Регистрация</title>
 </head>
 <body>
     <div class="sea-cover">
@@ -16,7 +16,7 @@
             <div class="modal-content rounded-4 shadow">
                 <div class="modal-header p-5 border-bottom-0 mb-2">
                 <!-- <img src="/img/ladya.svg" height="120" width="80"> -->
-                <h2 class="fw-bold fs-2">Авторизация</h2>
+                <h2 class="fw-bold fs-2">Регистрация</h2>
                 </div>
                 <div class="modal-body p-5 pt-0 pb-4">
                 <form class="login" method="POST" action="/" enctype="application/json">
@@ -28,8 +28,12 @@
                         <input type="password" class="form-control" id="floatingInput" placeholder="secret" name="password">
                         <label for="floatingInput">Пароль</label>
                     </div>
+                    <div class="form-floating mb-2">
+                        <input type="password" class="form-control" id="floatingInput" placeholder="secret" name="confirm-password">
+                        <label for="floatingInput">Подтвердите пароль</label>
+                    </div>
                     <button class="bg-success w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit">Вход</button>
-                    <button class="w-100 mb-2 btn btn-lg rounded-3 btn-secondary" id="register">У меня нет аккаунта</button>
+                    <button class="w-100 mb-2 btn btn-lg rounded-3 btn-secondary" id="login">У меня есть аккаунт</button>
                 </form>
                 </div>
             </div>
@@ -37,6 +41,6 @@
             <div class="alert" role="alert"><p></p></div>
         </div>
     </div>
-    <script src="/js/login.js"></script>
+    <script src="/js/register.js"></script>
 </body>
 </html>
