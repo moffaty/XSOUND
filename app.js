@@ -49,6 +49,11 @@ app.route('/login')
     console.log(req.body);
 });
 
+app.route('/map')
+.get((req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'views', 'map.html'));
+});
+
 app.route('/register')
 .get((req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'views', 'register.html'));
