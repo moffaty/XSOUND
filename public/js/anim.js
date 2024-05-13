@@ -22,7 +22,7 @@ window.onscroll = function() { scrollFunction() };
 
 function scrollFunction() {
     const headder = document.querySelector(".navbar");
-    const footer = document.querySelector(".fixed-bottom");
+    const footer = document.querySelector(".footer");
     if (document.body.scrollTop > window.innerHeight || document.documentElement.scrollTop > window.innerHeight) 
     {
         headder.classList.remove("transparent");

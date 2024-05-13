@@ -105,15 +105,15 @@
           <div class="col-md-10 mx-auto col-lg-5">
             <form method="POST" action="/register" class="login p-4 p-md-5 border rounded-3 bg-light">
               <div class="form-floating mb-3">
-                <input name="email" type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                <input name="email" type="email" class="form-control" id="floatingInput" placeholder="name@example.com" required>
                 <label for="floatingInput">Email адрес</label>
               </div>
               <div class="form-floating mb-3">
-                <input name="password" type="password" class="form-control" id="floatingPassword" placeholder="Пароль">
+                <input name="password" type="password" class="form-control" id="floatingPassword" placeholder="Пароль" required>
                 <label for="floatingPassword">Пароль</label>
               </div>
               <div class="form-floating mb-3">
-                <input name="confirm-password" type="password" class="form-control" id="floatingPassword" placeholder="Повторите пароль">
+                <input name="confirm-password" type="password" class="form-control" id="floatingPassword" placeholder="Повторите пароль" required>
                 <label for="floatingPassword">Повторите пароль</label>
               </div>
               <button class="w-100 btn btn-lg btn-primary" type="submit">Зарегистрироваться</button>
@@ -136,8 +136,10 @@
         </div>
     </div>
 
+    <div class="alert alert-danger mb-4 fixed-bottom transparent" role="alert">
+    </div>
 
-    <div class=" fixed-bottom transparent">
+    <div class="footer fixed-bottom transparent">
         <footer>
             <div id="line-container">
                 <div id="line">

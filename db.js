@@ -19,7 +19,7 @@ const genres = [
     { genre_name: 'Рок' },
     { genre_name: 'Поп' },
     { genre_name: 'Техно' },
-    { genre_name: 'Репч' },
+    { genre_name: 'Реп' },
 ]
 
 const eventStatus = [
@@ -60,14 +60,14 @@ const events = [
 ]
 
 async function fillTables() {
-    // await Genre.bulkCreate(genres);
-    // await EventStatus.bulkCreate(eventStatus);
-    // await Role.bulkCreate(roles);
-    // await User.bulkCreate(users);
-    // await Musician.bulkCreate(musicians);
-    // await Venue.bulkCreate(venues);
-    // await Organizer.bulkCreate(organizers);
-    // await Event.bulkCreate(events);
+    await Genre.bulkCreate(genres);
+    await EventStatus.bulkCreate(eventStatus);
+    await Role.bulkCreate(roles);
+    await User.bulkCreate(users);
+    await Musician.bulkCreate(musicians);
+    await Venue.bulkCreate(venues);
+    await Organizer.bulkCreate(organizers);
+    await Event.bulkCreate(events);
 }
 
 fillTables();

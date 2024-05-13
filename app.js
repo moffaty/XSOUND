@@ -19,6 +19,8 @@ const Event = require(modelDir + '/event');
 const EventStatus = require(modelDir + '/eventStatus');
 const Musician = require(modelDir + '/musician');
 const Genre = require(modelDir + '/genre');
+const Venue = require(modelDir + '/venue');
+const Organizer = require(modelDir + '/organizer');
 
 // Используем сессии
 app.use(session({
@@ -36,12 +38,12 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views', 'index.html'));
+    res.sendFile(path.join(__dirname, 'public', 'views', 'index.html'));
 })
 
 app.route('/login')
 .get((req, res) => {
-    res.sendFile(path.join(__dirname, 'views', 'login.html'));
+    res.sendFile(path.join(__dirname, 'public', 'views', 'login.html'));
 })
 .post((req, res) => {
     console.log(req.body);
@@ -49,7 +51,16 @@ app.route('/login')
 
 app.route('/register')
 .get((req, res) => {
-    res.sendFile(path.join(__dirname, 'views', 'register.html'));
+    res.sendFile(path.join(__dirname, 'public', 'views', 'register.html'));
+})
+.post(async (req, res) => {
+    const user = await User.findOne({ where: { email: req.body.email }});
+    if (user === null) {
+        console.log('not found');
+    }
+    else {
+        res.json({ message: 'Аккаунт с этой почтой уже существует' });
+    }
 });
 
 // Создание всех таблиц
