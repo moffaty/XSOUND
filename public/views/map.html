@@ -9,24 +9,8 @@
     <script src="/dist/js/bootstrap.bundle.min.js"></script>
     <title>Поиск</title>
     <link rel="stylesheet" href="/leaflet/dist/leaflet.css"/>
+    <link rel="stylesheet" href="/css/map.css"/>
     <script src="./leaflet/dist/leaflet.js"></script>
-    <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-        }
-        #map {
-            height: 100%;
-            width: 100%; /* Ширина карты будет равна ширине экрана минус ширина навигационной панели */
-            float: right; /* Выравнивание карты вправо */
-        }
-        .leaflet-bottom.leaflet-right {
-            bottom: 5px !important; /* Сдвиг кнопок управления вниз */
-            right: 5px !important; /* Сдвиг кнопок управления вправо */
-        }
-    </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top transparent" aria-label="Tenth navbar example">
@@ -41,10 +25,7 @@
                 <a class="nav-link active" aria-current="page" href="/">XSOUND</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="/link">Присоединиться к команде</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/about">Узнать больше о нас</a>
+                    <a class="nav-link" href="/profile">Профиль</a>
                 </li>
                 <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="dropdown08" data-bs-toggle="dropdown" aria-expanded="false">Аккаунт</a>
@@ -58,42 +39,6 @@
         </div>
     </nav>
     <div id="map"></div>
-    <script>
-        let map = L.map('map', {
-            maxBounds: [
-                [59.646, 29.298], // Юго-западные координаты Санкт-Петербурга
-                [60.115, 30.804]  // Северо-восточные координаты Санкт-Петербурга
-            ]
-        }).setView([59.9343, 30.534], 11); // Координаты и масштаб по умолчанию
-
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            minZoom: 11,
-        }).addTo(map);
-
-        // Удаление логотипа Leaflet
-        map.attributionControl.setPrefix('');
-
-        // Перемещение кнопок управления в правый нижний угол
-        map.addControl(new L.Control.Zoom({ position: 'bottomright' }));
-
-        // Добавление маркеров
-        L.marker([59.9343, 30.334]).addTo(map)
-            .bindPopup('Место 1')
-            .openPopup();
-
-        L.marker([59.955, 30.205]).addTo(map)
-            .bindPopup('Место 2')
-            .openPopup();
-        
-        // Добавление маркеров
-        // let markers = [];
-        // function addMarker(e) {
-        //     let marker = L.marker(e.latlng).addTo(map);
-        //     markers.push(marker);
-        //     marker.bindPopup('Новый маркер').openPopup();
-        // }
-        // map.on('click', addMarker);
-    </script>
+    <script src="/js/map.js"></script>
 </body>
 </html>

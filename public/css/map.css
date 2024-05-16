@@ -1,0 +1,15 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+#map {
+    height: 100%;
+    width: 100%; /* Ширина карты будет равна ширине экрана минус ширина навигационной панели */
+    float: right; /* Выравнивание карты вправо */
+}
+.leaflet-bottom.leaflet-right {
+    bottom: 5px !important; /* Сдвиг кнопок управления вниз */
+    right: 5px !important; /* Сдвиг кнопок управления вправо */
+}
