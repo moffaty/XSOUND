@@ -25,14 +25,21 @@ const Organizer = require(modelDir + '/organizer');
 // Используем сессии
 app.use(session({
     username: '',
-    position: '',
-    file: '',
+    role: '',
     secret: secret,
     resave: false,
     isAuth: false,
     cookie: { maxAge: 600000 },
     saveUninitialized: true
 }))
+
+// Для отправки сообщений
+function sendMessage(res, status, message) {
+    if (status) {
+        return res.json({ status: 'success', message });
+    }
+    return res.json({ status: 'error', message });
+}
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -45,8 +52,18 @@ app.route('/login')
 .get((req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'views', 'login.html'));
 })
-.post((req, res) => {
+.post(async (req, res) => {
     console.log(req.body);
+    const user = await User.findOne({ where: { email: req.body.email, password: req.body.password }});
+    console.log(user);
+    if (user === null) {
+        sendMessage(res, false, 'Неверно введенные учетные данные');
+    }
+    else {
+        req.session.username = user.dataValues.username;
+        req.session.role = user.dataValues.role_id;
+        sendMessage(res, true, 'Авторизация прошла успешно!');
+    }
 });
 
 app.route('/register')

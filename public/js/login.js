@@ -11,7 +11,7 @@ form.addEventListener('submit', async e => {
         body: JSON.stringify({ email, password })
     })
     const data = await response.json();
-    console.log(data);
+    
 })
 
 const registerButton = document.querySelector('#register');
