@@ -25,14 +25,21 @@ const Organizer = require(modelDir + '/organizer');
 // Используем сессии
 app.use(session({
     username: '',
-    position: '',
-    file: '',
+    role: '',
     secret: secret,
     resave: false,
     isAuth: false,
     cookie: { maxAge: 600000 },
     saveUninitialized: true
 }))
+
+// Для отправки сообщений
+function sendMessage(res, status, message) {
+    if (status) {
+        return res.json({ status: 'success', message });
+    }
+    return res.json({ status: 'error', message });
+}
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
