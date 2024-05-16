@@ -1,6 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('./sequelize');
 const Status = require('./eventStatus');
+const Venue = require('./venue');
 
 // Определите модель пользователя
 const Event = sequelize.define('Event', {
@@ -19,7 +20,11 @@ const Event = sequelize.define('Event', {
   },
   venue_id: {
     type: DataTypes.INTEGER,
-   
+    allowNull: false,
+    references: {
+      model: Venue,
+      key: 'id',
+    }
   },
   status_id: {
     type: DataTypes.INTEGER,
