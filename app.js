@@ -78,6 +78,19 @@ app.route('/map')
     else {
         res.redirect('/login');
     }
+})
+.post(async (req, res) => {
+    if (req.session.username) {
+        const venue = await Venue.findAll({ attributes: [ 'id', 'name', 'address', 'capacity' ]});
+        let result = [];
+        venue.forEach(element => {
+            result.push(element);
+        });
+        sendMessage(res, true, result);
+    }
+    else {
+        res.redirect('/login');
+    }
 });
 
 app.route('/register')

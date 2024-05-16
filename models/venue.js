@@ -12,7 +12,7 @@ const Venue = sequelize.define('Venue', {
         allowNull: false,
     },
     address: {
-        type: DataTypes.STRING,
+        type: DataTypes.JSON,
         allowNull: false,
     },
     capacity: {

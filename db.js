@@ -46,9 +46,8 @@ const musicians = [
 ]
 
 const venues = [
-    { name: 'Baaar', address: 'strret 1', capacity: 50 }, 
-    { name: 'Cluub', address: 'strret 2', capacity: 110 }, 
-    { name: 'Aroun', address: 'strret 3', capacity: 20 }, 
+    { name: 'Baaar', address: { x: 59.955, y: 30.205 }, capacity: 50 }, 
+    { name: 'Cluub', address: { x: 59.934, y: 30.334 }, capacity: 110 }, 
 ]
 
 const organizers = [
