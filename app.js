@@ -26,6 +26,7 @@ const Organizer = require(modelDir + '/organizer');
 app.use(session({
     username: '',
     role: '',
+    email: '',
     secret: secret,
     resave: false,
     isAuth: false,
@@ -34,7 +35,10 @@ app.use(session({
 }))
 
 // Для отправки сообщений
-function sendMessage(res, status, message) {
+function sendMessage(res, status, message = '') {
+    if (message == '') {
+        message = status;
+    }
     if (status) {
         return res.json({ status: 'success', message });
     }
@@ -53,18 +57,27 @@ app.route('/login')
     res.sendFile(path.join(__dirname, 'public', 'views', 'login.html'));
 })
 .post(async (req, res) => {
+    console.log(req.body);
     const user = await User.findOne({ where: { email: req.body.email, password: req.body.password }});
     if (user === null) {
-        res.json({ message: 'Аккаунт не найден. Неверно введенные учетные данные' });
+        sendMessage(res, false);
     }
     else {
-        res.json({ message: 'Аккаунт с этой почтой уже существует' });
+        req.session.username = user.dataValues.username;
+        req.session.role = user.dataValues.role_id;
+        req.session.email = user.dataValues.email;
+        sendMessage(res, true);
     }
 });
 
 app.route('/map')
 .get((req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'views', 'map.html'));
+    if (req.session.username) {
+        res.sendFile(path.join(__dirname, 'public', 'views', 'map.html'));
+    }
+    else {
+        res.redirect('/login');
+    }
 });
 
 app.route('/register')

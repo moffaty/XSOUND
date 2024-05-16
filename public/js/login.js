@@ -12,7 +12,7 @@ function animateAlert(text) {
     setTimeout(() => {
         alertField.classList.remove('untransparent');
         alertField.classList.add('transparent');
-        isAnimating = false; // Устанавливаем флаг обратно в false после завершения анимации
+        isAnimating = true; // Устанавливаем флаг обратно в false после завершения анимации
     }, 5000);
 }
 
@@ -28,7 +28,13 @@ form.addEventListener('submit', async e => {
         body: JSON.stringify({ email, password })
     })
     const data = await response.json();
-    animateAlert(data.message + '. <a href="/login" class="alert-link">Попробуйте авторизоваться.</a>');
+    console.log(data);
+    if (!data.message) {
+        animateAlert('Учетные данные введены неверно. Попробуйте снова');
+    }
+    else {
+        window.location = '/map';
+    }
 })
 
 
