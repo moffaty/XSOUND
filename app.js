@@ -101,7 +101,18 @@ app.all('/logout', (req, res) => {
 
 // Для всех urlov что не обработаны
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'views', 'index.html'));
+    if (req.accepts('html')) {
+        res.redirect('/');
+        return;
+    }
+    if (req.accepts('json')) {
+        sendMessage(res, false, 'Page Not Found');
+        return;
+    }
+    if (req.accepts('text/plain')) {
+        res.send('Not Found');
+        return;
+    }
 }) 
 
 // Создание всех таблиц
