@@ -99,6 +99,10 @@ app.all('/logout', (req, res) => {
     res.redirect('/');
 })
 
+// Для всех urlov что не обработаны
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'views', 'index.html'));
+}) 
 
 // Создание всех таблиц
 sequelize.sync().then(() => {
