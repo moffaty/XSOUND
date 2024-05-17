@@ -1,6 +1,5 @@
-
-body { 
-    height: auto; 
+body {
+    height: auto;
 }
 
 p {
@@ -17,7 +16,9 @@ p {
     position: absolute;
     bottom: -0.5rem; /* Сдвигаем прямоугольник вниз, чтобы он был виден под карточкой */
     left: -0.5rem;
-    width: calc(100% + 1rem); /* Увеличиваем ширину прямоугольника на 20px по каждой стороне */
+    width: calc(
+        100% + 1rem
+    ); /* Увеличиваем ширину прямоугольника на 20px по каждой стороне */
     height: calc(100% + 1rem); /* Увеличиваем высоту прямоугольника */
     border-radius: 1rem;
     background-color: #336699; /* Цвет прямоугольника */
@@ -44,4 +45,3 @@ p {
 .card.st-4::after {
     background-color: #c24e4e;
 }
-

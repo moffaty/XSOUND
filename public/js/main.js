@@ -58,13 +58,13 @@ function getTimeDifferenceInMinutes(startTime) {
 
 function formatLastUpdateMessage(startTime) {
     const differenceInSeconds = getTimeDifferenceInSeconds(startTime);
-    
+
     if (differenceInSeconds < 60) {
         return `Последнее обновление: ${differenceInSeconds} ${pluralizeSeconds(differenceInSeconds)} назад`;
-    } 
-    
+    }
+
     const differenceInMinutes = getTimeDifferenceInMinutes(startTime);
-    
+
     if (differenceInMinutes < 60) {
         return `Последнее обновление: ${differenceInMinutes} ${pluralizeMinutes(differenceInMinutes)} назад`;
     } else {
@@ -76,19 +76,34 @@ function formatLastUpdateMessage(startTime) {
 
 function pluralizeHours(hours) {
     if (hours % 10 === 1 && hours % 100 !== 11) return 'час';
-    if (hours % 10 >= 2 && hours % 10 <= 4 && (hours % 100 < 10 || hours % 100 >= 20)) return 'часа';
+    if (
+        hours % 10 >= 2 &&
+        hours % 10 <= 4 &&
+        (hours % 100 < 10 || hours % 100 >= 20)
+    )
+        return 'часа';
     return 'часов';
 }
 
 function pluralizeMinutes(minutes) {
     if (minutes % 10 === 1 && minutes % 100 !== 11) return 'минута';
-    if (minutes % 10 >= 2 && minutes % 10 <= 4 && (minutes % 100 < 10 || minutes % 100 >= 20)) return 'минуты';
+    if (
+        minutes % 10 >= 2 &&
+        minutes % 10 <= 4 &&
+        (minutes % 100 < 10 || minutes % 100 >= 20)
+    )
+        return 'минуты';
     return 'минут';
 }
 
 function pluralizeSeconds(seconds) {
     if (seconds % 10 === 1 && seconds % 100 !== 11) return 'секунда';
-    if (seconds % 10 >= 2 && seconds % 10 <= 4 && (seconds % 100 < 10 || seconds % 100 >= 20)) return 'секунды';
+    if (
+        seconds % 10 >= 2 &&
+        seconds % 10 <= 4 &&
+        (seconds % 100 < 10 || seconds % 100 >= 20)
+    )
+        return 'секунды';
     return 'секунд';
 }
 

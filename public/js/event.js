@@ -27,7 +27,7 @@ async function addCardsToContainer(containerId) {
     const events = await getEvents();
 
     // Создаем массив промисов для всех асинхронных операций внутри forEach
-    const cardsDataPromises = events.map(async event => {
+    const cardsDataPromises = events.map(async (event) => {
         const status = await getStatus(event.status_id);
         const venue = await getVenue(event.venue_id);
         console.log(venue);
@@ -52,8 +52,14 @@ async function addCardsToContainer(containerId) {
     const cardsData = await Promise.all(cardsDataPromises);
 
     // Создаем и добавляем карточки в контейнер
-    cardsData.forEach(data => {
-        const card = generateCard(data.title, data.text, data.status, data.imageUrl, data.timestamp);
+    cardsData.forEach((data) => {
+        const card = generateCard(
+            data.title,
+            data.text,
+            data.status,
+            data.imageUrl,
+            data.timestamp,
+        );
         container.appendChild(card);
     });
 }

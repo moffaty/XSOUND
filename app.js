@@ -139,14 +139,15 @@ app.route('/venue').post(async (req, res) => {
 app.route('/event')
     .get(isAuthenticated, async (req, res) => {
         if (req.query.get) {
-            const event = await Event.findAll({ where: { user_id: req.session.user_id } });
+            const event = await Event.findAll({
+                where: { user_id: req.session.user_id },
+            });
             let result = [];
             event.forEach((element) => {
                 result.push(element);
             });
             sendMessage(res, true, result);
-        }
-        else {
+        } else {
             res.sendFile(path.join(__dirname, 'public', 'views', 'event.html'));
         }
     })
@@ -157,13 +158,12 @@ app.route('/event')
         sendResponse(res, event);
     });
 
-app.route('/status')
-.get(async (req, res) => {
+app.route('/status').get(async (req, res) => {
     if (req.query.status) {
         const status = await Status.findByPk(req.query.status);
         sendResponse(res, status);
     }
-})
+});
 
 app.all('/logout', (req, res) => {
     req.session.username = '';

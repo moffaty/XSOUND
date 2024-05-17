@@ -6,7 +6,6 @@ if (gif) {
     };
 }
 
-
 window.addEventListener('load', function () {
     if (gif) {
         gif.style.opacity = 1;
