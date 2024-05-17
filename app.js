@@ -16,7 +16,7 @@ const sequelize = require(modelDir + '/sequelize');
 const User = require(modelDir + '/user');
 const Role = require(modelDir + '/roles');
 const Event = require(modelDir + '/event');
-const EventStatus = require(modelDir + '/eventStatus');
+const Status = require(modelDir + '/eventStatus');
 const Musician = require(modelDir + '/musician');
 const Genre = require(modelDir + '/genre');
 const Venue = require(modelDir + '/venue');
@@ -139,7 +139,7 @@ app.route('/venue').post(async (req, res) => {
 app.route('/event')
     .get(isAuthenticated, async (req, res) => {
         if (req.query.get) {
-            const event = await Event.findAll({ where: { user_id: req.session.user_id }});
+            const event = await Event.findAll({ where: { user_id: req.session.user_id } });
             let result = [];
             event.forEach((element) => {
                 result.push(element);
@@ -156,6 +156,14 @@ app.route('/event')
         const event = await Event.create({ venue_id, status_id });
         sendResponse(res, event);
     });
+
+app.route('/status')
+.get(async (req, res) => {
+    if (req.query.status) {
+        const status = await Status.findByPk(req.query.status);
+        sendResponse(res, status);
+    }
+})
 
 app.all('/logout', (req, res) => {
     req.session.username = '';

@@ -3,6 +3,11 @@ body {
     height: auto; 
 }
 
+p {
+    margin: 0;
+    padding: 0;
+}
+
 .card {
     position: relative; /* Устанавливаем позицию для относительного позиционирования псевдоэлемента */
 }
@@ -22,3 +27,21 @@ body {
 .card:hover {
     box-shadow: 0px 0px 0.2rem 0.1rem rgba(255, 255, 255, 0.4); /* Эффект свечения */
 }
+
+/* Стили для классов состояния */
+.card.st-1::after {
+    background-color: #336699;
+}
+
+.card.st-2::after {
+    background-color: #8ca8c4;
+}
+
+.card.st-3::after {
+    background-color: #993363 !important;
+}
+
+.card.st-4::after {
+    background-color: #c24e4e;
+}
+

@@ -69,7 +69,12 @@ const organizers = [
     { user_id: 2, organizer_name: 'NOO', venue_id: 1, phone: '+79770027002' },
 ];
 
-const events = [{ name: 'Party', venue_id: 1, user_id: 1, status_id: 1 }];
+const events = [
+    { name: 'Party1', venue_id: 1, user_id: 1, status_id: 1 },
+    { name: 'Party2', venue_id: 1, user_id: 1, status_id: 2 },
+    { name: 'Party3', venue_id: 1, user_id: 1, status_id: 3 },
+    { name: 'Party4', venue_id: 1, user_id: 1, status_id: 4 },
+];
 
 async function fillTables() {
     await Genre.bulkCreate(genres);
