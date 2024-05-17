@@ -142,6 +142,10 @@ app.route('/profile').get(isAuthenticated, async (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'views', 'profile.html'));
 });
 
+app.route('/settings').get(isAuthenticated, async (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'views', 'settings.html'));
+})
+
 app.route('/event')
     .get(isAuthenticated, async (req, res) => {
         if (req.query.get) {
