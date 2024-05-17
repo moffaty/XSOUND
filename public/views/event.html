@@ -80,36 +80,69 @@
             style="margin-top: 70px"
         ></div>
         <div class="card chat-fixed">
-            <div class="card-header d-flex justify-content-between align-items-center p-3"
-                    style="border-top: 4px solid #ffa900; background-color: white">
-                <h5 class="mb-0">Chat messages</h5>
+            <div
+                class="card-header d-flex justify-content-between align-items-center p-3"
+                style="border-top: 4px solid #ffa900; background-color: white"
+            >
+                <h5 class="mb-0">Чат</h5>
                 <div class="d-flex flex-row align-items-center">
                     <i class="fas fa-minus me-3 text-muted fa-xs"></i>
                     <i class="fas fa-comments me-3 text-muted fa-xs"></i>
                     <i class="fas fa-times text-muted fa-xs"></i>
-                    <button class="fas fa-times text-muted fa-xs text-decoration-none border-0 bg-white" id="closeChat">X</button>
+                    <button
+                        class="fas fa-times text-muted fa-xs text-decoration-none border-0 bg-white"
+                        id="closeChat"
+                    >
+                        X
+                    </button>
                 </div>
             </div>
-            <div class="card-body" data-mdb-perfect-scrollbar="true" style="position: relative; height: 400px; background-color: white">
+            <div
+                class="card-body"
+                data-mdb-perfect-scrollbar="true"
+                style="
+                    position: relative;
+                    height: 400px;
+                    width: 400px;
+                    background-color: white;
+                "
+            >
                 <!-- Содержимое чата -->
             </div>
-            <div class="card-footer text-muted d-flex justify-content-start align-items-center p-3" style="background-color: white; border-radius: 1px;">
+            <div
+                class="card-footer text-muted d-flex justify-content-start align-items-center p-3"
+                style="background-color: white; border-radius: 1px"
+            >
                 <div class="input-group mb-0">
-                    <input type="text" class="form-control" placeholder="Type message"
-                            aria-label="Recipient's username" aria-describedby="button-addon2" />
-                    <button data-mdb-button-init data-mdb-ripple-init class="btn btn-warning" type="button"
-                            id="button-addon2" style="padding-top: .55rem;">
-                        Button
+                    <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Наберите сообщение..."
+                        aria-label="Recipient's username"
+                        aria-describedby="button-addon2"
+                    />
+                    <button
+                        data-mdb-button-init
+                        data-mdb-ripple-init
+                        class="btn btn-warning"
+                        type="button"
+                        id="button-addon2"
+                        style="padding-top: 0.55rem"
+                    >
+                        Отправить
                     </button>
                 </div>
             </div>
         </div>
-        <div id="openChat" class="chat-icon d-flex justify-content-center transparent align-items-center chat-fixed">
+        <div
+            id="openChat"
+            class="chat-icon d-flex justify-content-center transparent align-items-center chat-fixed"
+        >
             <div class="circle bg-warning">
-                <img src="/img/chat.png" alt="icon" class="icon">
+                <img src="/img/chat.png" alt="icon" class="icon" alt="Чат"/>
             </div>
         </div>
-        
+
         <div class="footer fixed-bottom">
             <footer>
                 <div id="line-container">

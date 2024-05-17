@@ -17,9 +17,7 @@ const Venue = require(modelDir + '/venue');
 const Chat = require(modelDir + '/chat');
 const Message = require(modelDir + '/message');
 
-const chats = [
-    { user_id_to: 1, user_id_from: 2 },
-]
+const chats = [{ user_id_to: 1, user_id_from: 2 }];
 
 const messages = [
     {
@@ -32,9 +30,9 @@ const messages = [
         user_id_to: 2,
         user_id_from: 1,
         chat_id: 1,
-        message: 'I\'m fine! Thanks =)',
+        message: "I'm fine! Thanks =)",
     },
-]
+];
 
 const genres = [
     { genre_name: 'Рок' },

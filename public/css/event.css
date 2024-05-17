@@ -49,8 +49,7 @@ p {
 .chat-container {
     bottom: 0;
     right: 0;
-    width: 200%;
-    max-width: 400px; /* Максимальная ширина чата */
+    max-width: 100%; /* Максимальная ширина чата */
     margin: 0; /* Убираем отступы */
     padding: 0; /* Убираем отступы */
     z-index: 999; /* Чат будет отображаться поверх других элементов */
@@ -68,7 +67,8 @@ p {
 }
 
 .card-body {
-    max-height: 300px; /* Максимальная высота чата */
+    max-height: 100%; /* Максимальная высота чата */
+    max-width: 100%; /* Максимальная ширина чата */
     overflow-y: auto; /* Скролл при переполнении */
 }
 
@@ -88,8 +88,8 @@ p {
 }
 
 .chat-fixed {
-    position: fixed; 
-    bottom: 35px; 
+    position: fixed;
+    bottom: 35px;
     right: 15px;
 }
 

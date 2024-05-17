@@ -1,4 +1,4 @@
-function generateCard(title, text, status, imageUrl, timestamp) {
+function generateCard(title, text, status, venue_id, imageUrl, timestamp) {
     // Создаем элемент карточки
     const card = document.createElement('div');
     card.classList.add('col-md-4'); // Добавляем класс Bootstrap для колонки
@@ -9,7 +9,10 @@ function generateCard(title, text, status, imageUrl, timestamp) {
         <div class="background-rectangle"></div>
         <div class="card st-${status}">
             <div class="card-body">
-                <h5 class="card-title">${title}</h5>
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="card-title">${title}</h5>
+                    <button id="venue-${venue_id}" data-venue="${venue_id}" class="chat-venue m-1 btn btn-dark">Связаться с площадкой</button>
+                </div>
                 <p class="card-text">${text}</p>
             </div>
             <div class="card-footer">
@@ -17,6 +20,12 @@ function generateCard(title, text, status, imageUrl, timestamp) {
             </div>
         </div>
     `;
+
+    const chatButton = card.querySelector('.chat-venue');
+    chatButton.addEventListener('click', async e => {
+        const data = await postFetch('/create-chat', { venue_id: chatButton.dataset.venue });
+        console.log(data);
+    })
 
     // Возвращаем сгенерированную карточку
     return card;
@@ -30,16 +39,17 @@ async function addCardsToContainer(containerId) {
     const cardsDataPromises = events.map(async (event) => {
         const status = await getStatus(event.status_id);
         const venue = await getVenue(event.venue_id);
-        console.log(venue);
         const venue_name = venue.name;
         const status_name = status.status_name;
         console.log(status_name);
         const cardText = `
             <p>Статус: ${status_name}</p>
-            <p>Площадка: ${venue_name}</p>            
+            <p>Площадка: ${venue_name}</p>     
+            <p></p>       
         `;
         const card = {
             title: `${event.name}`,
+            venue_id: venue.id,
             text: cardText,
             status: status.status_id,
             imageUrl: '...',
@@ -57,6 +67,7 @@ async function addCardsToContainer(containerId) {
             data.title,
             data.text,
             data.status,
+            data.venue_id,
             data.imageUrl,
             data.timestamp,
         );

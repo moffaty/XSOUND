@@ -22,7 +22,7 @@ const Message = sequelize.define('Message', {
         references: {
             model: Chat,
             key: 'id',
-        }
+        },
     },
     message: {
         type: DataTypes.TEXT, // Используйте TEXT для хранения более длинных сообщений

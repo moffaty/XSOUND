@@ -16,4 +16,6 @@ openChatIcon.addEventListener('click', () => {
     openChatIcon.classList.add('transparent');
     chatCard.classList.remove('transparent');
     chatCard.classList.add('untransparent');
-})
+});
+
+closeChatIcon.click();
