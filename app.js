@@ -84,6 +84,7 @@ app.route('/login')
         res.sendFile(path.join(__dirname, 'public', 'views', 'login.html'));
     })
     .post(async (req, res) => {
+        console.log(req.body);
         const user = await User.findOne({
             where: { email: req.body.email, password: req.body.password },
         });
@@ -123,7 +124,7 @@ app.route('/register')
     })
     .post(async (req, res) => {
         const email = req.body.email;
-        const username = email.substr(0, email.indexOf('@')); 
+        const username = email.substr(0, email.indexOf('@'));
         const password = req.body.password;
         const role_id = 1;
         // Проверка аутентификации
@@ -132,14 +133,17 @@ app.route('/register')
             // Если пользователь найден, проверяем пароль
             if (user.password === password) {
                 sendResponse(res, user);
-            } 
-            else {
+            } else {
                 sendMessage(res, false);
             }
-        } 
-        else {
+        } else {
             // Пользователь с указанным email не найден, регистрируем нового пользователя
-            const newUser = await User.create({ email, username, password, role_id });
+            const newUser = await User.create({
+                email,
+                username,
+                password,
+                role_id,
+            });
             sendResponse(res, newUser);
         }
     });
@@ -162,15 +166,23 @@ app.route('/profile')
         const surname = req.body.surname;
         const about = req.body.about;
         const [profile, created] = await Profile.findOrCreate({
-            where: { name, surname, about },
-            defaults: { name, surname, about },
-        })
+            where: { user_id: req.session.user_id },
+            defaults: { user_id: req.session.user_id },
+        });
+        if (name && surname && about) {
+            profile.name = name;
+            profile.surname = surname;
+            profile.about = about;
+            await profile.save();
+        }
         sendResponse(res, profile);
-    })
+    });
+
+app.route('/');
 
 app.route('/settings').get(isAuthenticated, async (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'views', 'settings.html'));
-})
+});
 
 app.route('/event')
     .get(isAuthenticated, async (req, res) => {
@@ -191,7 +203,12 @@ app.route('/event')
         const venue_id = req.body.venue_id;
         const status_id = 1;
         const name = 'Мероприятие';
-        const event = await Event.create({ name, venue_id, status_id, user_id: req.session.user_id });
+        const event = await Event.create({
+            name,
+            venue_id,
+            status_id,
+            user_id: req.session.user_id,
+        });
         sendResponse(res, event);
     });
 

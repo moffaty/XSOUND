@@ -36,8 +36,7 @@ form.addEventListener('submit', async (e) => {
     console.log(data);
     if (data.status === 'success') {
         window.location = '/login?success=true';
-    }
-    else {
+    } else {
         animateAlert(
             data.message +
                 '. <a href="/login" class="alert-link">Попробуйте авторизоваться.</a>',

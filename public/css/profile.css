@@ -1,6 +1,21 @@
 #profile {
-    width: 150px; 
-    height: 150px; 
+    width: 150px;
+    height: 150px;
     object-fit: cover;
     position: relative; /* Устанавливаем позицию для относительного позиционирования псевдоэлемента */
+}
+
+#loadingSpinnerContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(
+        255,
+        255,
+        255,
+        0.5
+    ); /* Прозрачный фон для затемнения */
+    z-index: 1000; /* Устанавливаем z-index выше всех, чтобы спиннер был поверх всего содержимого */
 }

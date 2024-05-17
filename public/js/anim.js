@@ -7,6 +7,11 @@ if (gif) {
 }
 
 window.addEventListener('load', function () {
+    document.querySelector('html').classList.add('transparent');
+    setTimeout(() => {
+        document.querySelector('html').classList.remove('transparent');
+        document.querySelector('html').classList.add('untransparent');
+    }, 50);
     if (gif) {
         gif.style.opacity = 1;
         gif.style.visibility = 'visible';

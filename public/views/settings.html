@@ -61,7 +61,9 @@
                                 aria-labelledby="dropdown08"
                             >
                                 <li>
-                                    <a class="dropdown-item active" href="/settings"
+                                    <a
+                                        class="dropdown-item active"
+                                        href="/settings"
                                         >Настройки профиля</a
                                     >
                                 </li>
@@ -76,42 +78,136 @@
                 </div>
             </div>
         </nav>
-
-        <div class="container rounded bg-white mt-5 mb-5">
+        <div
+            id="loadingSpinnerContainer"
+            class="untransparent d-flex justify-content-center align-items-center vh-100"
+        >
+            <div
+                id="loadingSpinner"
+                class="spinner-border text-white"
+                role="status"
+            >
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        <div
+            id="profile-container"
+            class="container rounded bg-white mt-5 mb-5 transparent"
+        >
             <div class="row">
                 <div class="col-md-3 border-right">
-                    <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="/img/icon.png"><span class="font-weight-bold">Edogaru</span><span class="text-black-50">edogaru@mail.com.my</span><span> </span></div>
+                    <div
+                        class="d-flex flex-column align-items-center text-center p-3 py-5"
+                    >
+                        <img
+                            class="rounded-circle mt-5"
+                            width="150px"
+                            src="/img/icon.png"
+                        /><span id="username" class="font-weight-bold"
+                            >Username</span
+                        ><span id="email" class="text-black-50"
+                            >edogaru@mail.com.my</span
+                        ><span> </span>
+                    </div>
                 </div>
                 <div class="col-md-5 border-right">
                     <div class="p-3 py-5">
-                        <div class="d-flex flex-column align-items-center flex-direction-colum mb-3">
+                        <div
+                            class="d-flex flex-column align-items-center flex-direction-colum mb-3"
+                        >
                             <h4 class="text-right">Настройки профиля</h4>
                         </div>
                         <div class="row mt-2">
-                            <div class="col-md-6 d-flex flex-column align-items-center flex-direction-colum"><label class="labels">Имя</label><input type="text" class="form-control" placeholder="NAME" value=""></div>
-                            <div class="col-md-6 d-flex flex-column align-items-center flex-direction-colum"><label class="labels">Фамилия</label><input type="text" class="form-control" value="" placeholder="SURNAME"></div>
+                            <div
+                                class="col-md-6 d-flex flex-column align-items-center flex-direction-colum"
+                            >
+                                <label class="labels">Имя</label
+                                ><input
+                                    id="name"
+                                    type="text"
+                                    class="form-control"
+                                    placeholder="NAME"
+                                    value=""
+                                />
+                            </div>
+                            <div
+                                class="col-md-6 d-flex flex-column align-items-center flex-direction-colum"
+                            >
+                                <label class="labels">Фамилия</label
+                                ><input
+                                    id="surname"
+                                    type="text"
+                                    class="form-control"
+                                    value=""
+                                    placeholder="SURNAME"
+                                />
+                            </div>
                         </div>
                         <div class="row mt-3">
-                            <div class="col-md-12 d-flex flex-column align-items-center flex-direction-column"><label class="labels">Элекронная почта</label><input type="text" class="form-control" placeholder="EMAIL" value=""></div>
+                            <div
+                                class="col-md-12 d-flex flex-column align-items-center flex-direction-colum"
+                            >
+                                <label class="labels">О себе</label
+                                ><textarea
+                                    rows="6"
+                                    id="about"
+                                    type="text"
+                                    class="form-control"
+                                    placeholder="ABOUT"
+                                    value=""
+                                ></textarea>
+                            </div>
                         </div>
-                        <div class="row mt-3">
-                            <div class="col-md-12 d-flex flex-column align-items-center flex-direction-colum"><label class="labels">О себе</label><textarea type="text" class="form-control" placeholder="ABOUT" value=""></textarea></div>
+                        <div class="mt-5 text-center">
+                            <button
+                                class="w-100 btn btn-primary profile-button"
+                                id="saveChanges"
+                                type="button"
+                            >
+                                Сохранить изменения
+                            </button>
                         </div>
-                        <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button">Сохранить изменения</button></div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="p-3 py-5">
-                        <div class="d-flex justify-content-between align-items-center experience"><span>Edit Experience</span><span class="border px-3 p-1 add-experience"><i class="fa fa-plus"></i>&nbsp;Experience</span></div><br>
-                        <div class="col-md-12"><label class="labels">Experience in Designing</label><input type="text" class="form-control" placeholder="experience" value=""></div> <br>
-                        <div class="col-md-12"><label class="labels">Additional Details</label><input type="text" class="form-control" placeholder="additional details" value=""></div>
+                        <div
+                            class="d-flex justify-content-between align-items-center experience"
+                        >
+                            <span>Edit Experience</span
+                            ><span class="border px-3 p-1 add-experience"
+                                ><i class="fa fa-plus"></i
+                                >&nbsp;Experience</span
+                            >
+                        </div>
+                        <br />
+                        <div class="col-md-12">
+                            <label class="labels">Experience in Designing</label
+                            ><input
+                                type="text"
+                                class="form-control"
+                                placeholder="experience"
+                                value=""
+                            />
+                        </div>
+                        <br />
+                        <div class="col-md-12">
+                            <label class="labels">Additional Details</label
+                            ><input
+                                type="text"
+                                class="form-control"
+                                placeholder="additional details"
+                                value=""
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        </div>
-        </div>
-
+        <div
+            class="alert alert-secondary fixed-bottom mb-4 transparent"
+            role="alert"
+        ></div>
         <div class="footer fixed-bottom">
             <footer>
                 <div id="line-container">
@@ -129,5 +225,7 @@
             </footer>
         </div>
         <script src="/js/anim.js"></script>
+        <script src="/js/main.js"></script>
+        <script src="/js/settings.js"></script>
     </body>
 </html>

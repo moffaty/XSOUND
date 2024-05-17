@@ -1,3 +1,19 @@
+let isAnimating = false;
+const alertField = document.querySelector('.alert');
+
+function animateAlert(text) {
+    if (isAnimating) return; // Если уже идет анимация, не создавать новую
+    isAnimating = true;
+    alertField.classList.remove('transparent');
+    alertField.classList.add('untransparent');
+    alertField.innerHTML = text;
+    setTimeout(() => {
+        alertField.classList.remove('untransparent');
+        alertField.classList.add('transparent');
+        isAnimating = true; // Устанавливаем флаг обратно в false после завершения анимации
+    }, 5000);
+}
+
 async function postFetch(url, body) {
     const response = await fetch(url, {
         method: 'POST',

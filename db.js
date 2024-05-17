@@ -98,6 +98,10 @@ const events = [
     { name: 'Party4', venue_id: 2, user_id: 1, status_id: 4 },
 ];
 
+const profiles = [
+    { name: 'Egor', surname: 'Shestakov', about: 'Coolest guy)', user_id: 1 },
+];
+
 async function fillTables() {
     await Chat.bulkCreate(chats);
     await Message.bulkCreate(messages);
@@ -109,6 +113,7 @@ async function fillTables() {
     await Venue.bulkCreate(venues);
     await Organizer.bulkCreate(organizers);
     await Event.bulkCreate(events);
+    await Profile.bulkCreate(profiles);
 }
 
 fillTables();
