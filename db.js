@@ -14,6 +14,27 @@ const Musician = require(modelDir + '/musician');
 const Organizer = require(modelDir + '/organizer');
 const Genre = require(modelDir + '/genre');
 const Venue = require(modelDir + '/venue');
+const Chat = require(modelDir + '/chat');
+const Message = require(modelDir + '/message');
+
+const chats = [
+    { user_id_to: 1, user_id_from: 2 },
+]
+
+const messages = [
+    {
+        user_id_to: 1,
+        user_id_from: 2,
+        chat_id: 1,
+        message: 'Hello! How are you?',
+    },
+    {
+        user_id_to: 2,
+        user_id_from: 1,
+        chat_id: 1,
+        message: 'I\'m fine! Thanks =)',
+    },
+]
 
 const genres = [
     { genre_name: 'Рок' },
@@ -77,6 +98,8 @@ const events = [
 ];
 
 async function fillTables() {
+    await Chat.bulkCreate(chats);
+    await Message.bulkCreate(messages);
     await Genre.bulkCreate(genres);
     await EventStatus.bulkCreate(eventStatus);
     await Role.bulkCreate(roles);
