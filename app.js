@@ -23,6 +23,7 @@ const Venue = require(modelDir + '/venue');
 const Chat = require(modelDir + '/chat');
 const Message = require(modelDir + '/message');
 const Organizer = require(modelDir + '/organizer');
+const Profile = require(modelDir + '/profile');
 
 // Используем сессии
 app.use(

@@ -16,6 +16,7 @@ const Genre = require(modelDir + '/genre');
 const Venue = require(modelDir + '/venue');
 const Chat = require(modelDir + '/chat');
 const Message = require(modelDir + '/message');
+const Profile = require(modelDir + '/profile');
 
 const chats = [{ user_id_to: 1, user_id_from: 2 }];
 
