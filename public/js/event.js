@@ -22,38 +22,53 @@ function generateCard(title, text, status, venue_id, imageUrl, timestamp) {
     `;
 
     const chatButton = card.querySelector('.chat-venue');
-    chatButton.addEventListener('click', async e => {
-        if (openChatIcon) { openChatIcon.click(); }
+    chatButton.addEventListener('click', async (e) => {
+        if (openChatIcon) {
+            openChatIcon.click();
+        }
         const me = await getFetch('/whoami');
         const user_id = me.user_id;
-        const data = await postFetch('/create-chat-musician', { venue_id: chatButton.dataset.venue });
+        const data = await postFetch('/create-chat-musician', {
+            venue_id: chatButton.dataset.venue,
+        });
         const user_id_from = data.message.user_id_from;
         const user_id_to = data.message.user_id_to;
         const chat_id = data.message.id;
-        const messages = await postFetch('/get-messages', {chat_id});
+        const messages = await postFetch('/get-messages', { chat_id });
         const venue = await getVenue(chatButton.dataset.venue);
         if (messages.status === 'success') {
             const all_messages = messages.message;
-            all_messages.forEach(message => {
+            all_messages.forEach((message) => {
                 console.log(message);
                 if (message.user_id_from == user_id) {
-                    createUserMessage(me.username, getDate(message.createdAt), message.message);
+                    createUserMessage(
+                        me.username,
+                        getDate(message.createdAt),
+                        message.message,
+                    );
+                } else {
+                    createResponseMessage(
+                        venue.name,
+                        new Date(message.createdAt),
+                        message.message,
+                    );
                 }
-                else {
-                    createResponseMessage(venue.name, new Date(message.createdAt), message.message);
-                }
-            })
+            });
         }
         if (data.status === 'success') {
             headerChat.textContent += ' с ' + venue.name;
-            chatSend.addEventListener('click', async e => {
+            chatSend.addEventListener('click', async (e) => {
                 const user_message = chatInput.value;
-                const message = await postFetch('/send-message', { user_message, user_id_from, user_id_to, chat_id });
+                const message = await postFetch('/send-message', {
+                    user_message,
+                    user_id_from,
+                    user_id_to,
+                    chat_id,
+                });
                 console.log(message);
-            })
+            });
         }
-        
-    })
+    });
 
     // Возвращаем сгенерированную карточку
     return card;
