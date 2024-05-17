@@ -25,6 +25,7 @@ const Organizer = require(modelDir + '/organizer');
 // Используем сессии
 app.use(
     session({
+        user_id: '',
         username: '',
         role: '',
         email: '',
@@ -59,6 +60,15 @@ function sendMessage(res, status, message = '') {
     return res.json({ status: 'error', message });
 }
 
+// Отправка данных с модели
+function sendResponse(res, model) {
+    if (model) {
+        sendMessage(res, true, model.dataValues);
+    } else {
+        sendMessage(res, false);
+    }
+}
+
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -80,6 +90,7 @@ app.route('/login')
             req.session.username = user.dataValues.username;
             req.session.role = user.dataValues.role_id;
             req.session.email = user.dataValues.email;
+            req.session.user_id = user.dataValues.id;
             sendMessage(res, true);
         }
     });
@@ -121,27 +132,25 @@ app.route('/venue').post(async (req, res) => {
     console.log(venue_id);
     if (venue_id) {
         const venue = await Venue.findByPk(venue_id);
-        if (venue === null) {
-            sendMessage(res, false);
-        } else {
-            sendMessage(res, true, venue.dataValues);
-        }
+        sendResponse(res, venue);
     }
 });
 
 app.route('/event')
-    .get(isAuthenticated, (req, res) => {
-        res.sendFile(path.join(__dirname, 'public', 'views', 'event.html'));
+    .get(isAuthenticated, async (req, res) => {
+        if (req.query.user) {
+            const event = await Event.findAll({ where: { user_id: req.session.user_id }});
+            sendResponse(res, event);
+        }
+        else {
+            res.sendFile(path.join(__dirname, 'public', 'views', 'event.html'));
+        }
     })
     .post(async (req, res) => {
         const venue_id = req.body.venue_id;
         const status_id = 1;
         const event = await Event.create({ venue_id, status_id });
-        if (event === null) {
-            sendMessage(res, false);
-        } else {
-            sendMessage(res, true, event.dataValues);
-        }
+        sendResponse(res, event);
     });
 
 app.all('/logout', (req, res) => {
