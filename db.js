@@ -1,19 +1,19 @@
 // Заполнение таблицы
 // Определяем директорию моделей
-const modelDir = './models';
+const modelDir = './models'
 
 // Подключаем настройки Sequelize
-const sequelize = require(modelDir + '/sequelize');
+const sequelize = require(modelDir + '/sequelize')
 
 // Подключаем модели
-const User = require(modelDir + '/user');
-const Role = require(modelDir + '/roles');
-const Event = require(modelDir + '/event');
-const EventStatus = require(modelDir + '/eventStatus');
-const Musician = require(modelDir + '/musician');
-const Organizer = require(modelDir + '/organizer');
-const Genre = require(modelDir + '/genre');
-const Venue = require(modelDir + '/venue');
+const User = require(modelDir + '/user')
+const Role = require(modelDir + '/roles')
+const Event = require(modelDir + '/event')
+const EventStatus = require(modelDir + '/eventStatus')
+const Musician = require(modelDir + '/musician')
+const Organizer = require(modelDir + '/organizer')
+const Genre = require(modelDir + '/genre')
+const Venue = require(modelDir + '/venue')
 
 const genres = [
     { genre_name: 'Рок' },
@@ -42,31 +42,44 @@ const users = [
 ]
 
 const musicians = [
-    { user_id: 1, musician_name: 'TTT', genre_id: 1, repertoire: { songs: 'ToToTo' } },
+    {
+        user_id: 1,
+        musician_name: 'TTT',
+        genre_id: 1,
+        repertoire: { songs: 'ToToTo' },
+    },
 ]
 
 const venues = [
-    { name: 'Baaar', address: { x: 59.955, y: 30.205 }, capacity: 50, info: 'Классное место!' }, 
-    { name: 'Cluub', address: { x: 59.934, y: 30.334 }, capacity: 110, info: 'Улёт!)' }, 
+    {
+        name: 'Baaar',
+        address: { x: 59.955, y: 30.205 },
+        capacity: 50,
+        info: 'Классное место!',
+    },
+    {
+        name: 'Cluub',
+        address: { x: 59.934, y: 30.334 },
+        capacity: 110,
+        info: 'Улёт!)',
+    },
 ]
 
 const organizers = [
-    { user_id: 2, organizer_name: 'NOO', venue_id: 1, phone: '+79770027002' }
+    { user_id: 2, organizer_name: 'NOO', venue_id: 1, phone: '+79770027002' },
 ]
 
-const events = [
-    { name: 'Party', venue_id: 1, user_id: 1, status_id: 1 }
-]
+const events = [{ name: 'Party', venue_id: 1, user_id: 1, status_id: 1 }]
 
 async function fillTables() {
-    await Genre.bulkCreate(genres);
-    await EventStatus.bulkCreate(eventStatus);
-    await Role.bulkCreate(roles);
-    await User.bulkCreate(users);
-    await Musician.bulkCreate(musicians);
-    await Venue.bulkCreate(venues);
-    await Organizer.bulkCreate(organizers);
-    await Event.bulkCreate(events);
+    await Genre.bulkCreate(genres)
+    await EventStatus.bulkCreate(eventStatus)
+    await Role.bulkCreate(roles)
+    await User.bulkCreate(users)
+    await Musician.bulkCreate(musicians)
+    await Venue.bulkCreate(venues)
+    await Organizer.bulkCreate(organizers)
+    await Event.bulkCreate(events)
 }
 
-fillTables();
+fillTables()

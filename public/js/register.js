@@ -1,42 +1,45 @@
-const form = document.querySelector('.login');
-const alertField = document.querySelector('.alert');
+const form = document.querySelector('.login')
+const alertField = document.querySelector('.alert')
 
-let isAnimating = false;
+let isAnimating = false
 
 function animateAlert(text) {
-    if (isAnimating) return; // Если уже идет анимация, не создавать новую
-    isAnimating = true;
-    alertField.classList.remove('transparent');
-    alertField.classList.add('untransparent');
-    alertField.innerHTML = text;
+    if (isAnimating) return // Если уже идет анимация, не создавать новую
+    isAnimating = true
+    alertField.classList.remove('transparent')
+    alertField.classList.add('untransparent')
+    alertField.innerHTML = text
     setTimeout(() => {
-        alertField.classList.remove('untransparent');
-        alertField.classList.add('transparent');
-        isAnimating = false; // Устанавливаем флаг обратно в false после завершения анимации
-    }, 5000);
+        alertField.classList.remove('untransparent')
+        alertField.classList.add('transparent')
+        isAnimating = false // Устанавливаем флаг обратно в false после завершения анимации
+    }, 5000)
 }
 
-form.addEventListener('submit', async e => {
-    e.preventDefault();
-    const email = form.elements['email'].value;
-    const password = form.elements['password'].value;
-    const confirmPassword = form.elements['confirm-password'].value;
+form.addEventListener('submit', async (e) => {
+    e.preventDefault()
+    const email = form.elements['email'].value
+    const password = form.elements['password'].value
+    const confirmPassword = form.elements['confirm-password'].value
     if (password != confirmPassword) {
-        animateAlert('Пароли не совпадают');
-        return;
+        animateAlert('Пароли не совпадают')
+        return
     }
     const response = await fetch('/register', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email, password }),
     })
-    const data = await response.json();
-    animateAlert(data.message + '. <a href="/login" class="alert-link">Попробуйте авторизоваться.</a>');
+    const data = await response.json()
+    animateAlert(
+        data.message +
+            '. <a href="/login" class="alert-link">Попробуйте авторизоваться.</a>',
+    )
 })
 
-const loginButton = document.querySelector('#login');
-loginButton.addEventListener('click', e => {
-    window.location = '/login';
+const loginButton = document.querySelector('#login')
+loginButton.addEventListener('click', (e) => {
+    window.location = '/login'
 })

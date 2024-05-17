@@ -1,24 +1,23 @@
-
-import {version} from '../package.json';
-export {version};
+import { version } from '../package.json'
+export { version }
 
 // control
-export * from './control/index';
+export * from './control/index'
 
 // core
-export * from './core/index';
+export * from './core/index'
 
 // dom
-export * from './dom/index';
+export * from './dom/index'
 
 // geometry
-export * from './geometry/index';
+export * from './geometry/index'
 
 // geo
-export * from './geo/index';
+export * from './geo/index'
 
 // layer
-export * from './layer/index';
+export * from './layer/index'
 
 // map
-export * from './map/index';
+export * from './map/index'

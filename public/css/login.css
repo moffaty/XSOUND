@@ -1,4 +1,7 @@
-html, body, .sea-cover, .modal { 
+html,
+body,
+.sea-cover,
+.modal {
     height: 100%;
 }
 
@@ -11,13 +14,12 @@ html, body, .sea-cover, .modal {
     background-size: cover;
 }
 
-
 .modal {
     background-color: rgba(0, 0, 0, 0.6) !important;
 }
 
 .modal-header {
-    padding-bottom: 0px !important
+    padding-bottom: 0px !important;
 }
 
 .alert {

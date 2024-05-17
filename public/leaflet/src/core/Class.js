@@ -1,4 +1,4 @@
-import * as Util from './Util';
+import * as Util from './Util'
 
 // @class Class
 // @aka L.Class
@@ -11,125 +11,138 @@ import * as Util from './Util';
 export function Class() {}
 
 Class.extend = function (props) {
+    // @function extend(props: Object): Function
+    // [Extends the current class](#class-inheritance) given the properties to be included.
+    // Returns a Javascript function that is a class constructor (to be called with `new`).
+    var NewClass = function () {
+        Util.setOptions(this)
 
-	// @function extend(props: Object): Function
-	// [Extends the current class](#class-inheritance) given the properties to be included.
-	// Returns a Javascript function that is a class constructor (to be called with `new`).
-	var NewClass = function () {
+        // call the constructor
+        if (this.initialize) {
+            this.initialize.apply(this, arguments)
+        }
 
-		Util.setOptions(this);
+        // call all constructor hooks
+        this.callInitHooks()
+    }
 
-		// call the constructor
-		if (this.initialize) {
-			this.initialize.apply(this, arguments);
-		}
+    var parentProto = (NewClass.__super__ = this.prototype)
 
-		// call all constructor hooks
-		this.callInitHooks();
-	};
+    var proto = Util.create(parentProto)
+    proto.constructor = NewClass
 
-	var parentProto = NewClass.__super__ = this.prototype;
+    NewClass.prototype = proto
 
-	var proto = Util.create(parentProto);
-	proto.constructor = NewClass;
+    // inherit parent's statics
+    for (var i in this) {
+        if (
+            Object.prototype.hasOwnProperty.call(this, i) &&
+            i !== 'prototype' &&
+            i !== '__super__'
+        ) {
+            NewClass[i] = this[i]
+        }
+    }
 
-	NewClass.prototype = proto;
+    // mix static properties into the class
+    if (props.statics) {
+        Util.extend(NewClass, props.statics)
+    }
 
-	// inherit parent's statics
-	for (var i in this) {
-		if (Object.prototype.hasOwnProperty.call(this, i) && i !== 'prototype' && i !== '__super__') {
-			NewClass[i] = this[i];
-		}
-	}
+    // mix includes into the prototype
+    if (props.includes) {
+        checkDeprecatedMixinEvents(props.includes)
+        Util.extend.apply(null, [proto].concat(props.includes))
+    }
 
-	// mix static properties into the class
-	if (props.statics) {
-		Util.extend(NewClass, props.statics);
-	}
+    // mix given properties into the prototype
+    Util.extend(proto, props)
+    delete proto.statics
+    delete proto.includes
 
-	// mix includes into the prototype
-	if (props.includes) {
-		checkDeprecatedMixinEvents(props.includes);
-		Util.extend.apply(null, [proto].concat(props.includes));
-	}
+    // merge options
+    if (proto.options) {
+        proto.options = parentProto.options
+            ? Util.create(parentProto.options)
+            : {}
+        Util.extend(proto.options, props.options)
+    }
 
-	// mix given properties into the prototype
-	Util.extend(proto, props);
-	delete proto.statics;
-	delete proto.includes;
+    proto._initHooks = []
 
-	// merge options
-	if (proto.options) {
-		proto.options = parentProto.options ? Util.create(parentProto.options) : {};
-		Util.extend(proto.options, props.options);
-	}
+    // add method for calling all hooks
+    proto.callInitHooks = function () {
+        if (this._initHooksCalled) {
+            return
+        }
 
-	proto._initHooks = [];
+        if (parentProto.callInitHooks) {
+            parentProto.callInitHooks.call(this)
+        }
 
-	// add method for calling all hooks
-	proto.callInitHooks = function () {
+        this._initHooksCalled = true
 
-		if (this._initHooksCalled) { return; }
+        for (var i = 0, len = proto._initHooks.length; i < len; i++) {
+            proto._initHooks[i].call(this)
+        }
+    }
 
-		if (parentProto.callInitHooks) {
-			parentProto.callInitHooks.call(this);
-		}
-
-		this._initHooksCalled = true;
-
-		for (var i = 0, len = proto._initHooks.length; i < len; i++) {
-			proto._initHooks[i].call(this);
-		}
-	};
-
-	return NewClass;
-};
-
+    return NewClass
+}
 
 // @function include(properties: Object): this
 // [Includes a mixin](#class-includes) into the current class.
 Class.include = function (props) {
-	var parentOptions = this.prototype.options;
-	Util.extend(this.prototype, props);
-	if (props.options) {
-		this.prototype.options = parentOptions;
-		this.mergeOptions(props.options);
-	}
-	return this;
-};
+    var parentOptions = this.prototype.options
+    Util.extend(this.prototype, props)
+    if (props.options) {
+        this.prototype.options = parentOptions
+        this.mergeOptions(props.options)
+    }
+    return this
+}
 
 // @function mergeOptions(options: Object): this
 // [Merges `options`](#class-options) into the defaults of the class.
 Class.mergeOptions = function (options) {
-	Util.extend(this.prototype.options, options);
-	return this;
-};
+    Util.extend(this.prototype.options, options)
+    return this
+}
 
 // @function addInitHook(fn: Function): this
 // Adds a [constructor hook](#class-constructor-hooks) to the class.
-Class.addInitHook = function (fn) { // (Function) || (String, args...)
-	var args = Array.prototype.slice.call(arguments, 1);
+Class.addInitHook = function (fn) {
+    // (Function) || (String, args...)
+    var args = Array.prototype.slice.call(arguments, 1)
 
-	var init = typeof fn === 'function' ? fn : function () {
-		this[fn].apply(this, args);
-	};
+    var init =
+        typeof fn === 'function'
+            ? fn
+            : function () {
+                  this[fn].apply(this, args)
+              }
 
-	this.prototype._initHooks = this.prototype._initHooks || [];
-	this.prototype._initHooks.push(init);
-	return this;
-};
+    this.prototype._initHooks = this.prototype._initHooks || []
+    this.prototype._initHooks.push(init)
+    return this
+}
 
 function checkDeprecatedMixinEvents(includes) {
-	/* global L: true */
-	if (typeof L === 'undefined' || !L || !L.Mixin) { return; }
+    /* global L: true */
+    if (typeof L === 'undefined' || !L || !L.Mixin) {
+        return
+    }
 
-	includes = Util.isArray(includes) ? includes : [includes];
+    includes = Util.isArray(includes) ? includes : [includes]
 
-	for (var i = 0; i < includes.length; i++) {
-		if (includes[i] === L.Mixin.Events) {
-			console.warn('Deprecated include of L.Mixin.Events: ' +
-				'this property will be removed in future releases, ' +
-				'please inherit from L.Evented instead.', new Error().stack);
-		}
-	}
+    for (var i = 0; i < includes.length; i++) {
+        if (includes[i] === L.Mixin.Events) {
+            console.warn(
+                'Deprecated include of L.Mixin.Events: ' +
+                    'this property will be removed in future releases, ' +
+                    'please inherit from L.Evented instead.',
+                new Error().stack,
+            )
+        }
+    }
 }

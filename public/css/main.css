@@ -1,7 +1,9 @@
 .transparent {
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0s linear 0.1s;
+    transition:
+        opacity 0.3s ease,
+        visibility 0s linear 0.1s;
 }
 
 .untransparent {
@@ -55,7 +57,7 @@
     background-color: black;
     z-index: -1; /* Устанавливаем под текстом */
     opacity: 0; /* Начальная прозрачность */
-    animation: revealBackground 0.5s 1.0s forwards; /* Анимация для появления заднего фона после 1.5 секунды */
+    animation: revealBackground 0.5s 1s forwards; /* Анимация для появления заднего фона после 1.5 секунды */
 }
 
 @keyframes revealBackground {

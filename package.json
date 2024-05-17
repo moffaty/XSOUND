@@ -1,25 +1,25 @@
 {
-  "name": "diplom",
-  "version": "0.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npx nodemon app",
-    "rmk": "node rmk -n > dev-log && node db > dev-log && echo Таблицы очищены и заполнены",
-    "full_rmk": "node rmk -y > dev-log && node db > dev-log && echo Таблицы очищены и заполнены.Бекап обновлен"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "bootstrap": "^5.3.3",
-    "express": "^4.19.2",
-    "express-session": "^1.18.0",
-    "sequelize": "^6.37.3",
-    "sqlite3": "^5.1.7",
-    "vite": "^5.2.11"
-  },
-  "devDependencies": {
-    "prettier": "3.2.5"
-  }
+    "name": "diplom",
+    "version": "0.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "dev": "npx nodemon app",
+        "rmk": "node rmk -n > dev-log && node db > dev-log && echo Таблицы очищены и заполнены",
+        "full_rmk": "node rmk -y > dev-log && node db > dev-log && echo Таблицы очищены и заполнены.Бекап обновлен"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "bootstrap": "^5.3.3",
+        "express": "^4.19.2",
+        "express-session": "^1.18.0",
+        "sequelize": "^6.37.3",
+        "sqlite3": "^5.1.7",
+        "vite": "^5.2.11"
+    },
+    "devDependencies": {
+        "prettier": "3.2.5"
+    }
 }

@@ -7,12 +7,9 @@
         <link href="/css/login.css" rel="stylesheet" />
         <link rel="icon" type="image/png" href="/img/icon.png" />
         <script src="/dist/js/bootstrap.bundle.min.js"></script>
-        <title>Карта площадок</title>
-        <link rel="stylesheet" href="/leaflet/dist/leaflet.css" />
-        <link rel="stylesheet" href="/css/map.css" />
-        <script src="./leaflet/dist/leaflet.js"></script>
+        <title>Мероприятия</title>
     </head>
-    <body>
+    <body class="bg-gradient bg-dark">
         <nav
             class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top transparent"
             aria-label="Tenth navbar example"
@@ -75,50 +72,49 @@
                 </div>
             </div>
         </nav>
-
-        <!-- Modal -->
-        <div
-            class="modal fade"
-            id="exampleModal"
-            tabindex="-1"
-            aria-labelledby="exampleModalLabel"
-            aria-hidden="true"
-        >
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">
-                            Modal title
-                        </h5>
-                        <button
-                            type="button"
-                            class="btn-close"
-                            data-bs-dismiss="modal"
-                            aria-label="Close"
-                        ></button>
-                    </div>
-                    <div id="modal-body" class="modal-body">...</div>
-                    <div class="modal-footer">
-                        <button
-                            type="button"
-                            class="btn btn-secondary"
-                            data-bs-dismiss="modal"
-                        >
-                            Закрыть
-                        </button>
-                        <button
-                            type="button"
-                            id="createEvent"
-                            class="btn btn-primary"
-                        >
-                            Выбрать точку
-                        </button>
-                    </div>
+        <div class="card-deck">
+            <div class="card">
+                <img src="..." class="card-img-top" alt="..." />
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">
+                        This is a wider card with supporting text below as a
+                        natural lead-in to additional content. This content is a
+                        little bit longer.
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">Last updated 3 mins ago</small>
+                </div>
+            </div>
+            <div class="card">
+                <img src="..." class="card-img-top" alt="..." />
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">
+                        This card has supporting text below as a natural lead-in
+                        to additional content.
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">Last updated 3 mins ago</small>
+                </div>
+            </div>
+            <div class="card">
+                <img src="..." class="card-img-top" alt="..." />
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">
+                        This is a wider card with supporting text below as a
+                        natural lead-in to additional content. This card has
+                        even longer content than the first to show that equal
+                        height action.
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">Last updated 3 mins ago</small>
                 </div>
             </div>
         </div>
-        <div id="map"></div>
-        <script src="/js/main.js"></script>
-        <script src="/js/map.js"></script>
     </body>
 </html>
