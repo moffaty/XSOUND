@@ -69,6 +69,11 @@
     }
 }
 
+@font-face {
+    font-family: 'Oswald-Medium';
+    src: url('../font/Oswald-Medium.ttf') format('truetype'); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
+}
+
 body {
     font-family: 'Oswald-Medium', sans-serif !important;
 }
