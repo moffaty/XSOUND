@@ -1,4 +1,4 @@
-import Browser from '../../core/Browser'
+import Browser from '../../core/Browser';
 
 // @namespace SVG; @section
 // There are several static functions which can be called without instantiating L.SVG:
@@ -8,7 +8,7 @@ import Browser from '../../core/Browser'
 // corresponding to the class name passed. For example, using 'line' will return
 // an instance of [SVGLineElement](https://developer.mozilla.org/docs/Web/API/SVGLineElement).
 export function svgCreate(name) {
-    return document.createElementNS('http://www.w3.org/2000/svg', name)
+    return document.createElementNS('http://www.w3.org/2000/svg', name);
 }
 
 // @function pointsToPath(rings: Point[], closed: Boolean): String
@@ -21,20 +21,20 @@ export function pointsToPath(rings, closed) {
         len,
         len2,
         points,
-        p
+        p;
 
     for (i = 0, len = rings.length; i < len; i++) {
-        points = rings[i]
+        points = rings[i];
 
         for (j = 0, len2 = points.length; j < len2; j++) {
-            p = points[j]
-            str += (j ? 'L' : 'M') + p.x + ' ' + p.y
+            p = points[j];
+            str += (j ? 'L' : 'M') + p.x + ' ' + p.y;
         }
 
         // closes the ring for polygons; "x" is VML syntax
-        str += closed ? (Browser.svg ? 'z' : 'x') : ''
+        str += closed ? (Browser.svg ? 'z' : 'x') : '';
     }
 
     // SVG complains about empty path strings
-    return str || 'M0 0'
+    return str || 'M0 0';
 }

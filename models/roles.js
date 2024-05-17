@@ -1,5 +1,5 @@
-const { DataTypes } = require('sequelize')
-const sequelize = require('./sequelize')
+const { DataTypes } = require('sequelize');
+const sequelize = require('./sequelize');
 
 // Определите модель роли
 const Role = sequelize.define('Role', {
@@ -12,6 +12,6 @@ const Role = sequelize.define('Role', {
         type: DataTypes.STRING,
         allowNull: false,
     },
-})
+});
 
-module.exports = Role
+module.exports = Role;

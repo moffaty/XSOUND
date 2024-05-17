@@ -1,7 +1,7 @@
-import { Class } from '../../core/Class'
-import { setOptions } from '../../core/Util'
-import { toPoint as point } from '../../geometry/Point'
-import Browser from '../../core/Browser'
+import { Class } from '../../core/Class';
+import { setOptions } from '../../core/Util';
+import { toPoint as point } from '../../geometry/Point';
+import Browser from '../../core/Browser';
 
 /*
  * @class Icon
@@ -84,56 +84,56 @@ export var Icon = Class.extend({
     },
 
     initialize: function (options) {
-        setOptions(this, options)
+        setOptions(this, options);
     },
 
     // @method createIcon(oldIcon?: HTMLElement): HTMLElement
     // Called internally when the icon has to be shown, returns a `<img>` HTML element
     // styled according to the options.
     createIcon: function (oldIcon) {
-        return this._createIcon('icon', oldIcon)
+        return this._createIcon('icon', oldIcon);
     },
 
     // @method createShadow(oldIcon?: HTMLElement): HTMLElement
     // As `createIcon`, but for the shadow beneath it.
     createShadow: function (oldIcon) {
-        return this._createIcon('shadow', oldIcon)
+        return this._createIcon('shadow', oldIcon);
     },
 
     _createIcon: function (name, oldIcon) {
-        var src = this._getIconUrl(name)
+        var src = this._getIconUrl(name);
 
         if (!src) {
             if (name === 'icon') {
                 throw new Error(
                     'iconUrl not set in Icon options (see the docs).',
-                )
+                );
             }
-            return null
+            return null;
         }
 
         var img = this._createImg(
             src,
             oldIcon && oldIcon.tagName === 'IMG' ? oldIcon : null,
-        )
-        this._setIconStyles(img, name)
+        );
+        this._setIconStyles(img, name);
 
         if (this.options.crossOrigin || this.options.crossOrigin === '') {
             img.crossOrigin =
                 this.options.crossOrigin === true
                     ? ''
-                    : this.options.crossOrigin
+                    : this.options.crossOrigin;
         }
 
-        return img
+        return img;
     },
 
     _setIconStyles: function (img, name) {
-        var options = this.options
-        var sizeOption = options[name + 'Size']
+        var options = this.options;
+        var sizeOption = options[name + 'Size'];
 
         if (typeof sizeOption === 'number') {
-            sizeOption = [sizeOption, sizeOption]
+            sizeOption = [sizeOption, sizeOption];
         }
 
         var size = point(sizeOption),
@@ -141,38 +141,38 @@ export var Icon = Class.extend({
                 (name === 'shadow' && options.shadowAnchor) ||
                     options.iconAnchor ||
                     (size && size.divideBy(2, true)),
-            )
+            );
 
         img.className =
-            'leaflet-marker-' + name + ' ' + (options.className || '')
+            'leaflet-marker-' + name + ' ' + (options.className || '');
 
         if (anchor) {
-            img.style.marginLeft = -anchor.x + 'px'
-            img.style.marginTop = -anchor.y + 'px'
+            img.style.marginLeft = -anchor.x + 'px';
+            img.style.marginTop = -anchor.y + 'px';
         }
 
         if (size) {
-            img.style.width = size.x + 'px'
-            img.style.height = size.y + 'px'
+            img.style.width = size.x + 'px';
+            img.style.height = size.y + 'px';
         }
     },
 
     _createImg: function (src, el) {
-        el = el || document.createElement('img')
-        el.src = src
-        return el
+        el = el || document.createElement('img');
+        el.src = src;
+        return el;
     },
 
     _getIconUrl: function (name) {
         return (
             (Browser.retina && this.options[name + 'RetinaUrl']) ||
             this.options[name + 'Url']
-        )
+        );
     },
-})
+});
 
 // @factory L.icon(options: Icon options)
 // Creates an icon instance with the given options.
 export function icon(options) {
-    return new Icon(options)
+    return new Icon(options);
 }

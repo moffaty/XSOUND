@@ -1,5 +1,5 @@
-const { DataTypes } = require('sequelize')
-const sequelize = require('./sequelize')
+const { DataTypes } = require('sequelize');
+const sequelize = require('./sequelize');
 
 const Venue = sequelize.define('Venue', {
     id: {
@@ -23,6 +23,6 @@ const Venue = sequelize.define('Venue', {
         type: DataTypes.TEXT,
         allowNull: true,
     },
-})
+});
 
-module.exports = Venue
+module.exports = Venue;

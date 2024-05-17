@@ -1,7 +1,7 @@
-import { Map } from '../Map'
-import { Handler } from '../../core/Handler'
-import { on, off, stop } from '../../dom/DomEvent'
-import { toPoint } from '../../geometry/Point'
+import { Map } from '../Map';
+import { Handler } from '../../core/Handler';
+import { on, off, stop } from '../../dom/DomEvent';
+import { toPoint } from '../../geometry/Point';
 
 /*
  * L.Map.Keyboard is handling keyboard interaction with the map, enabled by default.
@@ -18,7 +18,7 @@ Map.mergeOptions({
     // @option keyboardPanDelta: Number = 80
     // Amount of pixels to pan when pressing an arrow key.
     keyboardPanDelta: 80,
-})
+});
 
 export var Keyboard = Handler.extend({
     keyCodes: {
@@ -31,18 +31,18 @@ export var Keyboard = Handler.extend({
     },
 
     initialize: function (map) {
-        this._map = map
+        this._map = map;
 
-        this._setPanDelta(map.options.keyboardPanDelta)
-        this._setZoomDelta(map.options.zoomDelta)
+        this._setPanDelta(map.options.keyboardPanDelta);
+        this._setZoomDelta(map.options.zoomDelta);
     },
 
     addHooks: function () {
-        var container = this._map._container
+        var container = this._map._container;
 
         // make the container focusable by tabbing
         if (container.tabIndex <= 0) {
-            container.tabIndex = '0'
+            container.tabIndex = '0';
         }
 
         on(
@@ -53,7 +53,7 @@ export var Keyboard = Handler.extend({
                 mousedown: this._onMouseDown,
             },
             this,
-        )
+        );
 
         this._map.on(
             {
@@ -61,11 +61,11 @@ export var Keyboard = Handler.extend({
                 blur: this._removeHooks,
             },
             this,
-        )
+        );
     },
 
     removeHooks: function () {
-        this._removeHooks()
+        this._removeHooks();
 
         off(
             this._map._container,
@@ -75,7 +75,7 @@ export var Keyboard = Handler.extend({
                 mousedown: this._onMouseDown,
             },
             this,
-        )
+        );
 
         this._map.off(
             {
@@ -83,51 +83,51 @@ export var Keyboard = Handler.extend({
                 blur: this._removeHooks,
             },
             this,
-        )
+        );
     },
 
     _onMouseDown: function () {
         if (this._focused) {
-            return
+            return;
         }
 
         var body = document.body,
             docEl = document.documentElement,
             top = body.scrollTop || docEl.scrollTop,
-            left = body.scrollLeft || docEl.scrollLeft
+            left = body.scrollLeft || docEl.scrollLeft;
 
-        this._map._container.focus()
+        this._map._container.focus();
 
-        window.scrollTo(left, top)
+        window.scrollTo(left, top);
     },
 
     _onFocus: function () {
-        this._focused = true
-        this._map.fire('focus')
+        this._focused = true;
+        this._map.fire('focus');
     },
 
     _onBlur: function () {
-        this._focused = false
-        this._map.fire('blur')
+        this._focused = false;
+        this._map.fire('blur');
     },
 
     _setPanDelta: function (panDelta) {
         var keys = (this._panKeys = {}),
             codes = this.keyCodes,
             i,
-            len
+            len;
 
         for (i = 0, len = codes.left.length; i < len; i++) {
-            keys[codes.left[i]] = [-1 * panDelta, 0]
+            keys[codes.left[i]] = [-1 * panDelta, 0];
         }
         for (i = 0, len = codes.right.length; i < len; i++) {
-            keys[codes.right[i]] = [panDelta, 0]
+            keys[codes.right[i]] = [panDelta, 0];
         }
         for (i = 0, len = codes.down.length; i < len; i++) {
-            keys[codes.down[i]] = [0, panDelta]
+            keys[codes.down[i]] = [0, panDelta];
         }
         for (i = 0, len = codes.up.length; i < len; i++) {
-            keys[codes.up[i]] = [0, -1 * panDelta]
+            keys[codes.up[i]] = [0, -1 * panDelta];
         }
     },
 
@@ -135,76 +135,76 @@ export var Keyboard = Handler.extend({
         var keys = (this._zoomKeys = {}),
             codes = this.keyCodes,
             i,
-            len
+            len;
 
         for (i = 0, len = codes.zoomIn.length; i < len; i++) {
-            keys[codes.zoomIn[i]] = zoomDelta
+            keys[codes.zoomIn[i]] = zoomDelta;
         }
         for (i = 0, len = codes.zoomOut.length; i < len; i++) {
-            keys[codes.zoomOut[i]] = -zoomDelta
+            keys[codes.zoomOut[i]] = -zoomDelta;
         }
     },
 
     _addHooks: function () {
-        on(document, 'keydown', this._onKeyDown, this)
+        on(document, 'keydown', this._onKeyDown, this);
     },
 
     _removeHooks: function () {
-        off(document, 'keydown', this._onKeyDown, this)
+        off(document, 'keydown', this._onKeyDown, this);
     },
 
     _onKeyDown: function (e) {
         if (e.altKey || e.ctrlKey || e.metaKey) {
-            return
+            return;
         }
 
         var key = e.keyCode,
             map = this._map,
-            offset
+            offset;
 
         if (key in this._panKeys) {
             if (!map._panAnim || !map._panAnim._inProgress) {
-                offset = this._panKeys[key]
+                offset = this._panKeys[key];
                 if (e.shiftKey) {
-                    offset = toPoint(offset).multiplyBy(3)
+                    offset = toPoint(offset).multiplyBy(3);
                 }
 
                 if (map.options.maxBounds) {
                     offset = map._limitOffset(
                         toPoint(offset),
                         map.options.maxBounds,
-                    )
+                    );
                 }
 
                 if (map.options.worldCopyJump) {
                     var newLatLng = map.wrapLatLng(
                         map.unproject(map.project(map.getCenter()).add(offset)),
-                    )
-                    map.panTo(newLatLng)
+                    );
+                    map.panTo(newLatLng);
                 } else {
-                    map.panBy(offset)
+                    map.panBy(offset);
                 }
             }
         } else if (key in this._zoomKeys) {
             map.setZoom(
                 map.getZoom() + (e.shiftKey ? 3 : 1) * this._zoomKeys[key],
-            )
+            );
         } else if (
             key === 27 &&
             map._popup &&
             map._popup.options.closeOnEscapeKey
         ) {
-            map.closePopup()
+            map.closePopup();
         } else {
-            return
+            return;
         }
 
-        stop(e)
+        stop(e);
     },
-})
+});
 
 // @section Handlers
 // @section Handlers
 // @property keyboard: Handler
 // Keyboard navigation handler.
-Map.addInitHook('addHandler', 'keyboard', Keyboard)
+Map.addInitHook('addHandler', 'keyboard', Keyboard);

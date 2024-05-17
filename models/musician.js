@@ -1,7 +1,7 @@
-const { DataTypes } = require('sequelize')
-const sequelize = require('./sequelize')
-const User = require('./user')
-const Genre = require('./genre')
+const { DataTypes } = require('sequelize');
+const sequelize = require('./sequelize');
+const User = require('./user');
+const Genre = require('./genre');
 
 const Musician = sequelize.define('Musician', {
     id: {
@@ -34,6 +34,6 @@ const Musician = sequelize.define('Musician', {
         type: DataTypes.JSON,
         allowNull: true,
     },
-})
+});
 
-module.exports = Musician
+module.exports = Musician;

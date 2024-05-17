@@ -1,8 +1,8 @@
-import { TileLayer } from './TileLayer'
-import { extend, setOptions, getParamString } from '../../core/Util'
-import Browser from '../../core/Browser'
-import { EPSG4326 } from '../../geo/crs/CRS.EPSG4326'
-import { toBounds } from '../../geometry/Bounds'
+import { TileLayer } from './TileLayer';
+import { extend, setOptions, getParamString } from '../../core/Util';
+import Browser from '../../core/Browser';
+import { EPSG4326 } from '../../geo/crs/CRS.EPSG4326';
+import { toBounds } from '../../geometry/Bounds';
 
 /*
  * @class TileLayer.WMS
@@ -65,35 +65,35 @@ export var TileLayerWMS = TileLayer.extend({
     },
 
     initialize: function (url, options) {
-        this._url = url
+        this._url = url;
 
-        var wmsParams = extend({}, this.defaultWmsParams)
+        var wmsParams = extend({}, this.defaultWmsParams);
 
         // all keys that are not TileLayer options go to WMS params
         for (var i in options) {
             if (!(i in this.options)) {
-                wmsParams[i] = options[i]
+                wmsParams[i] = options[i];
             }
         }
 
-        options = setOptions(this, options)
+        options = setOptions(this, options);
 
-        var realRetina = options.detectRetina && Browser.retina ? 2 : 1
-        var tileSize = this.getTileSize()
-        wmsParams.width = tileSize.x * realRetina
-        wmsParams.height = tileSize.y * realRetina
+        var realRetina = options.detectRetina && Browser.retina ? 2 : 1;
+        var tileSize = this.getTileSize();
+        wmsParams.width = tileSize.x * realRetina;
+        wmsParams.height = tileSize.y * realRetina;
 
-        this.wmsParams = wmsParams
+        this.wmsParams = wmsParams;
     },
 
     onAdd: function (map) {
-        this._crs = this.options.crs || map.options.crs
-        this._wmsVersion = parseFloat(this.wmsParams.version)
+        this._crs = this.options.crs || map.options.crs;
+        this._wmsVersion = parseFloat(this.wmsParams.version);
 
-        var projectionKey = this._wmsVersion >= 1.3 ? 'crs' : 'srs'
-        this.wmsParams[projectionKey] = this._crs.code
+        var projectionKey = this._wmsVersion >= 1.3 ? 'crs' : 'srs';
+        this.wmsParams[projectionKey] = this._crs.code;
 
-        TileLayer.prototype.onAdd.call(this, map)
+        TileLayer.prototype.onAdd.call(this, map);
     },
 
     getTileUrl: function (coords) {
@@ -110,30 +110,30 @@ export var TileLayerWMS = TileLayer.extend({
                     ? [min.y, min.x, max.y, max.x]
                     : [min.x, min.y, max.x, max.y]
             ).join(','),
-            url = TileLayer.prototype.getTileUrl.call(this, coords)
+            url = TileLayer.prototype.getTileUrl.call(this, coords);
         return (
             url +
             getParamString(this.wmsParams, url, this.options.uppercase) +
             (this.options.uppercase ? '&BBOX=' : '&bbox=') +
             bbox
-        )
+        );
     },
 
     // @method setParams(params: Object, noRedraw?: Boolean): this
     // Merges an object with the new parameters and re-requests tiles on the current screen (unless `noRedraw` was set to true).
     setParams: function (params, noRedraw) {
-        extend(this.wmsParams, params)
+        extend(this.wmsParams, params);
 
         if (!noRedraw) {
-            this.redraw()
+            this.redraw();
         }
 
-        return this
+        return this;
     },
-})
+});
 
 // @factory L.tileLayer.wms(baseUrl: String, options: TileLayer.WMS options)
 // Instantiates a WMS tile layer object given a base URL of the WMS service and a WMS parameters/options object.
 export function tileLayerWMS(url, options) {
-    return new TileLayerWMS(url, options)
+    return new TileLayerWMS(url, options);
 }

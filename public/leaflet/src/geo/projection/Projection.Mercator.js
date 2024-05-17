@@ -1,6 +1,6 @@
-import { LatLng } from '../LatLng'
-import { Bounds } from '../../geometry/Bounds'
-import { Point } from '../../geometry/Point'
+import { LatLng } from '../LatLng';
+import { Bounds } from '../../geometry/Bounds';
+import { Point } from '../../geometry/Point';
 
 /*
  * @namespace Projection
@@ -24,14 +24,14 @@ export var Mercator = {
             y = latlng.lat * d,
             tmp = this.R_MINOR / r,
             e = Math.sqrt(1 - tmp * tmp),
-            con = e * Math.sin(y)
+            con = e * Math.sin(y);
 
         var ts =
             Math.tan(Math.PI / 4 - y / 2) /
-            Math.pow((1 - con) / (1 + con), e / 2)
-        y = -r * Math.log(Math.max(ts, 1e-10))
+            Math.pow((1 - con) / (1 + con), e / 2);
+        y = -r * Math.log(Math.max(ts, 1e-10));
 
-        return new Point(latlng.lng * d * r, y)
+        return new Point(latlng.lng * d * r, y);
     },
 
     unproject: function (point) {
@@ -40,15 +40,15 @@ export var Mercator = {
             tmp = this.R_MINOR / r,
             e = Math.sqrt(1 - tmp * tmp),
             ts = Math.exp(-point.y / r),
-            phi = Math.PI / 2 - 2 * Math.atan(ts)
+            phi = Math.PI / 2 - 2 * Math.atan(ts);
 
         for (var i = 0, dphi = 0.1, con; i < 15 && Math.abs(dphi) > 1e-7; i++) {
-            con = e * Math.sin(phi)
-            con = Math.pow((1 - con) / (1 + con), e / 2)
-            dphi = Math.PI / 2 - 2 * Math.atan(ts * con) - phi
-            phi += dphi
+            con = e * Math.sin(phi);
+            con = Math.pow((1 - con) / (1 + con), e / 2);
+            dphi = Math.PI / 2 - 2 * Math.atan(ts * con) - phi;
+            phi += dphi;
         }
 
-        return new LatLng(phi * d, (point.x * d) / r)
+        return new LatLng(phi * d, (point.x * d) / r);
     },
-}
+};

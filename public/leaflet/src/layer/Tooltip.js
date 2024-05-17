@@ -1,11 +1,11 @@
-import { DivOverlay } from './DivOverlay'
-import { toPoint } from '../geometry/Point'
-import { Map } from '../map/Map'
-import { Layer } from './Layer'
-import * as DomUtil from '../dom/DomUtil'
-import * as DomEvent from '../dom/DomEvent'
-import * as Util from '../core/Util'
-import { FeatureGroup } from './FeatureGroup'
+import { DivOverlay } from './DivOverlay';
+import { toPoint } from '../geometry/Point';
+import { Map } from '../map/Map';
+import { Layer } from './Layer';
+import * as DomUtil from '../dom/DomUtil';
+import * as DomEvent from '../dom/DomEvent';
+import * as Util from '../core/Util';
+import { FeatureGroup } from './FeatureGroup';
 
 /*
  * @class Tooltip
@@ -79,54 +79,54 @@ export var Tooltip = DivOverlay.extend({
     },
 
     onAdd: function (map) {
-        DivOverlay.prototype.onAdd.call(this, map)
-        this.setOpacity(this.options.opacity)
+        DivOverlay.prototype.onAdd.call(this, map);
+        this.setOpacity(this.options.opacity);
 
         // @namespace Map
         // @section Tooltip events
         // @event tooltipopen: TooltipEvent
         // Fired when a tooltip is opened in the map.
-        map.fire('tooltipopen', { tooltip: this })
+        map.fire('tooltipopen', { tooltip: this });
 
         if (this._source) {
-            this.addEventParent(this._source)
+            this.addEventParent(this._source);
 
             // @namespace Layer
             // @section Tooltip events
             // @event tooltipopen: TooltipEvent
             // Fired when a tooltip bound to this layer is opened.
-            this._source.fire('tooltipopen', { tooltip: this }, true)
+            this._source.fire('tooltipopen', { tooltip: this }, true);
         }
     },
 
     onRemove: function (map) {
-        DivOverlay.prototype.onRemove.call(this, map)
+        DivOverlay.prototype.onRemove.call(this, map);
 
         // @namespace Map
         // @section Tooltip events
         // @event tooltipclose: TooltipEvent
         // Fired when a tooltip in the map is closed.
-        map.fire('tooltipclose', { tooltip: this })
+        map.fire('tooltipclose', { tooltip: this });
 
         if (this._source) {
-            this.removeEventParent(this._source)
+            this.removeEventParent(this._source);
 
             // @namespace Layer
             // @section Tooltip events
             // @event tooltipclose: TooltipEvent
             // Fired when a tooltip bound to this layer is closed.
-            this._source.fire('tooltipclose', { tooltip: this }, true)
+            this._source.fire('tooltipclose', { tooltip: this }, true);
         }
     },
 
     getEvents: function () {
-        var events = DivOverlay.prototype.getEvents.call(this)
+        var events = DivOverlay.prototype.getEvents.call(this);
 
         if (!this.options.permanent) {
-            events.preclick = this.close
+            events.preclick = this.close;
         }
 
-        return events
+        return events;
     },
 
     _initLayout: function () {
@@ -136,15 +136,15 @@ export var Tooltip = DivOverlay.extend({
                 ' ' +
                 (this.options.className || '') +
                 ' leaflet-zoom-' +
-                (this._zoomAnimated ? 'animated' : 'hide')
+                (this._zoomAnimated ? 'animated' : 'hide');
 
-        this._contentNode = this._container = DomUtil.create('div', className)
+        this._contentNode = this._container = DomUtil.create('div', className);
 
-        this._container.setAttribute('role', 'tooltip')
+        this._container.setAttribute('role', 'tooltip');
         this._container.setAttribute(
             'id',
             'leaflet-tooltip-' + Util.stamp(this),
-        )
+        );
     },
 
     _updateLayout: function () {},
@@ -162,56 +162,56 @@ export var Tooltip = DivOverlay.extend({
             tooltipWidth = container.offsetWidth,
             tooltipHeight = container.offsetHeight,
             offset = toPoint(this.options.offset),
-            anchor = this._getAnchor()
+            anchor = this._getAnchor();
 
         if (direction === 'top') {
-            subX = tooltipWidth / 2
-            subY = tooltipHeight
+            subX = tooltipWidth / 2;
+            subY = tooltipHeight;
         } else if (direction === 'bottom') {
-            subX = tooltipWidth / 2
-            subY = 0
+            subX = tooltipWidth / 2;
+            subY = 0;
         } else if (direction === 'center') {
-            subX = tooltipWidth / 2
-            subY = tooltipHeight / 2
+            subX = tooltipWidth / 2;
+            subY = tooltipHeight / 2;
         } else if (direction === 'right') {
-            subX = 0
-            subY = tooltipHeight / 2
+            subX = 0;
+            subY = tooltipHeight / 2;
         } else if (direction === 'left') {
-            subX = tooltipWidth
-            subY = tooltipHeight / 2
+            subX = tooltipWidth;
+            subY = tooltipHeight / 2;
         } else if (tooltipPoint.x < centerPoint.x) {
-            direction = 'right'
-            subX = 0
-            subY = tooltipHeight / 2
+            direction = 'right';
+            subX = 0;
+            subY = tooltipHeight / 2;
         } else {
-            direction = 'left'
-            subX = tooltipWidth + (offset.x + anchor.x) * 2
-            subY = tooltipHeight / 2
+            direction = 'left';
+            subX = tooltipWidth + (offset.x + anchor.x) * 2;
+            subY = tooltipHeight / 2;
         }
 
         pos = pos
             .subtract(toPoint(subX, subY, true))
             .add(offset)
-            .add(anchor)
+            .add(anchor);
 
-        DomUtil.removeClass(container, 'leaflet-tooltip-right')
-        DomUtil.removeClass(container, 'leaflet-tooltip-left')
-        DomUtil.removeClass(container, 'leaflet-tooltip-top')
-        DomUtil.removeClass(container, 'leaflet-tooltip-bottom')
-        DomUtil.addClass(container, 'leaflet-tooltip-' + direction)
-        DomUtil.setPosition(container, pos)
+        DomUtil.removeClass(container, 'leaflet-tooltip-right');
+        DomUtil.removeClass(container, 'leaflet-tooltip-left');
+        DomUtil.removeClass(container, 'leaflet-tooltip-top');
+        DomUtil.removeClass(container, 'leaflet-tooltip-bottom');
+        DomUtil.addClass(container, 'leaflet-tooltip-' + direction);
+        DomUtil.setPosition(container, pos);
     },
 
     _updatePosition: function () {
-        var pos = this._map.latLngToLayerPoint(this._latlng)
-        this._setPosition(pos)
+        var pos = this._map.latLngToLayerPoint(this._latlng);
+        this._setPosition(pos);
     },
 
     setOpacity: function (opacity) {
-        this.options.opacity = opacity
+        this.options.opacity = opacity;
 
         if (this._container) {
-            DomUtil.setOpacity(this._container, opacity)
+            DomUtil.setOpacity(this._container, opacity);
         }
     },
 
@@ -220,8 +220,8 @@ export var Tooltip = DivOverlay.extend({
             this._latlng,
             e.zoom,
             e.center,
-        )
-        this._setPosition(pos)
+        );
+        this._setPosition(pos);
     },
 
     _getAnchor: function () {
@@ -232,9 +232,9 @@ export var Tooltip = DivOverlay.extend({
                 !this.options.sticky
                 ? this._source._getTooltipAnchor()
                 : [0, 0],
-        )
+        );
     },
-})
+});
 
 // @namespace Tooltip
 // @factory L.tooltip(options?: Tooltip options, source?: Layer)
@@ -243,8 +243,8 @@ export var Tooltip = DivOverlay.extend({
 // @factory L.tooltip(latlng: LatLng, options?: Tooltip options)
 // Instantiates a `Tooltip` object given `latlng` where the tooltip will open and an optional `options` object that describes its appearance and location.
 export var tooltip = function (options, source) {
-    return new Tooltip(options, source)
-}
+    return new Tooltip(options, source);
+};
 
 // @namespace Map
 // @section Methods for Layers and Controls
@@ -255,18 +255,18 @@ Map.include({
     // @method openTooltip(content: String|HTMLElement, latlng: LatLng, options?: Tooltip options): this
     // Creates a tooltip with the specified content and options and open it.
     openTooltip: function (tooltip, latlng, options) {
-        this._initOverlay(Tooltip, tooltip, latlng, options).openOn(this)
+        this._initOverlay(Tooltip, tooltip, latlng, options).openOn(this);
 
-        return this
+        return this;
     },
 
     // @method closeTooltip(tooltip: Tooltip): this
     // Closes the tooltip given as parameter.
     closeTooltip: function (tooltip) {
-        tooltip.close()
-        return this
+        tooltip.close();
+        return this;
     },
-})
+});
 
 /*
  * @namespace Layer
@@ -289,7 +289,7 @@ Layer.include({
     // the layer as the first argument and should return a `String` or `HTMLElement`.
     bindTooltip: function (content, options) {
         if (this._tooltip && this.isTooltipOpen()) {
-            this.unbindTooltip()
+            this.unbindTooltip();
         }
 
         this._tooltip = this._initOverlay(
@@ -297,57 +297,57 @@ Layer.include({
             this._tooltip,
             content,
             options,
-        )
-        this._initTooltipInteractions()
+        );
+        this._initTooltipInteractions();
 
         if (
             this._tooltip.options.permanent &&
             this._map &&
             this._map.hasLayer(this)
         ) {
-            this.openTooltip()
+            this.openTooltip();
         }
 
-        return this
+        return this;
     },
 
     // @method unbindTooltip(): this
     // Removes the tooltip previously bound with `bindTooltip`.
     unbindTooltip: function () {
         if (this._tooltip) {
-            this._initTooltipInteractions(true)
-            this.closeTooltip()
-            this._tooltip = null
+            this._initTooltipInteractions(true);
+            this.closeTooltip();
+            this._tooltip = null;
         }
-        return this
+        return this;
     },
 
     _initTooltipInteractions: function (remove) {
         if (!remove && this._tooltipHandlersAdded) {
-            return
+            return;
         }
         var onOff = remove ? 'off' : 'on',
             events = {
                 remove: this.closeTooltip,
                 move: this._moveTooltip,
-            }
+            };
         if (!this._tooltip.options.permanent) {
-            events.mouseover = this._openTooltip
-            events.mouseout = this.closeTooltip
-            events.click = this._openTooltip
+            events.mouseover = this._openTooltip;
+            events.mouseout = this.closeTooltip;
+            events.click = this._openTooltip;
             if (this._map) {
-                this._addFocusListeners()
+                this._addFocusListeners();
             } else {
-                events.add = this._addFocusListeners
+                events.add = this._addFocusListeners;
             }
         } else {
-            events.add = this._openTooltip
+            events.add = this._openTooltip;
         }
         if (this._tooltip.options.sticky) {
-            events.mousemove = this._moveTooltip
+            events.mousemove = this._moveTooltip;
         }
-        this[onOff](events)
-        this._tooltipHandlersAdded = !remove
+        this[onOff](events);
+        this._tooltipHandlersAdded = !remove;
     },
 
     // @method openTooltip(latlng?: LatLng): this
@@ -355,27 +355,27 @@ Layer.include({
     openTooltip: function (latlng) {
         if (this._tooltip) {
             if (!(this instanceof FeatureGroup)) {
-                this._tooltip._source = this
+                this._tooltip._source = this;
             }
             if (this._tooltip._prepareOpen(latlng)) {
                 // open the tooltip on the map
-                this._tooltip.openOn(this._map)
+                this._tooltip.openOn(this._map);
 
                 if (this.getElement) {
-                    this._setAriaDescribedByOnLayer(this)
+                    this._setAriaDescribedByOnLayer(this);
                 } else if (this.eachLayer) {
-                    this.eachLayer(this._setAriaDescribedByOnLayer, this)
+                    this.eachLayer(this._setAriaDescribedByOnLayer, this);
                 }
             }
         }
-        return this
+        return this;
     },
 
     // @method closeTooltip(): this
     // Closes the tooltip bound to this layer if it is open.
     closeTooltip: function () {
         if (this._tooltip) {
-            return this._tooltip.close()
+            return this._tooltip.close();
         }
     },
 
@@ -383,66 +383,66 @@ Layer.include({
     // Opens or closes the tooltip bound to this layer depending on its current state.
     toggleTooltip: function () {
         if (this._tooltip) {
-            this._tooltip.toggle(this)
+            this._tooltip.toggle(this);
         }
-        return this
+        return this;
     },
 
     // @method isTooltipOpen(): boolean
     // Returns `true` if the tooltip bound to this layer is currently open.
     isTooltipOpen: function () {
-        return this._tooltip.isOpen()
+        return this._tooltip.isOpen();
     },
 
     // @method setTooltipContent(content: String|HTMLElement|Tooltip): this
     // Sets the content of the tooltip bound to this layer.
     setTooltipContent: function (content) {
         if (this._tooltip) {
-            this._tooltip.setContent(content)
+            this._tooltip.setContent(content);
         }
-        return this
+        return this;
     },
 
     // @method getTooltip(): Tooltip
     // Returns the tooltip bound to this layer.
     getTooltip: function () {
-        return this._tooltip
+        return this._tooltip;
     },
 
     _addFocusListeners: function () {
         if (this.getElement) {
-            this._addFocusListenersOnLayer(this)
+            this._addFocusListenersOnLayer(this);
         } else if (this.eachLayer) {
-            this.eachLayer(this._addFocusListenersOnLayer, this)
+            this.eachLayer(this._addFocusListenersOnLayer, this);
         }
     },
 
     _addFocusListenersOnLayer: function (layer) {
-        var el = typeof layer.getElement === 'function' && layer.getElement()
+        var el = typeof layer.getElement === 'function' && layer.getElement();
         if (el) {
             DomEvent.on(
                 el,
                 'focus',
                 function () {
-                    this._tooltip._source = layer
-                    this.openTooltip()
+                    this._tooltip._source = layer;
+                    this.openTooltip();
                 },
                 this,
-            )
-            DomEvent.on(el, 'blur', this.closeTooltip, this)
+            );
+            DomEvent.on(el, 'blur', this.closeTooltip, this);
         }
     },
 
     _setAriaDescribedByOnLayer: function (layer) {
-        var el = typeof layer.getElement === 'function' && layer.getElement()
+        var el = typeof layer.getElement === 'function' && layer.getElement();
         if (el) {
-            el.setAttribute('aria-describedby', this._tooltip._container.id)
+            el.setAttribute('aria-describedby', this._tooltip._container.id);
         }
     },
 
     _openTooltip: function (e) {
         if (!this._tooltip || !this._map) {
-            return
+            return;
         }
 
         // If the map is moving, we will show the tooltip after it's done.
@@ -451,31 +451,31 @@ Layer.include({
             this._map.dragging.moving() &&
             !this._openOnceFlag
         ) {
-            this._openOnceFlag = true
-            var that = this
+            this._openOnceFlag = true;
+            var that = this;
             this._map.once('moveend', function () {
-                that._openOnceFlag = false
-                that._openTooltip(e)
-            })
-            return
+                that._openOnceFlag = false;
+                that._openTooltip(e);
+            });
+            return;
         }
 
-        this._tooltip._source = e.layer || e.target
+        this._tooltip._source = e.layer || e.target;
 
-        this.openTooltip(this._tooltip.options.sticky ? e.latlng : undefined)
+        this.openTooltip(this._tooltip.options.sticky ? e.latlng : undefined);
     },
 
     _moveTooltip: function (e) {
         var latlng = e.latlng,
             containerPoint,
-            layerPoint
+            layerPoint;
         if (this._tooltip.options.sticky && e.originalEvent) {
             containerPoint = this._map.mouseEventToContainerPoint(
                 e.originalEvent,
-            )
-            layerPoint = this._map.containerPointToLayerPoint(containerPoint)
-            latlng = this._map.layerPointToLatLng(layerPoint)
+            );
+            layerPoint = this._map.containerPointToLayerPoint(containerPoint);
+            latlng = this._map.layerPointToLatLng(layerPoint);
         }
-        this._tooltip.setLatLng(latlng)
+        this._tooltip.setLatLng(latlng);
     },
-})
+});

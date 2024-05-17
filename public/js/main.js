@@ -5,7 +5,7 @@ async function postFetch(url, body) {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(body),
-    })
-    const data = await response.json()
-    return data
+    });
+    const data = await response.json();
+    return data;
 }

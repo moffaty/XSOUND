@@ -1,37 +1,37 @@
-const loadingSpinner = document.getElementById('loadingSpinner')
+const loadingSpinner = document.getElementById('loadingSpinner');
 
 async function getVenues() {
-    const data = await postFetch('/map', {})
+    const data = await postFetch('/map', {});
     if (data.message) {
-        return data.message
+        return data.message;
     }
 }
 
 async function getVenue(id) {
-    const data = await postFetch('/venue', { id })
-    return data.message
+    const data = await postFetch('/venue', { id });
+    return data.message;
 }
 
 async function createEvent(venue_id) {
-    const data = await postFetch('/event', { venue_id })
-    return data.message
+    const data = await postFetch('/event', { venue_id });
+    return data.message;
 }
 
 async function getAddress(latitude, longitude) {
     const response = await fetch(
         `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`,
-    )
-    const data = await response.json()
-    return data.display_name
+    );
+    const data = await response.json();
+    return data.display_name;
 }
 
 async function fillMap() {
-    const venues = await getVenues()
-    console.log(venues)
+    const venues = await getVenues();
+    console.log(venues);
 
     // Показываем анимацию загрузки
-    const loadingSpinner = document.getElementById('loadingSpinner')
-    loadingSpinner.classList.remove('d-none')
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    loadingSpinner.classList.remove('d-none');
 
     venues.forEach((element) => {
         L.marker([element.address.x, element.address.y]).addTo(map)
@@ -40,37 +40,37 @@ async function fillMap() {
             <button type="button" id="${element.id}" class="modalButton btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 Подробная информация
             </button>
-            </div>`)
-    })
+            </div>`);
+    });
 
     // Обрабатываем события после того, как все маркеры добавлены на карту
     map.on('popupopen', async function (e) {
-        const modalButton = e.popup._contentNode.querySelector('.modalButton')
+        const modalButton = e.popup._contentNode.querySelector('.modalButton');
         if (modalButton) {
             modalButton.addEventListener('click', async () => {
-                const submitButton = document.querySelector('#createEvent')
-                const closeButton = document.querySelector('#close')
-                const data = await getVenue(modalButton.id)
-                const header = document.getElementById('exampleModalLabel')
-                const body = document.getElementById('modal-body')
-                header.textContent = data.name
+                const submitButton = document.querySelector('#createEvent');
+                const closeButton = document.querySelector('#close');
+                const data = await getVenue(modalButton.id);
+                const header = document.getElementById('exampleModalLabel');
+                const body = document.getElementById('modal-body');
+                header.textContent = data.name;
                 body.innerHTML = `
                     <p>Вместимость точки: ${data.capacity} </p>
                     <p>Адрес: ${await getAddress(data.address.x, data.address.y)} </p>
                     <p> ${data.info ? 'Дополнительная информация: ' + data.info : ''} </p>
-                `
+                `;
 
                 submitButton.addEventListener('click', async () => {
-                    const data = await createEvent(modalButton.id)
-                    console.log(data)
-                })
+                    const data = await createEvent(modalButton.id);
+                    console.log(data);
+                });
 
                 closeButton.addEventListener('click', () => {
-                    body = loadingSpinner
-                })
-            })
+                    body = loadingSpinner;
+                });
+            });
         }
-    })
+    });
 }
 
 let map = L.map('map', {
@@ -79,18 +79,18 @@ let map = L.map('map', {
         [60.115, 30.804], // Северо-восточные координаты Санкт-Петербурга
     ],
     zoomControl: false,
-}).setView([59.9343, 30.534], 11) // Координаты и масштаб по умолчанию
+}).setView([59.9343, 30.534], 11); // Координаты и масштаб по умолчанию
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     minZoom: 11,
-}).addTo(map)
+}).addTo(map);
 
 // Удаление логотипа Leaflet
-map.attributionControl.setPrefix('')
+map.attributionControl.setPrefix('');
 
 // Перемещение кнопок управления в правый нижний угол
-map.addControl(new L.Control.Zoom({ position: 'bottomright' }))
+map.addControl(new L.Control.Zoom({ position: 'bottomright' }));
 
 // Добавление маркеров
 // L.marker([59.9343, 30.334]).addTo(map)
@@ -100,7 +100,7 @@ map.addControl(new L.Control.Zoom({ position: 'bottomright' }))
 // L.marker([59.955, 30.205]).addTo(map)
 //     .bindPopup('Место 2')
 //     .openPopup();
-fillMap()
+fillMap();
 // Добавление маркеров
 // let markers = [];
 // function addMarker(e) {

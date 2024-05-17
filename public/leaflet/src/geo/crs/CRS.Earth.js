@@ -1,5 +1,5 @@
-import { CRS } from './CRS'
-import * as Util from '../../core/Util'
+import { CRS } from './CRS';
+import * as Util from '../../core/Util';
 
 /*
  * @namespace CRS
@@ -29,7 +29,7 @@ export var Earth = Util.extend({}, CRS, {
             a =
                 sinDLat * sinDLat +
                 Math.cos(lat1) * Math.cos(lat2) * sinDLon * sinDLon,
-            c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-        return this.R * c
+            c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return this.R * c;
     },
-})
+});

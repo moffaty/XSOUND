@@ -1,6 +1,6 @@
-import { ImageOverlay } from './ImageOverlay'
-import * as DomUtil from '../dom/DomUtil'
-import * as Util from '../core/Util'
+import { ImageOverlay } from './ImageOverlay';
+import * as DomUtil from '../dom/DomUtil';
+import * as Util from '../core/Util';
 
 /*
  * @class VideoOverlay
@@ -49,67 +49,67 @@ export var VideoOverlay = ImageOverlay.extend({
     },
 
     _initImage: function () {
-        var wasElementSupplied = this._url.tagName === 'VIDEO'
+        var wasElementSupplied = this._url.tagName === 'VIDEO';
         var vid = (this._image = wasElementSupplied
             ? this._url
-            : DomUtil.create('video'))
+            : DomUtil.create('video'));
 
-        DomUtil.addClass(vid, 'leaflet-image-layer')
+        DomUtil.addClass(vid, 'leaflet-image-layer');
         if (this._zoomAnimated) {
-            DomUtil.addClass(vid, 'leaflet-zoom-animated')
+            DomUtil.addClass(vid, 'leaflet-zoom-animated');
         }
         if (this.options.className) {
-            DomUtil.addClass(vid, this.options.className)
+            DomUtil.addClass(vid, this.options.className);
         }
 
-        vid.onselectstart = Util.falseFn
-        vid.onmousemove = Util.falseFn
+        vid.onselectstart = Util.falseFn;
+        vid.onmousemove = Util.falseFn;
 
         // @event load: Event
         // Fired when the video has finished loading the first frame
-        vid.onloadeddata = Util.bind(this.fire, this, 'load')
+        vid.onloadeddata = Util.bind(this.fire, this, 'load');
 
         if (wasElementSupplied) {
-            var sourceElements = vid.getElementsByTagName('source')
-            var sources = []
+            var sourceElements = vid.getElementsByTagName('source');
+            var sources = [];
             for (var j = 0; j < sourceElements.length; j++) {
-                sources.push(sourceElements[j].src)
+                sources.push(sourceElements[j].src);
             }
 
-            this._url = sourceElements.length > 0 ? sources : [vid.src]
-            return
+            this._url = sourceElements.length > 0 ? sources : [vid.src];
+            return;
         }
 
         if (!Util.isArray(this._url)) {
-            this._url = [this._url]
+            this._url = [this._url];
         }
 
         if (
             !this.options.keepAspectRatio &&
             Object.prototype.hasOwnProperty.call(vid.style, 'objectFit')
         ) {
-            vid.style['objectFit'] = 'fill'
+            vid.style['objectFit'] = 'fill';
         }
-        vid.autoplay = !!this.options.autoplay
-        vid.loop = !!this.options.loop
-        vid.muted = !!this.options.muted
-        vid.playsInline = !!this.options.playsInline
+        vid.autoplay = !!this.options.autoplay;
+        vid.loop = !!this.options.loop;
+        vid.muted = !!this.options.muted;
+        vid.playsInline = !!this.options.playsInline;
         for (var i = 0; i < this._url.length; i++) {
-            var source = DomUtil.create('source')
-            source.src = this._url[i]
-            vid.appendChild(source)
+            var source = DomUtil.create('source');
+            source.src = this._url[i];
+            vid.appendChild(source);
         }
     },
 
     // @method getElement(): HTMLVideoElement
     // Returns the instance of [`HTMLVideoElement`](https://developer.mozilla.org/docs/Web/API/HTMLVideoElement)
     // used by this overlay.
-})
+});
 
 // @factory L.videoOverlay(video: String|Array|HTMLVideoElement, bounds: LatLngBounds, options?: VideoOverlay options)
 // Instantiates an image overlay object given the URL of the video (or array of URLs, or even a video element) and the
 // geographical bounds it is tied to.
 
 export function videoOverlay(video, bounds, options) {
-    return new VideoOverlay(video, bounds, options)
+    return new VideoOverlay(video, bounds, options);
 }

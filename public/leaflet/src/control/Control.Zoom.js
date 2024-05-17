@@ -1,7 +1,7 @@
-import { Control } from './Control'
-import { Map } from '../map/Map'
-import * as DomUtil from '../dom/DomUtil'
-import * as DomEvent from '../dom/DomEvent'
+import { Control } from './Control';
+import { Map } from '../map/Map';
+import * as DomUtil from '../dom/DomUtil';
+import * as DomEvent from '../dom/DomEvent';
 
 /*
  * @class Control.Zoom
@@ -37,7 +37,7 @@ export var Zoom = Control.extend({
     onAdd: function (map) {
         var zoomName = 'leaflet-control-zoom',
             container = DomUtil.create('div', zoomName + ' leaflet-bar'),
-            options = this.options
+            options = this.options;
 
         this._zoomInButton = this._createButton(
             options.zoomInText,
@@ -45,40 +45,42 @@ export var Zoom = Control.extend({
             zoomName + '-in',
             container,
             this._zoomIn,
-        )
+        );
         this._zoomOutButton = this._createButton(
             options.zoomOutText,
             options.zoomOutTitle,
             zoomName + '-out',
             container,
             this._zoomOut,
-        )
+        );
 
-        this._updateDisabled()
-        map.on('zoomend zoomlevelschange', this._updateDisabled, this)
+        this._updateDisabled();
+        map.on('zoomend zoomlevelschange', this._updateDisabled, this);
 
-        return container
+        return container;
     },
 
     onRemove: function (map) {
-        map.off('zoomend zoomlevelschange', this._updateDisabled, this)
+        map.off('zoomend zoomlevelschange', this._updateDisabled, this);
     },
 
     disable: function () {
-        this._disabled = true
-        this._updateDisabled()
-        return this
+        this._disabled = true;
+        this._updateDisabled();
+        return this;
     },
 
     enable: function () {
-        this._disabled = false
-        this._updateDisabled()
-        return this
+        this._disabled = false;
+        this._updateDisabled();
+        return this;
     },
 
     _zoomIn: function (e) {
         if (!this._disabled && this._map._zoom < this._map.getMaxZoom()) {
-            this._map.zoomIn(this._map.options.zoomDelta * (e.shiftKey ? 3 : 1))
+            this._map.zoomIn(
+                this._map.options.zoomDelta * (e.shiftKey ? 3 : 1),
+            );
         }
     },
 
@@ -86,49 +88,49 @@ export var Zoom = Control.extend({
         if (!this._disabled && this._map._zoom > this._map.getMinZoom()) {
             this._map.zoomOut(
                 this._map.options.zoomDelta * (e.shiftKey ? 3 : 1),
-            )
+            );
         }
     },
 
     _createButton: function (html, title, className, container, fn) {
-        var link = DomUtil.create('a', className, container)
-        link.innerHTML = html
-        link.href = '#'
-        link.title = title
+        var link = DomUtil.create('a', className, container);
+        link.innerHTML = html;
+        link.href = '#';
+        link.title = title;
 
         /*
          * Will force screen readers like VoiceOver to read this as "Zoom in - button"
          */
-        link.setAttribute('role', 'button')
-        link.setAttribute('aria-label', title)
+        link.setAttribute('role', 'button');
+        link.setAttribute('aria-label', title);
 
-        DomEvent.disableClickPropagation(link)
-        DomEvent.on(link, 'click', DomEvent.stop)
-        DomEvent.on(link, 'click', fn, this)
-        DomEvent.on(link, 'click', this._refocusOnMap, this)
+        DomEvent.disableClickPropagation(link);
+        DomEvent.on(link, 'click', DomEvent.stop);
+        DomEvent.on(link, 'click', fn, this);
+        DomEvent.on(link, 'click', this._refocusOnMap, this);
 
-        return link
+        return link;
     },
 
     _updateDisabled: function () {
         var map = this._map,
-            className = 'leaflet-disabled'
+            className = 'leaflet-disabled';
 
-        DomUtil.removeClass(this._zoomInButton, className)
-        DomUtil.removeClass(this._zoomOutButton, className)
-        this._zoomInButton.setAttribute('aria-disabled', 'false')
-        this._zoomOutButton.setAttribute('aria-disabled', 'false')
+        DomUtil.removeClass(this._zoomInButton, className);
+        DomUtil.removeClass(this._zoomOutButton, className);
+        this._zoomInButton.setAttribute('aria-disabled', 'false');
+        this._zoomOutButton.setAttribute('aria-disabled', 'false');
 
         if (this._disabled || map._zoom === map.getMinZoom()) {
-            DomUtil.addClass(this._zoomOutButton, className)
-            this._zoomOutButton.setAttribute('aria-disabled', 'true')
+            DomUtil.addClass(this._zoomOutButton, className);
+            this._zoomOutButton.setAttribute('aria-disabled', 'true');
         }
         if (this._disabled || map._zoom === map.getMaxZoom()) {
-            DomUtil.addClass(this._zoomInButton, className)
-            this._zoomInButton.setAttribute('aria-disabled', 'true')
+            DomUtil.addClass(this._zoomInButton, className);
+            this._zoomInButton.setAttribute('aria-disabled', 'true');
         }
     },
-})
+});
 
 // @namespace Map
 // @section Control options
@@ -136,7 +138,7 @@ export var Zoom = Control.extend({
 // Whether a [zoom control](#control-zoom) is added to the map by default.
 Map.mergeOptions({
     zoomControl: true,
-})
+});
 
 Map.addInitHook(function () {
     if (this.options.zoomControl) {
@@ -144,14 +146,14 @@ Map.addInitHook(function () {
         // @property zoomControl: Control.Zoom
         // The default zoom control (only available if the
         // [`zoomControl` option](#map-zoomcontrol) was `true` when creating the map).
-        this.zoomControl = new Zoom()
-        this.addControl(this.zoomControl)
+        this.zoomControl = new Zoom();
+        this.addControl(this.zoomControl);
     }
-})
+});
 
 // @namespace Control.Zoom
 // @factory L.control.zoom(options: Control.Zoom options)
 // Creates a zoom control
 export var zoom = function (options) {
-    return new Zoom(options)
-}
+    return new Zoom(options);
+};

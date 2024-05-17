@@ -1,7 +1,7 @@
-import { Earth } from './CRS.Earth'
-import { Mercator } from '../projection/Projection.Mercator'
-import { toTransformation } from '../../geometry/Transformation'
-import * as Util from '../../core/Util'
+import { Earth } from './CRS.Earth';
+import { Mercator } from '../projection/Projection.Mercator';
+import { toTransformation } from '../../geometry/Transformation';
+import * as Util from '../../core/Util';
 
 /*
  * @namespace CRS
@@ -14,7 +14,7 @@ export var EPSG3395 = Util.extend({}, Earth, {
     projection: Mercator,
 
     transformation: (function () {
-        var scale = 0.5 / (Math.PI * Mercator.R)
-        return toTransformation(scale, 0.5, -scale, 0.5)
+        var scale = 0.5 / (Math.PI * Mercator.R);
+        return toTransformation(scale, 0.5, -scale, 0.5);
     })(),
-})
+});

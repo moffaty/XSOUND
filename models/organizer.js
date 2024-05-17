@@ -1,7 +1,7 @@
-const { DataTypes } = require('sequelize')
-const sequelize = require('./sequelize')
-const User = require('./user')
-const Venue = require('./venue')
+const { DataTypes } = require('sequelize');
+const sequelize = require('./sequelize');
+const User = require('./user');
+const Venue = require('./venue');
 
 const Organizer = sequelize.define('Organizer', {
     id: {
@@ -34,6 +34,6 @@ const Organizer = sequelize.define('Organizer', {
         type: DataTypes.STRING,
         allowNull: true,
     },
-})
+});
 
-module.exports = Organizer
+module.exports = Organizer;

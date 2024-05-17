@@ -1,5 +1,5 @@
-import { Icon } from './Icon'
-import * as DomUtil from '../../dom/DomUtil'
+import { Icon } from './Icon';
+import * as DomUtil from '../../dom/DomUtil';
 
 /*
  * @miniclass Icon.Default (Icon)
@@ -32,7 +32,7 @@ export var IconDefault = Icon.extend({
     _getIconUrl: function (name) {
         if (typeof IconDefault.imagePath !== 'string') {
             // Deprecated, backwards-compatibility only
-            IconDefault.imagePath = this._detectIconPath()
+            IconDefault.imagePath = this._detectIconPath();
         }
 
         // @option imagePath: String
@@ -42,17 +42,17 @@ export var IconDefault = Icon.extend({
         return (
             (this.options.imagePath || IconDefault.imagePath) +
             Icon.prototype._getIconUrl.call(this, name)
-        )
+        );
     },
 
     _stripUrl: function (path) {
         // separate function to use in tests
         var strip = function (str, re, idx) {
-            var match = re.exec(str)
-            return match && match[idx]
-        }
-        path = strip(path, /^url\((['"])?(.+)\1\)$/, 2)
-        return path && strip(path, /^(.*)marker-icon\.png$/, 1)
+            var match = re.exec(str);
+            return match && match[idx];
+        };
+        path = strip(path, /^url\((['"])?(.+)\1\)$/, 2);
+        return path && strip(path, /^(.*)marker-icon\.png$/, 1);
     },
 
     _detectIconPath: function () {
@@ -60,23 +60,23 @@ export var IconDefault = Icon.extend({
             'div',
             'leaflet-default-icon-path',
             document.body,
-        )
+        );
         var path =
             DomUtil.getStyle(el, 'background-image') ||
-            DomUtil.getStyle(el, 'backgroundImage') // IE8
+            DomUtil.getStyle(el, 'backgroundImage'); // IE8
 
-        document.body.removeChild(el)
-        path = this._stripUrl(path)
+        document.body.removeChild(el);
+        path = this._stripUrl(path);
         if (path) {
-            return path
+            return path;
         }
-        var link = document.querySelector('link[href$="leaflet.css"]')
+        var link = document.querySelector('link[href$="leaflet.css"]');
         if (!link) {
-            return ''
+            return '';
         }
         return link.href.substring(
             0,
             link.href.length - 'leaflet.css'.length - 1,
-        )
+        );
     },
-})
+});

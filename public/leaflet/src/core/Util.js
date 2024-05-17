@@ -7,15 +7,15 @@
 // @function extend(dest: Object, src?: Object): Object
 // Merges the properties of the `src` object (or multiple objects) into `dest` object and returns the latter. Has an `L.extend` shortcut.
 export function extend(dest) {
-    var i, j, len, src
+    var i, j, len, src;
 
     for (j = 1, len = arguments.length; j < len; j++) {
-        src = arguments[j]
+        src = arguments[j];
         for (i in src) {
-            dest[i] = src[i]
+            dest[i] = src[i];
         }
     }
-    return dest
+    return dest;
 }
 
 // @function create(proto: Object, properties?: Object): Object
@@ -25,42 +25,42 @@ export var create =
     (function () {
         function F() {}
         return function (proto) {
-            F.prototype = proto
-            return new F()
-        }
-    })()
+            F.prototype = proto;
+            return new F();
+        };
+    })();
 
 // @function bind(fn: Function, …): Function
 // Returns a new function bound to the arguments passed, like [Function.prototype.bind](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function/bind).
 // Has a `L.bind()` shortcut.
 export function bind(fn, obj) {
-    var slice = Array.prototype.slice
+    var slice = Array.prototype.slice;
 
     if (fn.bind) {
-        return fn.bind.apply(fn, slice.call(arguments, 1))
+        return fn.bind.apply(fn, slice.call(arguments, 1));
     }
 
-    var args = slice.call(arguments, 2)
+    var args = slice.call(arguments, 2);
 
     return function () {
         return fn.apply(
             obj,
             args.length ? args.concat(slice.call(arguments)) : arguments,
-        )
-    }
+        );
+    };
 }
 
 // @property lastId: Number
 // Last unique ID used by [`stamp()`](#util-stamp)
-export var lastId = 0
+export var lastId = 0;
 
 // @function stamp(obj: Object): Number
 // Returns the unique ID of an object, assigning it one if it doesn't have it.
 export function stamp(obj) {
     if (!('_leaflet_id' in obj)) {
-        obj['_leaflet_id'] = ++lastId
+        obj['_leaflet_id'] = ++lastId;
     }
-    return obj._leaflet_id
+    return obj._leaflet_id;
 }
 
 // @function throttle(fn: Function, time: Number, context: Object): Function
@@ -71,30 +71,30 @@ export function stamp(obj) {
 // function, followed by any arguments passed when invoking the bound function.
 // Has an `L.throttle` shortcut.
 export function throttle(fn, time, context) {
-    var lock, args, wrapperFn, later
+    var lock, args, wrapperFn, later;
 
     later = function () {
         // reset lock and call if queued
-        lock = false
+        lock = false;
         if (args) {
-            wrapperFn.apply(context, args)
-            args = false
+            wrapperFn.apply(context, args);
+            args = false;
         }
-    }
+    };
 
     wrapperFn = function () {
         if (lock) {
             // called too soon, queue to call later
-            args = arguments
+            args = arguments;
         } else {
             // call and lock until later
-            fn.apply(context, arguments)
-            setTimeout(later, time)
-            lock = true
+            fn.apply(context, arguments);
+            setTimeout(later, time);
+            lock = true;
         }
-    }
+    };
 
-    return wrapperFn
+    return wrapperFn;
 }
 
 // @function wrapNum(num: Number, range: Number[], includeMax?: Boolean): Number
@@ -104,14 +104,14 @@ export function throttle(fn, time, context) {
 export function wrapNum(x, range, includeMax) {
     var max = range[1],
         min = range[0],
-        d = max - min
-    return x === max && includeMax ? x : ((((x - min) % d) + d) % d) + min
+        d = max - min;
+    return x === max && includeMax ? x : ((((x - min) % d) + d) % d) + min;
 }
 
 // @function falseFn(): Function
 // Returns a function which always returns `false`.
 export function falseFn() {
-    return false
+    return false;
 }
 
 // @function formatNum(num: Number, precision?: Number|false): Number
@@ -120,34 +120,34 @@ export function falseFn() {
 // `false` can be passed to skip any processing (can be useful to avoid round-off errors).
 export function formatNum(num, precision) {
     if (precision === false) {
-        return num
+        return num;
     }
-    var pow = Math.pow(10, precision === undefined ? 6 : precision)
-    return Math.round(num * pow) / pow
+    var pow = Math.pow(10, precision === undefined ? 6 : precision);
+    return Math.round(num * pow) / pow;
 }
 
 // @function trim(str: String): String
 // Compatibility polyfill for [String.prototype.trim](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String/Trim)
 export function trim(str) {
-    return str.trim ? str.trim() : str.replace(/^\s+|\s+$/g, '')
+    return str.trim ? str.trim() : str.replace(/^\s+|\s+$/g, '');
 }
 
 // @function splitWords(str: String): String[]
 // Trims and splits the string on whitespace and returns the array of parts.
 export function splitWords(str) {
-    return trim(str).split(/\s+/)
+    return trim(str).split(/\s+/);
 }
 
 // @function setOptions(obj: Object, options: Object): Object
 // Merges the given properties to the `options` of the `obj` object, returning the resulting options. See `Class options`. Has an `L.setOptions` shortcut.
 export function setOptions(obj, options) {
     if (!Object.prototype.hasOwnProperty.call(obj, 'options')) {
-        obj.options = obj.options ? create(obj.options) : {}
+        obj.options = obj.options ? create(obj.options) : {};
     }
     for (var i in options) {
-        obj.options[i] = options[i]
+        obj.options[i] = options[i];
     }
-    return obj.options
+    return obj.options;
 }
 
 // @function getParamString(obj: Object, existingUrl?: String, uppercase?: Boolean): String
@@ -156,21 +156,21 @@ export function setOptions(obj, options) {
 // be appended at the end. If `uppercase` is `true`, the parameter names will
 // be uppercased (e.g. `'?A=foo&B=bar'`)
 export function getParamString(obj, existingUrl, uppercase) {
-    var params = []
+    var params = [];
     for (var i in obj) {
         params.push(
             encodeURIComponent(uppercase ? i.toUpperCase() : i) +
                 '=' +
                 encodeURIComponent(obj[i]),
-        )
+        );
     }
     return (
         (!existingUrl || existingUrl.indexOf('?') === -1 ? '?' : '&') +
         params.join('&')
-    )
+    );
 }
 
-var templateRe = /\{ *([\w_ -]+) *\}/g
+var templateRe = /\{ *([\w_ -]+) *\}/g;
 
 // @function template(str: String, data: Object): String
 // Simple templating facility, accepts a template string of the form `'Hello {a}, {b}'`
@@ -179,15 +179,15 @@ var templateRe = /\{ *([\w_ -]+) *\}/g
 // data values — they will be evaluated passing `data` as an argument.
 export function template(str, data) {
     return str.replace(templateRe, function (str, key) {
-        var value = data[key]
+        var value = data[key];
 
         if (value === undefined) {
-            throw new Error('No value provided for variable ' + str)
+            throw new Error('No value provided for variable ' + str);
         } else if (typeof value === 'function') {
-            value = value(data)
+            value = value(data);
         }
-        return value
-    })
+        return value;
+    });
 }
 
 // @function isArray(obj): Boolean
@@ -195,18 +195,18 @@ export function template(str, data) {
 export var isArray =
     Array.isArray ||
     function (obj) {
-        return Object.prototype.toString.call(obj) === '[object Array]'
-    }
+        return Object.prototype.toString.call(obj) === '[object Array]';
+    };
 
 // @function indexOf(array: Array, el: Object): Number
 // Compatibility polyfill for [Array.prototype.indexOf](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf)
 export function indexOf(array, el) {
     for (var i = 0; i < array.length; i++) {
         if (array[i] === el) {
-            return i
+            return i;
         }
     }
-    return -1
+    return -1;
 }
 
 // @property emptyImageUrl: String
@@ -214,38 +214,38 @@ export function indexOf(array, el) {
 // Used as a hack to free memory from unused images on WebKit-powered
 // mobile devices (by setting image `src` to this string).
 export var emptyImageUrl =
-    'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs='
+    'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
 
 // inspired by https://paulirish.com/2011/requestanimationframe-for-smart-animating/
 
 function getPrefixed(name) {
     return (
         window['webkit' + name] || window['moz' + name] || window['ms' + name]
-    )
+    );
 }
 
-var lastTime = 0
+var lastTime = 0;
 
 // fallback for IE 7-8
 function timeoutDefer(fn) {
     var time = +new Date(),
-        timeToCall = Math.max(0, 16 - (time - lastTime))
+        timeToCall = Math.max(0, 16 - (time - lastTime));
 
-    lastTime = time + timeToCall
-    return window.setTimeout(fn, timeToCall)
+    lastTime = time + timeToCall;
+    return window.setTimeout(fn, timeToCall);
 }
 
 export var requestFn =
     window.requestAnimationFrame ||
     getPrefixed('RequestAnimationFrame') ||
-    timeoutDefer
+    timeoutDefer;
 export var cancelFn =
     window.cancelAnimationFrame ||
     getPrefixed('CancelAnimationFrame') ||
     getPrefixed('CancelRequestAnimationFrame') ||
     function (id) {
-        window.clearTimeout(id)
-    }
+        window.clearTimeout(id);
+    };
 
 // @function requestAnimFrame(fn: Function, context?: Object, immediate?: Boolean): Number
 // Schedules `fn` to be executed when the browser repaints. `fn` is bound to
@@ -255,9 +255,9 @@ export var cancelFn =
 // otherwise it's delayed. Returns a request ID that can be used to cancel the request.
 export function requestAnimFrame(fn, context, immediate) {
     if (immediate && requestFn === timeoutDefer) {
-        fn.call(context)
+        fn.call(context);
     } else {
-        return requestFn.call(window, bind(fn, context))
+        return requestFn.call(window, bind(fn, context));
     }
 }
 
@@ -265,6 +265,6 @@ export function requestAnimFrame(fn, context, immediate) {
 // Cancels a previous `requestAnimFrame`. See also [window.cancelAnimationFrame](https://developer.mozilla.org/docs/Web/API/window/cancelAnimationFrame).
 export function cancelAnimFrame(id) {
     if (id) {
-        cancelFn.call(window, id)
+        cancelFn.call(window, id);
     }
 }

@@ -1,8 +1,8 @@
-import { Layer } from '../Layer'
-import * as DomUtil from '../../dom/DomUtil'
-import * as Util from '../../core/Util'
-import Browser from '../../core/Browser'
-import { Bounds } from '../../geometry/Bounds'
+import { Layer } from '../Layer';
+import * as DomUtil from '../../dom/DomUtil';
+import * as Util from '../../core/Util';
+import Browser from '../../core/Browser';
+import { Bounds } from '../../geometry/Bounds';
 
 /*
  * @class Renderer
@@ -35,27 +35,27 @@ export var Renderer = Layer.extend({
     },
 
     initialize: function (options) {
-        Util.setOptions(this, options)
-        Util.stamp(this)
-        this._layers = this._layers || {}
+        Util.setOptions(this, options);
+        Util.stamp(this);
+        this._layers = this._layers || {};
     },
 
     onAdd: function () {
         if (!this._container) {
-            this._initContainer() // defined by renderer implementations
+            this._initContainer(); // defined by renderer implementations
 
             // always keep transform-origin as 0 0
-            DomUtil.addClass(this._container, 'leaflet-zoom-animated')
+            DomUtil.addClass(this._container, 'leaflet-zoom-animated');
         }
 
-        this.getPane().appendChild(this._container)
-        this._update()
-        this.on('update', this._updatePaths, this)
+        this.getPane().appendChild(this._container);
+        this._update();
+        this.on('update', this._updatePaths, this);
     },
 
     onRemove: function () {
-        this.off('update', this._updatePaths, this)
-        this._destroyContainer()
+        this.off('update', this._updatePaths, this);
+        this._destroyContainer();
     },
 
     getEvents: function () {
@@ -64,19 +64,19 @@ export var Renderer = Layer.extend({
             zoom: this._onZoom,
             moveend: this._update,
             zoomend: this._onZoomEnd,
-        }
+        };
         if (this._zoomAnimated) {
-            events.zoomanim = this._onAnimZoom
+            events.zoomanim = this._onAnimZoom;
         }
-        return events
+        return events;
     },
 
     _onAnimZoom: function (ev) {
-        this._updateTransform(ev.center, ev.zoom)
+        this._updateTransform(ev.center, ev.zoom);
     },
 
     _onZoom: function () {
-        this._updateTransform(this._map.getCenter(), this._map.getZoom())
+        this._updateTransform(this._map.getCenter(), this._map.getZoom());
     },
 
     _updateTransform: function (center, zoom) {
@@ -88,33 +88,33 @@ export var Renderer = Layer.extend({
             topLeftOffset = viewHalf
                 .multiplyBy(-scale)
                 .add(currentCenterPoint)
-                .subtract(this._map._getNewPixelOrigin(center, zoom))
+                .subtract(this._map._getNewPixelOrigin(center, zoom));
 
         if (Browser.any3d) {
-            DomUtil.setTransform(this._container, topLeftOffset, scale)
+            DomUtil.setTransform(this._container, topLeftOffset, scale);
         } else {
-            DomUtil.setPosition(this._container, topLeftOffset)
+            DomUtil.setPosition(this._container, topLeftOffset);
         }
     },
 
     _reset: function () {
-        this._update()
-        this._updateTransform(this._center, this._zoom)
+        this._update();
+        this._updateTransform(this._center, this._zoom);
 
         for (var id in this._layers) {
-            this._layers[id]._reset()
+            this._layers[id]._reset();
         }
     },
 
     _onZoomEnd: function () {
         for (var id in this._layers) {
-            this._layers[id]._project()
+            this._layers[id]._project();
         }
     },
 
     _updatePaths: function () {
         for (var id in this._layers) {
-            this._layers[id]._update()
+            this._layers[id]._update();
         }
     },
 
@@ -125,14 +125,14 @@ export var Renderer = Layer.extend({
             size = this._map.getSize(),
             min = this._map
                 .containerPointToLayerPoint(size.multiplyBy(-p))
-                .round()
+                .round();
 
         this._bounds = new Bounds(
             min,
             min.add(size.multiplyBy(1 + p * 2)).round(),
-        )
+        );
 
-        this._center = this._map.getCenter()
-        this._zoom = this._map.getZoom()
+        this._center = this._map.getCenter();
+        this._zoom = this._map.getZoom();
     },
-})
+});

@@ -1,6 +1,6 @@
-const { DataTypes } = require('sequelize')
-const sequelize = require('./sequelize')
-const Role = require('./roles')
+const { DataTypes } = require('sequelize');
+const sequelize = require('./sequelize');
+const Role = require('./roles');
 
 // Определите модель пользователя
 const User = sequelize.define('User', {
@@ -30,6 +30,6 @@ const User = sequelize.define('User', {
             key: 'role_id', // Поле, с которым устанавливается связь
         },
     },
-})
+});
 
-module.exports = User
+module.exports = User;

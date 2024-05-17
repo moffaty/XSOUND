@@ -1,8 +1,8 @@
-import { GridLayer } from './GridLayer'
-import Browser from '../../core/Browser'
-import * as Util from '../../core/Util'
-import * as DomEvent from '../../dom/DomEvent'
-import * as DomUtil from '../../dom/DomUtil'
+import { GridLayer } from './GridLayer';
+import Browser from '../../core/Browser';
+import * as Util from '../../core/Util';
+import * as DomEvent from '../../dom/DomEvent';
+import * as DomUtil from '../../dom/DomUtil';
 
 /*
  * @class TileLayer
@@ -86,36 +86,42 @@ export var TileLayer = GridLayer.extend({
     },
 
     initialize: function (url, options) {
-        this._url = url
+        this._url = url;
 
-        options = Util.setOptions(this, options)
+        options = Util.setOptions(this, options);
 
         // detecting retina displays, adjusting tileSize and zoom levels
         if (options.detectRetina && Browser.retina && options.maxZoom > 0) {
-            options.tileSize = Math.floor(options.tileSize / 2)
+            options.tileSize = Math.floor(options.tileSize / 2);
 
             if (!options.zoomReverse) {
-                options.zoomOffset++
-                options.maxZoom = Math.max(options.minZoom, options.maxZoom - 1)
+                options.zoomOffset++;
+                options.maxZoom = Math.max(
+                    options.minZoom,
+                    options.maxZoom - 1,
+                );
             } else {
-                options.zoomOffset--
-                options.minZoom = Math.min(options.maxZoom, options.minZoom + 1)
+                options.zoomOffset--;
+                options.minZoom = Math.min(
+                    options.maxZoom,
+                    options.minZoom + 1,
+                );
             }
 
-            options.minZoom = Math.max(0, options.minZoom)
+            options.minZoom = Math.max(0, options.minZoom);
         } else if (!options.zoomReverse) {
             // make sure maxZoom is gte minZoom
-            options.maxZoom = Math.max(options.minZoom, options.maxZoom)
+            options.maxZoom = Math.max(options.minZoom, options.maxZoom);
         } else {
             // make sure minZoom is lte maxZoom
-            options.minZoom = Math.min(options.maxZoom, options.minZoom)
+            options.minZoom = Math.min(options.maxZoom, options.minZoom);
         }
 
         if (typeof options.subdomains === 'string') {
-            options.subdomains = options.subdomains.split('')
+            options.subdomains = options.subdomains.split('');
         }
 
-        this.on('tileunload', this._onTileRemove)
+        this.on('tileunload', this._onTileRemove);
     },
 
     // @method setUrl(url: String, noRedraw?: Boolean): this
@@ -124,15 +130,15 @@ export var TileLayer = GridLayer.extend({
     // the noRedraw parameter is set to false.
     setUrl: function (url, noRedraw) {
         if (this._url === url && noRedraw === undefined) {
-            noRedraw = true
+            noRedraw = true;
         }
 
-        this._url = url
+        this._url = url;
 
         if (!noRedraw) {
-            this.redraw()
+            this.redraw();
         }
-        return this
+        return this;
     },
 
     // @method createTile(coords: Object, done?: Function): HTMLElement
@@ -140,37 +146,41 @@ export var TileLayer = GridLayer.extend({
     // to return an `<img>` HTML element with the appropriate image URL given `coords`. The `done`
     // callback is called when the tile has been loaded.
     createTile: function (coords, done) {
-        var tile = document.createElement('img')
+        var tile = document.createElement('img');
 
-        DomEvent.on(tile, 'load', Util.bind(this._tileOnLoad, this, done, tile))
+        DomEvent.on(
+            tile,
+            'load',
+            Util.bind(this._tileOnLoad, this, done, tile),
+        );
         DomEvent.on(
             tile,
             'error',
             Util.bind(this._tileOnError, this, done, tile),
-        )
+        );
 
         if (this.options.crossOrigin || this.options.crossOrigin === '') {
             tile.crossOrigin =
                 this.options.crossOrigin === true
                     ? ''
-                    : this.options.crossOrigin
+                    : this.options.crossOrigin;
         }
 
         // for this new option we follow the documented behavior
         // more closely by only setting the property when string
         if (typeof this.options.referrerPolicy === 'string') {
-            tile.referrerPolicy = this.options.referrerPolicy
+            tile.referrerPolicy = this.options.referrerPolicy;
         }
 
         // The alt attribute is set to the empty string,
         // allowing screen readers to ignore the decorative image tiles.
         // https://www.w3.org/WAI/tutorials/images/decorative/
         // https://www.w3.org/TR/html-aria/#el-img-empty-alt
-        tile.alt = ''
+        tile.alt = '';
 
-        tile.src = this.getTileUrl(coords)
+        tile.src = this.getTileUrl(coords);
 
-        return tile
+        return tile;
     },
 
     // @section Extension methods
@@ -186,94 +196,95 @@ export var TileLayer = GridLayer.extend({
             x: coords.x,
             y: coords.y,
             z: this._getZoomForUrl(),
-        }
+        };
         if (this._map && !this._map.options.crs.infinite) {
-            var invertedY = this._globalTileRange.max.y - coords.y
+            var invertedY = this._globalTileRange.max.y - coords.y;
             if (this.options.tms) {
-                data['y'] = invertedY
+                data['y'] = invertedY;
             }
-            data['-y'] = invertedY
+            data['-y'] = invertedY;
         }
 
-        return Util.template(this._url, Util.extend(data, this.options))
+        return Util.template(this._url, Util.extend(data, this.options));
     },
 
     _tileOnLoad: function (done, tile) {
         // For https://github.com/Leaflet/Leaflet/issues/3332
         if (Browser.ielt9) {
-            setTimeout(Util.bind(done, this, null, tile), 0)
+            setTimeout(Util.bind(done, this, null, tile), 0);
         } else {
-            done(null, tile)
+            done(null, tile);
         }
     },
 
     _tileOnError: function (done, tile, e) {
-        var errorUrl = this.options.errorTileUrl
+        var errorUrl = this.options.errorTileUrl;
         if (errorUrl && tile.getAttribute('src') !== errorUrl) {
-            tile.src = errorUrl
+            tile.src = errorUrl;
         }
-        done(e, tile)
+        done(e, tile);
     },
 
     _onTileRemove: function (e) {
-        e.tile.onload = null
+        e.tile.onload = null;
     },
 
     _getZoomForUrl: function () {
         var zoom = this._tileZoom,
             maxZoom = this.options.maxZoom,
             zoomReverse = this.options.zoomReverse,
-            zoomOffset = this.options.zoomOffset
+            zoomOffset = this.options.zoomOffset;
 
         if (zoomReverse) {
-            zoom = maxZoom - zoom
+            zoom = maxZoom - zoom;
         }
 
-        return zoom + zoomOffset
+        return zoom + zoomOffset;
     },
 
     _getSubdomain: function (tilePoint) {
         var index =
-            Math.abs(tilePoint.x + tilePoint.y) % this.options.subdomains.length
-        return this.options.subdomains[index]
+            Math.abs(tilePoint.x + tilePoint.y) %
+            this.options.subdomains.length;
+        return this.options.subdomains[index];
     },
 
     // stops loading all tiles in the background layer
     _abortLoading: function () {
-        var i, tile
+        var i, tile;
         for (i in this._tiles) {
             if (this._tiles[i].coords.z !== this._tileZoom) {
-                tile = this._tiles[i].el
+                tile = this._tiles[i].el;
 
-                tile.onload = Util.falseFn
-                tile.onerror = Util.falseFn
+                tile.onload = Util.falseFn;
+                tile.onerror = Util.falseFn;
 
                 if (!tile.complete) {
-                    tile.src = Util.emptyImageUrl
-                    var coords = this._tiles[i].coords
-                    DomUtil.remove(tile)
-                    delete this._tiles[i]
+                    tile.src = Util.emptyImageUrl;
+                    var coords = this._tiles[i].coords;
+                    DomUtil.remove(tile);
+                    delete this._tiles[i];
                     // @event tileabort: TileEvent
                     // Fired when a tile was loading but is now not wanted.
                     this.fire('tileabort', {
                         tile: tile,
                         coords: coords,
-                    })
+                    });
                 }
             }
         }
     },
 
     _removeTile: function (key) {
-        var tile = this._tiles[key]
+        var tile = this._tiles[key];
         if (!tile) {
-            return
+            return;
         }
 
         // Cancels any pending http requests associated with the tile
-        tile.el.setAttribute('src', Util.emptyImageUrl)
+        tile.el.setAttribute('src', Util.emptyImageUrl);
 
-        return GridLayer.prototype._removeTile.call(this, key)
+        return GridLayer.prototype._removeTile.call(this, key);
     },
 
     _tileReady: function (coords, err, tile) {
@@ -281,16 +292,16 @@ export var TileLayer = GridLayer.extend({
             !this._map ||
             (tile && tile.getAttribute('src') === Util.emptyImageUrl)
         ) {
-            return
+            return;
         }
 
-        return GridLayer.prototype._tileReady.call(this, coords, err, tile)
+        return GridLayer.prototype._tileReady.call(this, coords, err, tile);
     },
-})
+});
 
 // @factory L.tilelayer(urlTemplate: String, options?: TileLayer options)
 // Instantiates a tile layer object given a `URL template` and optionally an options object.
 
 export function tileLayer(url, options) {
-    return new TileLayer(url, options)
+    return new TileLayer(url, options);
 }

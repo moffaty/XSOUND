@@ -1,6 +1,6 @@
-import { Icon } from './Icon'
-import { toPoint as point } from '../../geometry/Point'
-import { empty } from '../../dom/DomUtil'
+import { Icon } from './Icon';
+import { toPoint as point } from '../../geometry/Point';
+import { empty } from '../../dom/DomUtil';
 
 /*
  * @class DivIcon
@@ -47,31 +47,31 @@ export var DivIcon = Icon.extend({
                 oldIcon && oldIcon.tagName === 'DIV'
                     ? oldIcon
                     : document.createElement('div'),
-            options = this.options
+            options = this.options;
 
         if (options.html instanceof Element) {
-            empty(div)
-            div.appendChild(options.html)
+            empty(div);
+            div.appendChild(options.html);
         } else {
-            div.innerHTML = options.html !== false ? options.html : ''
+            div.innerHTML = options.html !== false ? options.html : '';
         }
 
         if (options.bgPos) {
-            var bgPos = point(options.bgPos)
-            div.style.backgroundPosition = -bgPos.x + 'px ' + -bgPos.y + 'px'
+            var bgPos = point(options.bgPos);
+            div.style.backgroundPosition = -bgPos.x + 'px ' + -bgPos.y + 'px';
         }
-        this._setIconStyles(div, 'icon')
+        this._setIconStyles(div, 'icon');
 
-        return div
+        return div;
     },
 
     createShadow: function () {
-        return null
+        return null;
     },
-})
+});
 
 // @factory L.divIcon(options: DivIcon options)
 // Creates a `DivIcon` instance with the given options.
 export function divIcon(options) {
-    return new DivIcon(options)
+    return new DivIcon(options);
 }

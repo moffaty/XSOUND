@@ -1,8 +1,8 @@
-const { DataTypes } = require('sequelize')
-const sequelize = require('./sequelize')
-const Status = require('./eventStatus')
-const Venue = require('./venue')
-const User = require('./user')
+const { DataTypes } = require('sequelize');
+const sequelize = require('./sequelize');
+const Status = require('./eventStatus');
+const Venue = require('./venue');
+const User = require('./user');
 
 // Определите модель пользователя
 const Event = sequelize.define('Event', {
@@ -39,6 +39,6 @@ const Event = sequelize.define('Event', {
             key: 'status_id', // Поле, с которым устанавливается связь
         },
     },
-})
+});
 
-module.exports = Event
+module.exports = Event;

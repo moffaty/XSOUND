@@ -1,5 +1,5 @@
-import { Polygon } from './Polygon'
-import { toLatLngBounds } from '../../geo/LatLngBounds'
+import { Polygon } from './Polygon';
+import { toLatLngBounds } from '../../geo/LatLngBounds';
 
 /*
  * L.Rectangle extends Polygon and creates a rectangle when passed a LatLngBounds object.
@@ -33,27 +33,27 @@ export var Rectangle = Polygon.extend({
             this,
             this._boundsToLatLngs(latLngBounds),
             options,
-        )
+        );
     },
 
     // @method setBounds(latLngBounds: LatLngBounds): this
     // Redraws the rectangle with the passed bounds.
     setBounds: function (latLngBounds) {
-        return this.setLatLngs(this._boundsToLatLngs(latLngBounds))
+        return this.setLatLngs(this._boundsToLatLngs(latLngBounds));
     },
 
     _boundsToLatLngs: function (latLngBounds) {
-        latLngBounds = toLatLngBounds(latLngBounds)
+        latLngBounds = toLatLngBounds(latLngBounds);
         return [
             latLngBounds.getSouthWest(),
             latLngBounds.getNorthWest(),
             latLngBounds.getNorthEast(),
             latLngBounds.getSouthEast(),
-        ]
+        ];
     },
-})
+});
 
 // @factory L.rectangle(latLngBounds: LatLngBounds, options?: Polyline options)
 export function rectangle(latLngBounds, options) {
-    return new Rectangle(latLngBounds, options)
+    return new Rectangle(latLngBounds, options);
 }

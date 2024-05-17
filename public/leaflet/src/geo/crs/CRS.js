@@ -1,7 +1,7 @@
-import { Bounds } from '../../geometry/Bounds'
-import { LatLng } from '../LatLng'
-import { LatLngBounds } from '../LatLngBounds'
-import * as Util from '../../core/Util'
+import { Bounds } from '../../geometry/Bounds';
+import { LatLng } from '../LatLng';
+import { LatLngBounds } from '../LatLngBounds';
+import * as Util from '../../core/Util';
 
 /*
  * @namespace CRS
@@ -25,9 +25,9 @@ export var CRS = {
     // Projects geographical coordinates into pixel coordinates for a given zoom.
     latLngToPoint: function (latlng, zoom) {
         var projectedPoint = this.projection.project(latlng),
-            scale = this.scale(zoom)
+            scale = this.scale(zoom);
 
-        return this.transformation._transform(projectedPoint, scale)
+        return this.transformation._transform(projectedPoint, scale);
     },
 
     // @method pointToLatLng(point: Point, zoom: Number): LatLng
@@ -35,23 +35,23 @@ export var CRS = {
     // zoom into geographical coordinates.
     pointToLatLng: function (point, zoom) {
         var scale = this.scale(zoom),
-            untransformedPoint = this.transformation.untransform(point, scale)
+            untransformedPoint = this.transformation.untransform(point, scale);
 
-        return this.projection.unproject(untransformedPoint)
+        return this.projection.unproject(untransformedPoint);
     },
 
     // @method project(latlng: LatLng): Point
     // Projects geographical coordinates into coordinates in units accepted for
     // this CRS (e.g. meters for EPSG:3857, for passing it to WMS services).
     project: function (latlng) {
-        return this.projection.project(latlng)
+        return this.projection.project(latlng);
     },
 
     // @method unproject(point: Point): LatLng
     // Given a projected coordinate returns the corresponding LatLng.
     // The inverse of `project`.
     unproject: function (point) {
-        return this.projection.unproject(point)
+        return this.projection.unproject(point);
     },
 
     // @method scale(zoom: Number): Number
@@ -59,29 +59,29 @@ export var CRS = {
     // pixel coordinates for a particular zoom. For example, it returns
     // `256 * 2^zoom` for Mercator-based CRS.
     scale: function (zoom) {
-        return 256 * Math.pow(2, zoom)
+        return 256 * Math.pow(2, zoom);
     },
 
     // @method zoom(scale: Number): Number
     // Inverse of `scale()`, returns the zoom level corresponding to a scale
     // factor of `scale`.
     zoom: function (scale) {
-        return Math.log(scale / 256) / Math.LN2
+        return Math.log(scale / 256) / Math.LN2;
     },
 
     // @method getProjectedBounds(zoom: Number): Bounds
     // Returns the projection's bounds scaled and transformed for the provided `zoom`.
     getProjectedBounds: function (zoom) {
         if (this.infinite) {
-            return null
+            return null;
         }
 
         var b = this.projection.bounds,
             s = this.scale(zoom),
             min = this.transformation.transform(b.min, s),
-            max = this.transformation.transform(b.max, s)
+            max = this.transformation.transform(b.max, s);
 
-        return new Bounds(min, max)
+        return new Bounds(min, max);
     },
 
     // @method distance(latlng1: LatLng, latlng2: LatLng): Number
@@ -115,9 +115,9 @@ export var CRS = {
             lat = this.wrapLat
                 ? Util.wrapNum(latlng.lat, this.wrapLat, true)
                 : latlng.lat,
-            alt = latlng.alt
+            alt = latlng.alt;
 
-        return new LatLng(lat, lng, alt)
+        return new LatLng(lat, lng, alt);
     },
 
     // @method wrapLatLngBounds(bounds: LatLngBounds): LatLngBounds
@@ -128,17 +128,17 @@ export var CRS = {
         var center = bounds.getCenter(),
             newCenter = this.wrapLatLng(center),
             latShift = center.lat - newCenter.lat,
-            lngShift = center.lng - newCenter.lng
+            lngShift = center.lng - newCenter.lng;
 
         if (latShift === 0 && lngShift === 0) {
-            return bounds
+            return bounds;
         }
 
         var sw = bounds.getSouthWest(),
             ne = bounds.getNorthEast(),
             newSw = new LatLng(sw.lat - latShift, sw.lng - lngShift),
-            newNe = new LatLng(ne.lat - latShift, ne.lng - lngShift)
+            newNe = new LatLng(ne.lat - latShift, ne.lng - lngShift);
 
-        return new LatLngBounds(newSw, newNe)
+        return new LatLngBounds(newSw, newNe);
     },
-}
+};

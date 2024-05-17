@@ -1,5 +1,5 @@
-import { Layer } from './Layer'
-import * as Util from '../core/Util'
+import { Layer } from './Layer';
+import * as Util from '../core/Util';
 
 /*
  * @class LayerGroup
@@ -21,15 +21,15 @@ import * as Util from '../core/Util'
 
 export var LayerGroup = Layer.extend({
     initialize: function (layers, options) {
-        Util.setOptions(this, options)
+        Util.setOptions(this, options);
 
-        this._layers = {}
+        this._layers = {};
 
-        var i, len
+        var i, len;
 
         if (layers) {
             for (i = 0, len = layers.length; i < len; i++) {
-                this.addLayer(layers[i])
+                this.addLayer(layers[i]);
             }
         }
     },
@@ -37,15 +37,15 @@ export var LayerGroup = Layer.extend({
     // @method addLayer(layer: Layer): this
     // Adds the given layer to the group.
     addLayer: function (layer) {
-        var id = this.getLayerId(layer)
+        var id = this.getLayerId(layer);
 
-        this._layers[id] = layer
+        this._layers[id] = layer;
 
         if (this._map) {
-            this._map.addLayer(layer)
+            this._map.addLayer(layer);
         }
 
-        return this
+        return this;
     },
 
     // @method removeLayer(layer: Layer): this
@@ -54,15 +54,15 @@ export var LayerGroup = Layer.extend({
     // @method removeLayer(id: Number): this
     // Removes the layer with the given internal ID from the group.
     removeLayer: function (layer) {
-        var id = layer in this._layers ? layer : this.getLayerId(layer)
+        var id = layer in this._layers ? layer : this.getLayerId(layer);
 
         if (this._map && this._layers[id]) {
-            this._map.removeLayer(this._layers[id])
+            this._map.removeLayer(this._layers[id]);
         }
 
-        delete this._layers[id]
+        delete this._layers[id];
 
-        return this
+        return this;
     },
 
     // @method hasLayer(layer: Layer): Boolean
@@ -71,14 +71,15 @@ export var LayerGroup = Layer.extend({
     // @method hasLayer(id: Number): Boolean
     // Returns `true` if the given internal ID is currently added to the group.
     hasLayer: function (layer) {
-        var layerId = typeof layer === 'number' ? layer : this.getLayerId(layer)
-        return layerId in this._layers
+        var layerId =
+            typeof layer === 'number' ? layer : this.getLayerId(layer);
+        return layerId in this._layers;
     },
 
     // @method clearLayers(): this
     // Removes all the layers from the group.
     clearLayers: function () {
-        return this.eachLayer(this.removeLayer, this)
+        return this.eachLayer(this.removeLayer, this);
     },
 
     // @method invoke(methodName: String, …): this
@@ -88,25 +89,25 @@ export var LayerGroup = Layer.extend({
     invoke: function (methodName) {
         var args = Array.prototype.slice.call(arguments, 1),
             i,
-            layer
+            layer;
 
         for (i in this._layers) {
-            layer = this._layers[i]
+            layer = this._layers[i];
 
             if (layer[methodName]) {
-                layer[methodName].apply(layer, args)
+                layer[methodName].apply(layer, args);
             }
         }
 
-        return this
+        return this;
     },
 
     onAdd: function (map) {
-        this.eachLayer(map.addLayer, map)
+        this.eachLayer(map.addLayer, map);
     },
 
     onRemove: function (map) {
-        this.eachLayer(map.removeLayer, map)
+        this.eachLayer(map.removeLayer, map);
     },
 
     // @method eachLayer(fn: Function, context?: Object): this
@@ -118,40 +119,40 @@ export var LayerGroup = Layer.extend({
     // ```
     eachLayer: function (method, context) {
         for (var i in this._layers) {
-            method.call(context, this._layers[i])
+            method.call(context, this._layers[i]);
         }
-        return this
+        return this;
     },
 
     // @method getLayer(id: Number): Layer
     // Returns the layer with the given internal ID.
     getLayer: function (id) {
-        return this._layers[id]
+        return this._layers[id];
     },
 
     // @method getLayers(): Layer[]
     // Returns an array of all the layers added to the group.
     getLayers: function () {
-        var layers = []
-        this.eachLayer(layers.push, layers)
-        return layers
+        var layers = [];
+        this.eachLayer(layers.push, layers);
+        return layers;
     },
 
     // @method setZIndex(zIndex: Number): this
     // Calls `setZIndex` on every layer contained in this group, passing the z-index.
     setZIndex: function (zIndex) {
-        return this.invoke('setZIndex', zIndex)
+        return this.invoke('setZIndex', zIndex);
     },
 
     // @method getLayerId(layer: Layer): Number
     // Returns the internal ID for a layer
     getLayerId: function (layer) {
-        return Util.stamp(layer)
+        return Util.stamp(layer);
     },
-})
+});
 
 // @factory L.layerGroup(layers?: Layer[], options?: Object)
 // Create a layer group, optionally given an initial set of layers and an `options` object.
 export var layerGroup = function (layers, options) {
-    return new LayerGroup(layers, options)
-}
+    return new LayerGroup(layers, options);
+};

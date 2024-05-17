@@ -1,7 +1,7 @@
-import { Earth } from './CRS.Earth'
-import { SphericalMercator } from '../projection/Projection.SphericalMercator'
-import { toTransformation } from '../../geometry/Transformation'
-import * as Util from '../../core/Util'
+import { Earth } from './CRS.Earth';
+import { SphericalMercator } from '../projection/Projection.SphericalMercator';
+import { toTransformation } from '../../geometry/Transformation';
+import * as Util from '../../core/Util';
 
 /*
  * @namespace CRS
@@ -17,11 +17,11 @@ export var EPSG3857 = Util.extend({}, Earth, {
     projection: SphericalMercator,
 
     transformation: (function () {
-        var scale = 0.5 / (Math.PI * SphericalMercator.R)
-        return toTransformation(scale, 0.5, -scale, 0.5)
+        var scale = 0.5 / (Math.PI * SphericalMercator.R);
+        return toTransformation(scale, 0.5, -scale, 0.5);
     })(),
-})
+});
 
 export var EPSG900913 = Util.extend({}, EPSG3857, {
     code: 'EPSG:900913',
-})
+});
