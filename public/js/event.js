@@ -11,7 +11,7 @@ function generateCard(title, text, status, venue_id, imageUrl, timestamp) {
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
                     <h5 class="card-title">${title}</h5>
-                    <button id="venue-${venue_id}" data-venue="${venue_id}" class="chat-venue m-1 btn btn-dark">Связаться с площадкой</button>
+                    <button id="venue-${venue_id}" data-venue="${venue_id}" class="chat-venue m-1 btn btn-primary">Связаться с площадкой</button>
                 </div>
                 <p class="card-text">${text}</p>
             </div>
@@ -65,7 +65,18 @@ function generateCard(title, text, status, venue_id, imageUrl, timestamp) {
 async function addCardsToContainer(containerId) {
     const container = document.getElementById(containerId);
     const events = await getEvents();
-
+    // значит, что запрос выполнился успешно, но данных нет
+    if (events === true) { 
+        container.classList.add('text-white');
+        container.classList.add('d-flex');
+        container.classList.add('pl-5');
+        container.classList.add('flex-column');
+        container.classList.add('align-items-center');
+        container.classList.add('justify-content-between');
+        container.style.marginLeft = '200px';
+        container.textContent = 'Что-то тут пустовато...'
+        return;
+    }
     // Создаем массив промисов для всех асинхронных операций внутри forEach
     const cardsDataPromises = events.map(async (event) => {
         const status = await getStatus(event.status_id);

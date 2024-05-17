@@ -122,11 +122,25 @@ app.route('/register')
         res.sendFile(path.join(__dirname, 'public', 'views', 'register.html'));
     })
     .post(async (req, res) => {
-        const user = await User.findOne({ where: { email: req.body.email } });
-        if (user === null) {
-            res.json({ message: 'Аккаунт зарегистрирован' });
-        } else {
-            res.json({ message: 'Аккаунт с этой почтой уже существует' });
+        const email = req.body.email;
+        const username = email.substr(0, email.indexOf('@')); 
+        const password = req.body.password;
+        const role_id = 1;
+        // Проверка аутентификации
+        const user = await User.findOne({ where: { email } });
+        if (user) {
+            // Если пользователь найден, проверяем пароль
+            if (user.password === password) {
+                sendResponse(res, user);
+            } 
+            else {
+                sendMessage(res, false);
+            }
+        } 
+        else {
+            // Пользователь с указанным email не найден, регистрируем нового пользователя
+            const newUser = await User.create({ email, username, password, role_id });
+            sendResponse(res, newUser);
         }
     });
 
@@ -139,9 +153,20 @@ app.route('/venue').post(async (req, res) => {
     }
 });
 
-app.route('/profile').get(isAuthenticated, async (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'views', 'profile.html'));
-});
+app.route('/profile')
+    .get(isAuthenticated, async (req, res) => {
+        res.sendFile(path.join(__dirname, 'public', 'views', 'profile.html'));
+    })
+    .post(isAuthenticated, async (req, res) => {
+        const name = req.body.name;
+        const surname = req.body.surname;
+        const about = req.body.about;
+        const [profile, created] = await Profile.findOrCreate({
+            where: { name, surname, about },
+            defaults: { name, surname, about },
+        })
+        sendResponse(res, profile);
+    })
 
 app.route('/settings').get(isAuthenticated, async (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'views', 'settings.html'));
@@ -165,7 +190,8 @@ app.route('/event')
     .post(async (req, res) => {
         const venue_id = req.body.venue_id;
         const status_id = 1;
-        const event = await Event.create({ venue_id, status_id });
+        const name = 'Мероприятие';
+        const event = await Event.create({ name, venue_id, status_id, user_id: req.session.user_id });
         sendResponse(res, event);
     });
 

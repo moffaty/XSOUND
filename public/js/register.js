@@ -33,10 +33,16 @@ form.addEventListener('submit', async (e) => {
         body: JSON.stringify({ email, password }),
     });
     const data = await response.json();
-    animateAlert(
-        data.message +
-            '. <a href="/login" class="alert-link">Попробуйте авторизоваться.</a>',
-    );
+    console.log(data);
+    if (data.status === 'success') {
+        window.location = '/login?success=true';
+    }
+    else {
+        animateAlert(
+            data.message +
+                '. <a href="/login" class="alert-link">Попробуйте авторизоваться.</a>',
+        );
+    }
 });
 
 const loginButton = document.querySelector('#login');

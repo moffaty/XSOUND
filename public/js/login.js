@@ -40,3 +40,10 @@ const registerButton = document.querySelector('#register');
 registerButton.addEventListener('click', (e) => {
     window.location = '/register';
 });
+
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const referrer = document.referrer;
+if (urlParams.get('success') && referrer.substring(referrer.lastIndexOf('/'), referrer.length === '/register')) {
+    animateAlert('Авторизация прошла успешно! Авторизируйтесь для продолжения');
+}

@@ -37,7 +37,7 @@ async function fillMap() {
 
                 submitButton.addEventListener('click', async () => {
                     const data = await createEvent(modalButton.id);
-                    console.log(data);
+                    window.location = '/event';
                 });
 
                 closeButton.addEventListener('click', () => {
