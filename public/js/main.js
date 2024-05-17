@@ -43,9 +43,15 @@ async function getEvents() {
     return data.message;
 }
 
+function formatDate(date) {
+    return String(date).padStart(2, '0');
+}
+
 function getDate(time) {
     const date = new Date(time);
-    const result = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
+    const result = `
+    ${formatDate(date.getDate())}.${formatDate(date.getMonth() + 1)}.${date.getFullYear()} 
+    ${formatDate(date.getHours())}:${formatDate(date.getMinutes())}:${formatDate(date.getSeconds())}`;
     return result;
 }
 

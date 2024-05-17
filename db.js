@@ -57,6 +57,7 @@ const roles = [
 const users = [
     { username: 'tst', password: 'tst', email: 'tst@gmail.com', role_id: 1 },
     { username: 'zxc', password: 'zxc', email: 'zxc@gmail.com', role_id: 2 },
+    { username: 'yee', password: 'yee', email: 'yee@gmail.com', role_id: 2 },
     { username: 'qwe', password: 'qwe', email: 'qwe@gmail.com', role_id: 3 },
 ];
 
@@ -86,13 +87,14 @@ const venues = [
 
 const organizers = [
     { user_id: 2, organizer_name: 'NOO', venue_id: 1, phone: '+79770027002' },
+    { user_id: 3, organizer_name: 'YEE', venue_id: 2, phone: '+79770027002' },
 ];
 
 const events = [
     { name: 'Party1', venue_id: 1, user_id: 1, status_id: 1 },
     { name: 'Party2', venue_id: 1, user_id: 1, status_id: 2 },
     { name: 'Party3', venue_id: 1, user_id: 1, status_id: 3 },
-    { name: 'Party4', venue_id: 1, user_id: 1, status_id: 4 },
+    { name: 'Party4', venue_id: 2, user_id: 1, status_id: 4 },
 ];
 
 async function fillTables() {
