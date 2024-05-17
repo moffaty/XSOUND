@@ -1,14 +1,20 @@
 document.addEventListener('DOMContentLoaded', () => {
     const musicList = document.getElementById('music-list');
     const tracks = [
-        { title: 'Track 1', src: 'path_to_track_1' },
-        { title: 'Track 2', src: 'path_to_track_2' },
+        { title: 'Track 1', src: '/upload_tracks/1' },
+        { title: 'Track 2', src: '/upload_tracks/2' },
         // Добавьте больше треков по мере необходимости
     ];
 
-    tracks.forEach(track => {
+    tracks.forEach((track) => {
         const trackElement = document.createElement('a');
-        trackElement.classList.add('list-group-item', 'list-group-item-action', 'd-flex', 'justify-content-between', 'align-items-center');
+        trackElement.classList.add(
+            'list-group-item',
+            'list-group-item-action',
+            'd-flex',
+            'justify-content-between',
+            'align-items-center',
+        );
         trackElement.href = track.src;
         trackElement.target = '_blank';
 

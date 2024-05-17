@@ -1,0 +1,6 @@
+#profile {
+    width: 150px; 
+    height: 150px; 
+    object-fit: cover;
+    position: relative; /* Устанавливаем позицию для относительного позиционирования псевдоэлемента */
+}

@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link href="/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="/css/login.css" rel="stylesheet" />
+        <link href="/css/main.css" rel="stylesheet" />
+        <link rel="icon" type="image/png" href="/img/icon.png" />
+        <script src="/dist/js/bootstrap.bundle.min.js"></script>
+        <title>Авторизация</title>
+    </head>
+    <body>
+        <div class="sea-cover">
+            <div
+                class="modal modal-signin position-static d-block bg-gradient-success py-5"
+                tabindex="-1"
+                role="dialog"
+                id="modalSignin"
+            >
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content rounded-4 shadow">
+                        <div
+                            class="modal-header p-5 border-bottom-0 mb-2 d-flex justify-content-between"
+                        >
+                            <h2 class="fw-bold fs-2">
+                                <a href="/">На главную</a>
+                            </h2>
+                            <h2 class="fw-bold fs-2">Авторизация</h2>
+                        </div>
+                        <div class="modal-body p-5 pt-0 pb-4">
+                            <form
+                                class="login"
+                                method="POST"
+                                action="/"
+                                enctype="application/json"
+                            >
+                                <div class="form-floating mb-2">
+                                    <input
+                                        type="email"
+                                        class="form-control"
+                                        id="floatingInput"
+                                        placeholder="name@example.com"
+                                        name="email"
+                                    />
+                                    <label for="floatingInput"
+                                        >Email адрес</label
+                                    >
+                                </div>
+                                <div class="form-floating mb-2">
+                                    <input
+                                        type="password"
+                                        class="form-control"
+                                        id="floatingInput"
+                                        placeholder="secret"
+                                        name="password"
+                                    />
+                                    <label for="floatingInput">Пароль</label>
+                                </div>
+                                <button
+                                    class="w-100 mb-2 btn btn-lg rounded-3 btn-success"
+                                    type="submit"
+                                >
+                                    Вход
+                                </button>
+                            </form>
+                            <button
+                                class="w-100 mb-2 btn btn-lg rounded-3 btn-secondary"
+                                id="register"
+                            >
+                                У меня нет аккаунта
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div
+            class="alert alert-danger fixed-bottom transparent"
+            role="alert"
+        ></div>
+        <script src="/js/login.js"></script>
+    </body>
+</html>
