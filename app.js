@@ -138,6 +138,10 @@ app.route('/venue').post(async (req, res) => {
     }
 });
 
+app.route('/profile').get(async (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'views', 'profile.html'));
+})
+
 app.route('/event')
     .get(isAuthenticated, async (req, res) => {
         if (req.query.get) {
