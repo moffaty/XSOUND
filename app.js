@@ -122,6 +122,19 @@ app.route('/venue')
     }
 });
 
+app.route('/create-event')
+.post(async (req, res) => {
+    const venue_id = req.body.venue_id;
+    const status_id = 1;
+    const event = await Event.create({ venue_id, status_id });
+    if (event === null) {
+        sendMessage(res, false);
+    }
+    else {
+        sendMessage(res, true, event.dataValues);
+    }
+});
+
 app.all('/logout', (req, res) => {
     req.session.username = '';
     res.redirect('/');

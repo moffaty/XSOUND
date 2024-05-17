@@ -10,6 +10,11 @@ async function getVenue(id) {
     return data.message;
 }
 
+async function createEvent(venue_id) {
+    const data = await postFetch('/create-event', { venue_id });
+    return data.message;
+}
+
 async function getAddress(latitude, longitude) {
     const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`);
     const data = await response.json();
@@ -33,7 +38,8 @@ async function fillMap() {
     map.on('popupopen', async function(e) {
         const modalButton = e.popup._contentNode.querySelector('.modalButton');
         if (modalButton) {
-            modalButton.addEventListener('click', async function() {
+            modalButton.addEventListener('click', async () => {
+                const submitButton = document.querySelector('#createEvent');
                 const data = await getVenue(modalButton.id);
                 console.log(data);
                 const header = document.getElementById('exampleModalLabel');
@@ -44,6 +50,10 @@ async function fillMap() {
                     <p>Адрес: ${await getAddress(data.address.x, data.address.y)} </p>
                     <p> ${data.info ? 'Дополнительная информация: ' + data.info : ''} </p>
                 `;
+                submitButton.addEventListener('click', async () => {
+                    const data = await createEvent(modalButton.id);
+                    console.log(data);
+                })
             });
         }
     });
