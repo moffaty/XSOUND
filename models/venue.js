@@ -18,6 +18,10 @@ const Venue = sequelize.define('Venue', {
     capacity: {
         type: DataTypes.INTEGER,
         allowNull: true,
+    },
+    info: {
+        type: DataTypes.TEXT,
+        allowNull: true,
     }
 });
 

@@ -107,6 +107,21 @@ app.route('/register')
     }
 });
 
+app.route('/venue')
+.post(async (req, res) => {
+    const venue_id = req.body.id;
+    console.log(venue_id);
+    if (venue_id) {
+        const venue = await Venue.findByPk(venue_id);
+        if (venue === null) {
+            sendMessage(res, false);
+        }
+        else {
+            sendMessage(res, true, venue.dataValues);
+        }
+    }
+});
+
 app.all('/logout', (req, res) => {
     req.session.username = '';
     res.redirect('/');

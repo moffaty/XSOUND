@@ -5,16 +5,47 @@ async function getVenues() {
     }
 }
 
+async function getVenue(id) {
+    const data = await postFetch('/venue', { id });
+    return data.message;
+}
+
+async function getAddress(latitude, longitude) {
+    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`);
+    const data = await response.json();
+    return data.display_name;
+}
+
 async function fillMap() {
     const venues = await getVenues();
     console.log(venues);
     venues.forEach(element => {
         L.marker([element.address.x, element.address.y]).addTo(map)
             .bindPopup(`<div class="d-flex m-0 p-0 flex-column align-items-center justify-content-center">
-            <p class="m-0">${element.name} - ${element.capacity}</p>
-            <p><a href="${element.id}">Открыть подробную информацию</a></p>
-            </div>`)
-            .openPopup();
+            <h4 class="m-0">${element.name} - ${element.capacity}</h4>
+            <button type="button" id="${element.id}" class="modalButton btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Подробная информация
+            </button>
+            </div>`);
+    });
+
+    // Обрабатываем события после того, как все маркеры добавлены на карту
+    map.on('popupopen', async function(e) {
+        const modalButton = e.popup._contentNode.querySelector('.modalButton');
+        if (modalButton) {
+            modalButton.addEventListener('click', async function() {
+                const data = await getVenue(modalButton.id);
+                console.log(data);
+                const header = document.getElementById('exampleModalLabel');
+                const body = document.getElementById('modal-body');
+                header.textContent = data.name;
+                body.innerHTML = `
+                    <p>Вместимость точки: ${data.capacity} </p>
+                    <p>Адрес: ${await getAddress(data.address.x, data.address.y)} </p>
+                    <p> ${data.info ? 'Дополнительная информация: ' + data.info : ''} </p>
+                `;
+            });
+        }
     });
 }
 
