@@ -1,11 +1,11 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('./sequelize');
+const { DataTypes } = require('sequelize')
+const sequelize = require('./sequelize')
 
 const Venue = sequelize.define('Venue', {
     id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
     },
     name: {
         type: DataTypes.STRING,
@@ -22,7 +22,7 @@ const Venue = sequelize.define('Venue', {
     info: {
         type: DataTypes.TEXT,
         allowNull: true,
-    }
-});
+    },
+})
 
-module.exports = Venue;
+module.exports = Venue
