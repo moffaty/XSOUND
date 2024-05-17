@@ -45,3 +45,56 @@ p {
 .card.st-4::after {
     background-color: #c24e4e;
 }
+
+.chat-container {
+    bottom: 0;
+    right: 0;
+    width: 200%;
+    max-width: 400px; /* Максимальная ширина чата */
+    margin: 0; /* Убираем отступы */
+    padding: 0; /* Убираем отступы */
+    z-index: 999; /* Чат будет отображаться поверх других элементов */
+}
+
+.card {
+    position: relative; /* Устанавливаем позицию для относительного позиционирования псевдоэлемента */
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2); /* Тень вокруг карточки */
+    margin: 10px; /* Отступы внутри контейнера */
+}
+
+.card-header {
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.card-body {
+    max-height: 300px; /* Максимальная высота чата */
+    overflow-y: auto; /* Скролл при переполнении */
+}
+
+.form-outline {
+    margin-top: 10px;
+}
+
+.circle {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+}
+
+.icon {
+    width: 50px;
+    height: 50px;
+}
+
+.chat-fixed {
+    position: fixed; 
+    bottom: 35px; 
+    right: 15px;
+}
+
+.circle img {
+    margin-left: 1rem;
+    margin-top: 1rem;
+    cursor: pointer;
+}
