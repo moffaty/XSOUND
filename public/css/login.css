@@ -5,6 +5,10 @@ body,
     height: 100%;
 }
 
+a {
+    color: black;
+}
+
 .modal-header {
     justify-content: center;
 }

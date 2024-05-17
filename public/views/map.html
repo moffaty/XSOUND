@@ -37,10 +37,7 @@
                 >
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a
-                                class="nav-link"
-                                aria-current="page"
-                                href="/"
+                            <a class="nav-link" aria-current="page" href="/"
                                 >XSOUND</a
                             >
                         </li>
@@ -101,10 +98,19 @@
                             aria-label="Close"
                         ></button>
                     </div>
-                    <div id="modal-body" class="modal-body">...</div>
+                    <div id="modal-body" class="modal-body">
+                        <div
+                            id="loadingSpinner"
+                            class="spinner-border text-primary d-none"
+                            role="status"
+                        >
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
                     <div class="modal-footer">
                         <button
                             type="button"
+                            id="close"
                             class="btn btn-secondary"
                             data-bs-dismiss="modal"
                         >
@@ -121,6 +127,7 @@
                 </div>
             </div>
         </div>
+
         <div id="map"></div>
         <script src="/js/main.js"></script>
         <script src="/js/map.js"></script>

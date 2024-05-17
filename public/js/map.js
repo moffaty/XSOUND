@@ -1,3 +1,5 @@
+const loadingSpinner = document.getElementById('loadingSpinner')
+
 async function getVenues() {
     const data = await postFetch('/map', {})
     if (data.message) {
@@ -26,6 +28,11 @@ async function getAddress(latitude, longitude) {
 async function fillMap() {
     const venues = await getVenues()
     console.log(venues)
+
+    // Показываем анимацию загрузки
+    const loadingSpinner = document.getElementById('loadingSpinner')
+    loadingSpinner.classList.remove('d-none')
+
     venues.forEach((element) => {
         L.marker([element.address.x, element.address.y]).addTo(map)
             .bindPopup(`<div class="d-flex m-0 p-0 flex-column align-items-center justify-content-center">
@@ -42,8 +49,8 @@ async function fillMap() {
         if (modalButton) {
             modalButton.addEventListener('click', async () => {
                 const submitButton = document.querySelector('#createEvent')
+                const closeButton = document.querySelector('#close')
                 const data = await getVenue(modalButton.id)
-                console.log(data)
                 const header = document.getElementById('exampleModalLabel')
                 const body = document.getElementById('modal-body')
                 header.textContent = data.name
@@ -52,9 +59,14 @@ async function fillMap() {
                     <p>Адрес: ${await getAddress(data.address.x, data.address.y)} </p>
                     <p> ${data.info ? 'Дополнительная информация: ' + data.info : ''} </p>
                 `
+
                 submitButton.addEventListener('click', async () => {
                     const data = await createEvent(modalButton.id)
                     console.log(data)
+                })
+
+                closeButton.addEventListener('click', () => {
+                    body = loadingSpinner
                 })
             })
         }
