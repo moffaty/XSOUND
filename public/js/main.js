@@ -43,6 +43,12 @@ async function getEvents() {
     return data.message;
 }
 
+function getDate(time) {
+    const date = new Date(time);
+    const result = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
+    return result;
+}
+
 function getTimeDifferenceInSeconds(startTime) {
     const currentTime = new Date();
     const differenceInMilliseconds = currentTime - new Date(startTime);

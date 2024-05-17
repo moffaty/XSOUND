@@ -20,6 +20,8 @@ const Status = require(modelDir + '/eventStatus');
 const Musician = require(modelDir + '/musician');
 const Genre = require(modelDir + '/genre');
 const Venue = require(modelDir + '/venue');
+const Chat = require(modelDir + '/chat');
+const Message = require(modelDir + '/message');
 const Organizer = require(modelDir + '/organizer');
 
 // Используем сессии
@@ -164,6 +166,54 @@ app.route('/status').get(async (req, res) => {
         sendResponse(res, status);
     }
 });
+
+app.route('/create-chat-musician').post(isAuthenticated, async (req, res) => {
+    // музыкант пишет организатору 
+    const venue_id = req.body.venue_id;
+    if (venue_id === null) {
+        res.json({ status: 'error' });
+    }
+    const organizer = await Organizer.findOne({ where: { venue_id }, attributes: ['user_id']});
+    const musician = req.session.user_id;
+    const [chat, created] = await Chat.findOrCreate({
+        where: { user_id_to: organizer.user_id, user_id_from: musician },
+        defaults: { user_id_to: organizer.user_id, user_id_from: musician }
+    });
+    sendResponse(res, chat);
+})
+
+app.route('/send-message').post(isAuthenticated, async (req, res) => {
+    const user_message = req.body.user_message;
+    const user_id_to = req.body.user_id_to;
+    const user_id_from = req.body.user_id_from;
+    const chat_id = req.body.chat_id;
+    if (user_message && user_id_to && user_id_from && chat_id) {
+        const message = await Message.create({ user_id_to, user_id_from, chat_id, message: user_message });
+        sendResponse(res, message);
+    }
+    else {
+        sendMessage(res, false);
+    }
+})
+
+app.route('/get-messages').post(isAuthenticated, async (req, res) => {
+    const chat_id = req.body.chat_id;
+    if (chat_id) {
+        const message = await Message.findAll({ where: { chat_id }});
+        let result = [];
+        message.forEach((element) => {
+            result.push(element);
+        });
+        sendMessage(res, true, result);
+    }
+    else {
+        sendMessage(res, false);
+    }
+})
+
+app.get('/whoami', (req, res) => {
+    res.json({ email:req.session.email, role:req.session.role, user_id:req.session.user_id, username:req.session.username});
+})
 
 app.all('/logout', (req, res) => {
     req.session.username = '';
