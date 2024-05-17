@@ -138,9 +138,13 @@ app.route('/venue').post(async (req, res) => {
 
 app.route('/event')
     .get(isAuthenticated, async (req, res) => {
-        if (req.query.user) {
+        if (req.query.get) {
             const event = await Event.findAll({ where: { user_id: req.session.user_id }});
-            sendResponse(res, event);
+            let result = [];
+            event.forEach((element) => {
+                result.push(element);
+            });
+            sendMessage(res, true, result);
         }
         else {
             res.sendFile(path.join(__dirname, 'public', 'views', 'event.html'));

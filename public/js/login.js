@@ -32,7 +32,7 @@ form.addEventListener('submit', async (e) => {
     if (!data.message) {
         animateAlert('Учетные данные введены неверно. Попробуйте снова');
     } else {
-        window.location = '/map';
+        window.location = '/event';
     }
 });
 

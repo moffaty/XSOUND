@@ -1,30 +1,5 @@
 const loadingSpinner = document.getElementById('loadingSpinner');
 
-async function getVenues() {
-    const data = await postFetch('/map', {});
-    if (data.message) {
-        return data.message;
-    }
-}
-
-async function getVenue(id) {
-    const data = await postFetch('/venue', { id });
-    return data.message;
-}
-
-async function createEvent(venue_id) {
-    const data = await postFetch('/event', { venue_id });
-    return data.message;
-}
-
-async function getAddress(latitude, longitude) {
-    const response = await fetch(
-        `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`,
-    );
-    const data = await response.json();
-    return data.display_name;
-}
-
 async function fillMap() {
     const venues = await getVenues();
     console.log(venues);
