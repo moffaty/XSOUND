@@ -71,7 +71,6 @@ app.route('/login')
         res.sendFile(path.join(__dirname, 'public', 'views', 'login.html'))
     })
     .post(async (req, res) => {
-        console.log(req.body)
         const user = await User.findOne({
             where: { email: req.body.email, password: req.body.password },
         })

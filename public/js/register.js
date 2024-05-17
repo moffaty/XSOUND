@@ -17,7 +17,7 @@ function animateAlert(text) {
 }
 
 form.addEventListener('submit', async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     const email = form.elements['email'].value
     const password = form.elements['password'].value
     const confirmPassword = form.elements['confirm-password'].value
