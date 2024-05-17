@@ -55,7 +55,7 @@ const organizers = [
 ]
 
 const events = [
-    { name: 'Party', datetime: new Date(), venue_id: 1, status_id: 1 }
+    { name: 'Party', venue_id: 1, user_id: 1, status_id: 1 }
 ]
 
 async function fillTables() {
