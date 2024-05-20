@@ -10,7 +10,8 @@ async function loadProfile() {
 function loadBackgroundImage() {}
 
 function uploadAccountImage() {
-    document.getElementById('accfileInput').addEventListener('change', (e) => {
+    console.log(document.getElementById('accountImage'));
+    document.getElementById('accountImage').addEventListener('change', (e) => {
         const file = e.target.files[0]; // Получаем выбранный файл
 
         // Создаем объект FormData и добавляем в него выбранный файл
@@ -18,7 +19,7 @@ function uploadAccountImage() {
         formData.append('file', file);
 
         // Выполняем запрос на сервер для загрузки файла
-        fetch('/uploadAccount', {
+        fetch('/upload_account', {
             method: 'POST',
             body: formData,
         })

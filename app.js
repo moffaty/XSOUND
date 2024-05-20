@@ -188,10 +188,6 @@ app.post('/musician', isAuthenticated, async (req, res) => {
     sendResponse(res, musician);
 });
 
-app.post('/uploadBackground', isAuthenticated, async (req, res) => {
-    const user_id = req.session.user_id;
-});
-
 app.route('/settings').get(isAuthenticated, async (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'views', 'settings.html'));
 });
@@ -305,11 +301,27 @@ app.route('/upload_tracks').post(isAuthenticated, async (req, res) => {
 
     music.mv(path.join(__dirname, 'upload_tracks', music.name), function(err) {
         if (err)
-          return res.status(500).send(err);
+            return res.status(500).send(err);
     
         res.send('File uploaded!');
     });
-})
+});
+
+app.post('/upload_account', isAuthenticated, async (req, res) => {
+    if (!req.files || Object.keys(req.files).length === 0) {
+        return res.status(400).send('No files were uploaded.');
+    }
+
+    const icon = req.files.file;
+    const fileName = icon.name;
+    
+    icon.mv(path.join(__dirname, 'users_img', String(req.session.user_id), 'account' + fileName.substr(fileName.lastIndexOf('.'), fileName.length)), function(err) {
+        if (err)
+            return res.status(500).send(err);
+    
+        res.send('File uploaded!');
+    });
+});
 
 app.get('/whoami', (req, res) => {
     res.json({
