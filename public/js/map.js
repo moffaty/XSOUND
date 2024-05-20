@@ -50,7 +50,6 @@ async function fillMap() {
 
                 submitButton.addEventListener('click', async () => {
                     const date = document.getElementById('schedule').value;
-                    alert(date);
                     const data = await createEvent(modalButton.id, date);
                     window.location = '/event';
                 });
