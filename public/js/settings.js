@@ -3,16 +3,64 @@ async function loadProfile() {
     await loadProfileInformation();
     await loadMusicianInformation(); 
     loadBackgroundImage();
+    uploadAccountImage();
+    uploadBackgroundImage();
 }
 
 function loadBackgroundImage() {
 
 }
 
+function uploadAccountImage() {
+    document.getElementById('accfileInput').addEventListener('change', e => {
+        const file = e.target.files[0]; // Получаем выбранный файл
+
+        // Создаем объект FormData и добавляем в него выбранный файл
+        const formData = new FormData();
+        formData.append('file', file);
+
+        // Выполняем запрос на сервер для загрузки файла
+        fetch('/uploadAccount', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log('File uploaded successfully');
+            } else {
+                console.error('Failed to upload file');
+            }
+        })
+        .catch(error => {
+            console.error('Error uploading file:', error);
+        });
+    });
+}
+
 function uploadBackgroundImage() {
-    document.getElementById('fileInput').addEventListener('change', e => {
-        
-    })
+    document.getElementById('bgfileInput').addEventListener('change', e => {
+        const file = e.target.files[0]; // Получаем выбранный файл
+
+        // Создаем объект FormData и добавляем в него выбранный файл
+        const formData = new FormData();
+        formData.append('file', file);
+
+        // Выполняем запрос на сервер для загрузки файла
+        fetch('/uploadBackground', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log('File uploaded successfully');
+            } else {
+                console.error('Failed to upload file');
+            }
+        })
+        .catch(error => {
+            console.error('Error uploading file:', error);
+        });
+    });
 }
 
 async function loadUserInformation() {

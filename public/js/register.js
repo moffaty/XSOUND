@@ -45,6 +45,9 @@ form.addEventListener('submit', async (e) => {
 });
 
 const loginButton = document.querySelector('#login');
-loginButton.addEventListener('click', (e) => {
-    window.location = '/login';
-});
+if (loginButton) {
+    loginButton.addEventListener('click', (e) => {
+        window.location = '/login';
+    });
+}
+
