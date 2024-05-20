@@ -109,7 +109,7 @@ const schedules = [
     { date: new Date('12.09.2009 16:00'), venue_id: 1 },
     { date: new Date('11.09.2009 17:14'), venue_id: 2 },
     { date: new Date('14.09.2009 17:14'), venue_id: 2 },
-]
+];
 
 async function fillTables() {
     await Chat.bulkCreate(chats);

@@ -89,7 +89,7 @@ async function addCardsToContainer(containerId) {
         const cardText = `
             <p>Статус: ${status_name}</p>
             <p>Площадка: ${venue_name}</p>     
-            ${date ? `<p>Дата: ${getDate(date)}</p>`: ''}     
+            ${date ? `<p>Дата: ${getDate(date)}</p>` : ''}     
             <p></p>       
         `;
         const card = {

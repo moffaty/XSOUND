@@ -50,4 +50,3 @@ if (loginButton) {
         window.location = '/login';
     });
 }
-

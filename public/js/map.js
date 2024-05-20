@@ -2,9 +2,9 @@ const loadingSpinner = document.getElementById('loadingSpinner');
 
 function fillSchedules(data) {
     let res = '<select id="schedule" required>';
-    data.forEach(schedule => {
-        res += `<option value="${(schedule.date)}">${getDate(schedule.date)}</option>`;
-    })
+    data.forEach((schedule) => {
+        res += `<option value="${schedule.date}">${getDate(schedule.date)}</option>`;
+    });
     res += '</select>';
     return res;
 }

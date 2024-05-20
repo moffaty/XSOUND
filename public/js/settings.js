@@ -1,18 +1,16 @@
 async function loadProfile() {
     await loadUserInformation();
     await loadProfileInformation();
-    await loadMusicianInformation(); 
+    await loadMusicianInformation();
     loadBackgroundImage();
     uploadAccountImage();
     uploadBackgroundImage();
 }
 
-function loadBackgroundImage() {
-
-}
+function loadBackgroundImage() {}
 
 function uploadAccountImage() {
-    document.getElementById('accfileInput').addEventListener('change', e => {
+    document.getElementById('accfileInput').addEventListener('change', (e) => {
         const file = e.target.files[0]; // Получаем выбранный файл
 
         // Создаем объект FormData и добавляем в него выбранный файл
@@ -22,23 +20,23 @@ function uploadAccountImage() {
         // Выполняем запрос на сервер для загрузки файла
         fetch('/uploadAccount', {
             method: 'POST',
-            body: formData
+            body: formData,
         })
-        .then(response => {
-            if (response.ok) {
-                console.log('File uploaded successfully');
-            } else {
-                console.error('Failed to upload file');
-            }
-        })
-        .catch(error => {
-            console.error('Error uploading file:', error);
-        });
+            .then((response) => {
+                if (response.ok) {
+                    console.log('File uploaded successfully');
+                } else {
+                    console.error('Failed to upload file');
+                }
+            })
+            .catch((error) => {
+                console.error('Error uploading file:', error);
+            });
     });
 }
 
 function uploadBackgroundImage() {
-    document.getElementById('bgfileInput').addEventListener('change', e => {
+    document.getElementById('bgfileInput').addEventListener('change', (e) => {
         const file = e.target.files[0]; // Получаем выбранный файл
 
         // Создаем объект FormData и добавляем в него выбранный файл
@@ -48,18 +46,18 @@ function uploadBackgroundImage() {
         // Выполняем запрос на сервер для загрузки файла
         fetch('/uploadBackground', {
             method: 'POST',
-            body: formData
+            body: formData,
         })
-        .then(response => {
-            if (response.ok) {
-                console.log('File uploaded successfully');
-            } else {
-                console.error('Failed to upload file');
-            }
-        })
-        .catch(error => {
-            console.error('Error uploading file:', error);
-        });
+            .then((response) => {
+                if (response.ok) {
+                    console.log('File uploaded successfully');
+                } else {
+                    console.error('Failed to upload file');
+                }
+            })
+            .catch((error) => {
+                console.error('Error uploading file:', error);
+            });
     });
 }
 
@@ -95,7 +93,8 @@ async function loadMusicianInformation() {
     const musician = await postFetch('/musician');
     if (musician.message !== true) {
         const links = musician.message.links;
-        document.getElementById('musician-name').value = musician.message.musician_name;
+        document.getElementById('musician-name').value =
+            musician.message.musician_name;
         document.getElementById('links_vk').value = checkUndefined(links.vk);
         document.getElementById('links_ya').value = checkUndefined(links.ya);
         document.getElementById('links_tg').value = checkUndefined(links.tg);

@@ -181,14 +181,13 @@ app.route('/profile')
 
 app.post('/musician', isAuthenticated, async (req, res) => {
     const user_id = req.session.user_id;
-    const musician = await Musician.findOne({ where: { user_id }});
+    const musician = await Musician.findOne({ where: { user_id } });
     sendResponse(res, musician);
 });
 
 app.post('/uploadBackground', isAuthenticated, async (req, res) => {
     const user_id = req.session.user_id;
-
-})
+});
 
 app.route('/settings').get(isAuthenticated, async (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'views', 'settings.html'));
@@ -203,7 +202,7 @@ app.post('/schedule', isAuthenticated, async (req, res) => {
     });
     console.log(result);
     sendMessage(res, true, result);
-})
+});
 
 app.route('/event')
     .get(isAuthenticated, async (req, res) => {

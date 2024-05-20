@@ -15,7 +15,7 @@ const Schedule = sequelize.define('Schedule', {
         references: {
             model: Venue,
             key: 'id',
-        }
+        },
     },
     date: {
         type: DataTypes.DATE,
