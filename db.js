@@ -17,6 +17,7 @@ const Venue = require(modelDir + '/venue');
 const Chat = require(modelDir + '/chat');
 const Message = require(modelDir + '/message');
 const Profile = require(modelDir + '/profile');
+const Schedule = require(modelDir + '/schedule');
 
 const chats = [{ user_id_to: 1, user_id_from: 2 }];
 
@@ -43,6 +44,7 @@ const genres = [
 ];
 
 const eventStatus = [
+    { status_name: 'Предложен' },
     { status_name: 'Начат' },
     { status_name: 'В обработке' },
     { status_name: 'Завершен' },
@@ -102,6 +104,13 @@ const profiles = [
     { name: 'Egor', surname: 'Shestakov', about: 'Coolest guy)', user_id: 1 },
 ];
 
+const schedules = [
+    { date: new Date('11.09.2009 16:14'), venue_id: 1 },
+    { date: new Date('12.09.2009 16:00'), venue_id: 1 },
+    { date: new Date('11.09.2009 17:14'), venue_id: 2 },
+    { date: new Date('14.09.2009 17:14'), venue_id: 2 },
+]
+
 async function fillTables() {
     await Chat.bulkCreate(chats);
     await Message.bulkCreate(messages);
@@ -114,6 +123,7 @@ async function fillTables() {
     await Organizer.bulkCreate(organizers);
     await Event.bulkCreate(events);
     await Profile.bulkCreate(profiles);
+    await Schedule.bulkCreate(schedules);
 }
 
 fillTables();

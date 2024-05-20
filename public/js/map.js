@@ -1,5 +1,14 @@
 const loadingSpinner = document.getElementById('loadingSpinner');
 
+function fillSchedules(data) {
+    let res = '<select id="schedule" required>';
+    data.forEach(schedule => {
+        res += `<option value="${(schedule.date)}">${getDate(schedule.date)}</option>`;
+    })
+    res += '</select>';
+    return res;
+}
+
 async function fillMap() {
     const venues = await getVenues();
     console.log(venues);
@@ -26,6 +35,8 @@ async function fillMap() {
                 const submitButton = document.querySelector('#createEvent');
                 const closeButton = document.querySelector('#close');
                 const data = await getVenue(modalButton.id);
+                const schedule = await getSchedule(data.id);
+                console.log(schedule);
                 const header = document.getElementById('exampleModalLabel');
                 const body = document.getElementById('modal-body');
                 header.textContent = data.name;
@@ -33,10 +44,14 @@ async function fillMap() {
                     <p>Вместимость точки: ${data.capacity} </p>
                     <p>Адрес: ${await getAddress(data.address.x, data.address.y)} </p>
                     <p> ${data.info ? 'Дополнительная информация: ' + data.info : ''} </p>
+                    <p> Свободное расписание площадки: </p>
+                    <p> ${fillSchedules(schedule)} </p>
                 `;
 
                 submitButton.addEventListener('click', async () => {
-                    const data = await createEvent(modalButton.id);
+                    const date = document.getElementById('schedule').value;
+                    alert(date);
+                    const data = await createEvent(modalButton.id, date);
                     window.location = '/event';
                 });
 
@@ -67,20 +82,4 @@ map.attributionControl.setPrefix('');
 // Перемещение кнопок управления в правый нижний угол
 map.addControl(new L.Control.Zoom({ position: 'bottomright' }));
 
-// Добавление маркеров
-// L.marker([59.9343, 30.334]).addTo(map)
-//     .bindPopup('Место 1')
-//     .openPopup();
-
-// L.marker([59.955, 30.205]).addTo(map)
-//     .bindPopup('Место 2')
-//     .openPopup();
 fillMap();
-// Добавление маркеров
-// let markers = [];
-// function addMarker(e) {
-//     let marker = L.marker(e.latlng).addTo(map);
-//     markers.push(marker);
-//     marker.bindPopup('Новый маркер').openPopup();
-// }
-// map.on('click', addMarker);

@@ -15,6 +15,10 @@ const Event = sequelize.define('Event', {
         type: DataTypes.STRING,
         allowNull: false,
     },
+    date: {
+        type: DataTypes.DATE,
+        allowNull: true,
+    },
     venue_id: {
         type: DataTypes.INTEGER,
         allowNull: false,

@@ -49,13 +49,18 @@ async function getVenue(id) {
     return data.message;
 }
 
-async function createEvent(venue_id) {
-    const data = await postFetch('/event', { venue_id });
+async function createEvent(venue_id, date) {
+    const data = await postFetch('/event', { venue_id, date });
     return data.message;
 }
 
 async function getEvents() {
     const data = await getFetch('/event?get=1');
+    return data.message;
+}
+
+async function getSchedule(venue_id) {
+    const data = await postFetch('/schedule', { venue_id });
     return data.message;
 }
 

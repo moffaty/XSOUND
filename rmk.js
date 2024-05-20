@@ -14,6 +14,7 @@ const Organizer = require(modelDir + '/organizer');
 const Chat = require(modelDir + '/chat');
 const Message = require(modelDir + '/message');
 const Profile = require(modelDir + '/profile');
+const Schedule = require(modelDir + '/schedule');
 
 // Подключаем настройки Sequelize
 const sequelize = require(modelDir + '/sequelize');

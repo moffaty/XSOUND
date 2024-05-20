@@ -30,7 +30,7 @@ const Musician = sequelize.define('Musician', {
             key: 'genre_id', // Поле, с которым устанавливается связь
         },
     },
-    repertoire: {
+    links: {
         type: DataTypes.JSON,
         allowNull: true,
     },

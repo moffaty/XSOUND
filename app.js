@@ -24,6 +24,7 @@ const Chat = require(modelDir + '/chat');
 const Message = require(modelDir + '/message');
 const Organizer = require(modelDir + '/organizer');
 const Profile = require(modelDir + '/profile');
+const Schedule = require(modelDir + '/schedule');
 
 // Используем сессии
 app.use(
@@ -178,11 +179,20 @@ app.route('/profile')
         sendResponse(res, profile);
     });
 
-app.route('/');
-
 app.route('/settings').get(isAuthenticated, async (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'views', 'settings.html'));
 });
+
+app.post('/schedule', isAuthenticated, async (req, res) => {
+    const venue_id = req.body.venue_id;
+    const schedule = await Schedule.findAll({ where: { venue_id } });
+    let result = [];
+    schedule.forEach((element) => {
+        result.push(element);
+    });
+    console.log(result);
+    sendMessage(res, true, result);
+})
 
 app.route('/event')
     .get(isAuthenticated, async (req, res) => {
@@ -199,14 +209,16 @@ app.route('/event')
             res.sendFile(path.join(__dirname, 'public', 'views', 'event.html'));
         }
     })
-    .post(async (req, res) => {
+    .post(isAuthenticated, async (req, res) => {
         const venue_id = req.body.venue_id;
+        const date = req.body.date;
         const status_id = 1;
         const name = 'Мероприятие';
         const event = await Event.create({
             name,
             venue_id,
             status_id,
+            date,
             user_id: req.session.user_id,
         });
         sendResponse(res, event);

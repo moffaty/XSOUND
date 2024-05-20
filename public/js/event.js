@@ -79,6 +79,8 @@ async function addCardsToContainer(containerId) {
     }
     // Создаем массив промисов для всех асинхронных операций внутри forEach
     const cardsDataPromises = events.map(async (event) => {
+        console.log(event);
+        const date = event.date;
         const status = await getStatus(event.status_id);
         const venue = await getVenue(event.venue_id);
         const venue_name = venue.name;
@@ -87,6 +89,7 @@ async function addCardsToContainer(containerId) {
         const cardText = `
             <p>Статус: ${status_name}</p>
             <p>Площадка: ${venue_name}</p>     
+            ${date ? `<p>Дата: ${getDate(date)}</p>`: ''}     
             <p></p>       
         `;
         const card = {
@@ -94,6 +97,7 @@ async function addCardsToContainer(containerId) {
             venue_id: venue.id,
             text: cardText,
             status: status.status_id,
+            date: '',
             imageUrl: '...',
             timestamp: formatLastUpdateMessage(event.updatedAt),
         };
