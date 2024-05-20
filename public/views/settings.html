@@ -148,8 +148,9 @@
                                 class="col-md-12 d-flex flex-column align-items-center flex-direction-colum"
                             >
                                 <label class="labels">О себе</label
-                                ><textarea
-                                    rows="6"
+                                ><textarea style="resize: none;"
+                                    rows="8"
+                                    cols="10"
                                     id="about"
                                     type="text"
                                     class="form-control"
@@ -170,35 +171,50 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="p-3 py-5">
+                    <div class="p-3 py-5" id="musician-information">
                         <div
                             class="d-flex justify-content-between align-items-center experience"
                         >
-                            <span>Edit Experience</span
+                            <span>Карточка музыканта</span
                             ><span class="border px-3 p-1 add-experience"
                                 ><i class="fa fa-plus"></i
-                                >&nbsp;Experience</span
+                                >&nbsp;Preview</span
                             >
                         </div>
                         <br />
                         <div class="col-md-12">
-                            <label class="labels">Experience in Designing</label
+                            <label class="labels d-flex flex-column align-items-center flex-direction-colum">Псевдоним</label
                             ><input
                                 type="text"
                                 class="form-control"
-                                placeholder="experience"
+                                placeholder="MUSIC NAME"
                                 value=""
+                                id="musician-name"
                             />
                         </div>
                         <br />
                         <div class="col-md-12">
-                            <label class="labels">Additional Details</label
-                            ><input
-                                type="text"
-                                class="form-control"
-                                placeholder="additional details"
-                                value=""
-                            />
+                            <label class="labels mb-3 d-flex flex-column align-items-center flex-direction-colum">Ссылки на сервисы</label>
+                            <div class="input-group mb-2">
+                                <input id="links_vk" type="text" class="form-control" placeholder="vk.com" value="">
+                                <span class="input-group-text">VK</span>
+                            </div>
+                            <div class="input-group mb-2">
+                                <input id="links_tg" type="text" class="form-control" placeholder="t.me" value="">
+                                <span class="input-group-text">TELEGRAM</span>
+                            </div>
+                            <div class="input-group mb-2">
+                                <input id="links_ya" type="text" class="form-control" placeholder="music.yandex.ru" value="">
+                                <span class="input-group-text">YANDEX MUSIC</span>
+                            </div>
+                            <div class="input-group mb-2">
+                                <input id="links_yt" type="text" class="form-control" placeholder="youtube.com" value="">
+                                <span class="input-group-text">YOUTUBE</span>
+                            </div>
+                            <label for="fileInput" class="mt-5 w-100 custom-file-upload d-flex justify-content-center align-items-center">
+                                <input id="fileInput" type="file" class="form-control" style="display:none">
+                                <span>Загрузить обложку профиля</span>
+                            </label>
                         </div>
                     </div>
                 </div>

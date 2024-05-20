@@ -42,3 +42,27 @@ body {
     cursor: pointer;
     border: solid 1px #ba68c8;
 }
+
+.input-group-text {
+    border-radius: 0 4px 4px 0;
+    background-color: #e9ecef; /* Цвет фона плейсхолдера */
+    border-color: #ced4da; /* Цвет границы плейсхолдера */
+}
+
+.custom-file-upload {
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.custom-file-upload:hover {
+    background-color: #f5f5f5;
+}
+
+/* Стилизация текста внутри элемента */
+.custom-file-upload span {
+    /* Ваши стили */
+    content: '123';
+}

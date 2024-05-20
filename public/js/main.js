@@ -14,6 +14,10 @@ function animateAlert(text) {
     }, 5000);
 }
 
+function checkUndefined(value) {
+    return value ? value : '';
+}
+
 async function postFetch(url, body) {
     const response = await fetch(url, {
         method: 'POST',

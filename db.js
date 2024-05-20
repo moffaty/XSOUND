@@ -69,7 +69,7 @@ const musicians = [
         user_id: 1,
         musician_name: 'TTT',
         genre_id: 1,
-        repertoire: { songs: 'ToToTo' },
+        links: { vk: 'ToToTo', tg: '123' },
     },
 ];
 

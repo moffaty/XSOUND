@@ -1,6 +1,18 @@
 async function loadProfile() {
     await loadUserInformation();
     await loadProfileInformation();
+    await loadMusicianInformation(); 
+    loadBackgroundImage();
+}
+
+function loadBackgroundImage() {
+
+}
+
+function uploadBackgroundImage() {
+    document.getElementById('fileInput').addEventListener('change', e => {
+        
+    })
 }
 
 async function loadUserInformation() {
@@ -29,6 +41,18 @@ async function loading() {
     loadingSpinnerContainer.classList.add('transparent');
     profileContainer.classList.add('untransparent');
     profileContainer.classList.remove('transparent');
+}
+
+async function loadMusicianInformation() {
+    const musician = await postFetch('/musician');
+    if (musician.message !== true) {
+        const links = musician.message.links;
+        document.getElementById('musician-name').value = musician.message.musician_name;
+        document.getElementById('links_vk').value = checkUndefined(links.vk);
+        document.getElementById('links_ya').value = checkUndefined(links.ya);
+        document.getElementById('links_tg').value = checkUndefined(links.tg);
+        document.getElementById('links_yt').value = checkUndefined(links.yt);
+    }
 }
 
 loading();
