@@ -1,4 +1,5 @@
 const session = require('express-session');
+const fileUpload = require('express-fileupload');
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
@@ -40,6 +41,8 @@ app.use(
         saveUninitialized: true,
     }),
 );
+
+app.use(fileUpload());
 
 // Middleware функция для проверки аутентификации пользователя
 function isAuthenticated(req, res, next) {
@@ -290,6 +293,23 @@ app.route('/get-messages').post(isAuthenticated, async (req, res) => {
         sendMessage(res, false);
     }
 });
+
+app.route('/upload_tracks').post(isAuthenticated, async (req, res) => {
+    if (!req.files || Object.keys(req.files).length === 0) {
+        return res.status(400).send('No files were uploaded.');
+    }
+    // добавить надо в бд, чтобы в списке показывалось
+
+    console.log('FILE');
+    const music = req.files.music;
+
+    music.mv(path.join(__dirname, 'upload_tracks', music.name), function(err) {
+        if (err)
+          return res.status(500).send(err);
+    
+        res.send('File uploaded!');
+    });
+})
 
 app.get('/whoami', (req, res) => {
     res.json({
