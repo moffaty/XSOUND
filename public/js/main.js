@@ -57,6 +57,11 @@ async function getFetch(url) {
     return data;
 }
 
+async function getRedirect() {
+    const data = await getFetch('/get-redirect');
+    return data.message;
+}
+
 async function getVenues() {
     const data = await postFetch('/map', {});
     if (data.message) {

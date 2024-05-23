@@ -42,6 +42,7 @@ app.use(
         username: '',
         role: '',
         email: '',
+        redirect: '',
         secret: secret,
         resave: false,
         isAuth: false,
@@ -63,6 +64,7 @@ function isAuthenticated(req, res, next) {
         // Если пользователь аутентифицирован, передаем управление следующему обработчику
         next();
     } else {
+        req.session.redirect = (req.route.path);
         // Если пользователь не аутентифицирован, перенаправляем на страницу логина
         res.redirect('/login');
     }
@@ -123,6 +125,15 @@ function getBackgroundImage(userId) {
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'views', 'index.html'));
 });
+
+app.get('/get-redirect', (req, res) => {
+    if (req.session.redirect) {
+        sendMessage(res, true, req.session.redirect);
+    }
+    else {
+        sendMessage(res, true, '/map');
+    }
+})
 
 app.route('/login')
     .get((req, res) => {

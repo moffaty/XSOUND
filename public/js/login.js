@@ -3,6 +3,17 @@ const alertField = document.querySelector('.alert');
 
 let isAnimating = false;
 
+async function getFetch(url) {
+    const response = await fetch(url);
+    const data = await response.json();
+    return data;
+}
+
+async function getRedirect() {
+    const data = await getFetch('/get-redirect');
+    return data.message;
+}
+
 function animateAlert(text) {
     if (isAnimating) return; // Если уже идет анимация, не создавать новую
     isAnimating = true;
@@ -32,7 +43,8 @@ form.addEventListener('submit', async (e) => {
     if (!data.message) {
         animateAlert('Учетные данные введены неверно. Попробуйте снова');
     } else {
-        window.location = '/event';
+        const redirectUrl = await getRedirect();
+        window.location = redirectUrl;
     }
 });
 
