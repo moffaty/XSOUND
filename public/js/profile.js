@@ -1,4 +1,5 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    updateAccountImage();
     const musicList = document.getElementById('music-list');
     const tracks = [
         { title: 'Track 1', src: '/upload_tracks/1' },

@@ -16,6 +16,7 @@ function animateAlert(text) {
 
 async function updateAccountImage() {
     const img_container = document.getElementById('account');
+    console.log(img_container);
     const account_img = await getFetch(`/get_image/account`);
     if (img_container) {
         if (account_img.status === 'success') {
@@ -29,7 +30,7 @@ async function updateBackgroundImage() {
     const background_img = await getFetch('/get_image/background');
     console.log(container);
         if (background_img.status === 'success') {
-            container.style.backgroundImage = `url(${background_img.message})`;
+            container.style.backgroundImage = `url(${background_img.message})`  ;
             console.log(container.style);
         }
 }
