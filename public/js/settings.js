@@ -5,6 +5,8 @@ async function loadProfile() {
     loadBackgroundImage();
     uploadAccountImage();
     uploadBackgroundImage();
+    await updateAccountImage();
+    await updateBackgroundImage();
 }
 
 function loadBackgroundImage() {}
@@ -19,13 +21,14 @@ function uploadAccountImage() {
         formData.append('file', file);
 
         // Выполняем запрос на сервер для загрузки файла
-        fetch('/upload_account', {
+        fetch('/upload/account', {
             method: 'POST',
             body: formData,
         })
             .then((response) => {
                 if (response.ok) {
                     console.log('File uploaded successfully');
+                    updateAccountImage();
                 } else {
                     console.error('Failed to upload file');
                 }
@@ -45,12 +48,13 @@ function uploadBackgroundImage() {
         formData.append('file', file);
 
         // Выполняем запрос на сервер для загрузки файла
-        fetch('/uploadBackground', {
+        fetch('/upload/background', {
             method: 'POST',
             body: formData,
         })
             .then((response) => {
                 if (response.ok) {
+                    updateBackgroundImage();
                     console.log('File uploaded successfully');
                 } else {
                     console.error('Failed to upload file');

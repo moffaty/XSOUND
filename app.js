@@ -3,9 +3,17 @@ const fileUpload = require('express-fileupload');
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
+const { send } = require('vite');
 const secret = 'zxc';
 const PORT = 3000;
 const app = express();
+
+// Директория для картинок пользователя
+const img_dir = 'users_img';
+// Имя файлов для аватарок
+const img_icon = 'account';
+// Имя файлов для бекграундов
+const img_back = 'background';
 
 // Определяем директорию моделей
 const modelDir = './models';
@@ -44,6 +52,10 @@ app.use(
 
 app.use(fileUpload());
 
+app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, img_dir)));
+
 // Middleware функция для проверки аутентификации пользователя
 function isAuthenticated(req, res, next) {
     // Проверяем, существует ли username в сессии
@@ -76,8 +88,37 @@ function sendResponse(res, model) {
     }
 }
 
-app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
+function getImage(userId, typeImage) {
+    let ext = '';
+    let img = '';
+    switch (typeImage) {
+        case 'account':
+            img = img_icon;
+            break;
+        case 'background':
+            img = img_back;
+            break;
+    }
+    const dir = fs.readdirSync(path.join(__dirname, img_dir, String(userId)));
+    dir.forEach((file) => {
+        if (file.startsWith(img)) {
+            ext = path.extname(file);
+        }
+    });
+    const directoryPath = '/' + String(userId);
+    const fullFileName = img + ext;
+    const fullPath = directoryPath + '/' + fullFileName;
+    console.log(fullPath);
+    return fullPath;
+}
+
+function getAccountImage(userId) {
+    return getImage(userId, 'account');
+}
+
+function getBackgroundImage(userId) {
+    return getImage(userId, 'background');
+}
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'views', 'index.html'));
@@ -306,7 +347,7 @@ app.route('/upload_tracks').post(isAuthenticated, async (req, res) => {
     });
 });
 
-app.post('/upload_account', isAuthenticated, async (req, res) => {
+app.post('/upload/:type', isAuthenticated, async (req, res) => {
     if (!req.files || Object.keys(req.files).length === 0) {
         return res.status(400).send('No files were uploaded.');
     }
@@ -315,7 +356,7 @@ app.post('/upload_account', isAuthenticated, async (req, res) => {
     const fileName = icon.name;
     const directoryPath = path.join(
         __dirname,
-        'users_img',
+        img_dir,
         String(req.session.user_id),
     );
 
@@ -323,11 +364,30 @@ app.post('/upload_account', isAuthenticated, async (req, res) => {
         fs.mkdirSync(directoryPath, { recursive: true }); // creates directory and any necessary subdirectories
     }
 
+    const type = req.params.type;
+    let fileType = '';
+    switch (type) {
+        case 'account':
+            fileType = img_icon;
+            break;
+        case 'background':
+            fileType = img_back;
+            break;
+    }
+
+    const fullFileName = fileType + fileName.substr(fileName.lastIndexOf('.'), fileName.length)
+
+    const dir = fs.readdirSync(directoryPath);
+    dir.forEach(file => {
+        if (file.startsWith(fileType)) {
+            fs.unlinkSync(path.join(directoryPath, file));
+        }
+    })
+
     icon.mv(
         path.join(
             directoryPath,
-            'account' +
-                fileName.substr(fileName.lastIndexOf('.'), fileName.length),
+            fullFileName,
         ),
         function (err) {
             if (err) {
@@ -337,6 +397,28 @@ app.post('/upload_account', isAuthenticated, async (req, res) => {
             res.send('File uploaded!');
         },
     );
+});
+
+app.get('/get_image/:typeImage', isAuthenticated, (req, res) => {
+    const typeImage = req.params.typeImage;
+    switch (typeImage) {
+        case 'account':
+            try {
+                const fullPath = getAccountImage(req.session.user_id);
+                sendMessage(res, true, fullPath);
+            } catch (err) {
+                sendMessage(res, false, err);
+            }
+            break;
+        case 'background':
+            try {
+                const fullPath = getBackgroundImage(req.session.user_id);
+                sendMessage(res, true, fullPath);
+            } catch (err) {
+                sendMessage(res, false, err);
+            }
+            break;
+    }
 });
 
 app.get('/whoami', (req, res) => {
