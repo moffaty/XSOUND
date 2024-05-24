@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 'justify-content-between',
                 'align-items-center',
             );
-            trackElement.href = track.src;
             trackElement.target = '_blank';
 
             const titleElement = document.createElement('span');
@@ -26,6 +25,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             audioElement.controls = true;
             audioElement.src = track.src;
             audioElement.classList.add('ms-3');
+            audioElement.classList.add('w-100');
 
             trackElement.appendChild(titleElement);
             trackElement.appendChild(audioElement);

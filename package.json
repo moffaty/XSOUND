@@ -9,6 +9,9 @@
         "rmk": "node rmk -n > dev-log && node db > dev-log && echo Таблицы очищены и заполнены",
         "full_rmk": "node rmk -y > dev-log && node db > dev-log && echo Таблицы очищены и заполнены.Бекап обновлен"
     },
+    "nodemonConfig": {
+        "ignore": ["users_img//*"]
+    },
     "author": "",
     "license": "ISC",
     "dependencies": {

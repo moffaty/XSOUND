@@ -13,8 +13,11 @@ const app = express();
 const user_dir = 'users_img';
 // Директория для треков пользователя
 const track_dir = 'tracks';
+// Директория для изображений
+const imgs_dir = 'imgs';
 // Имя файлов для аватарок
 const img_icon = 'account';
+const user_settings = 'settings';
 // Имя файлов для бекграундов
 const img_back = 'background';
 
@@ -104,14 +107,15 @@ function getImage(userId, typeImage) {
             break;
     }
     const dir = fs.readdirSync(
-        path.join(__dirname, user_dir, String(userId), 'imgs'),
+        path.join(__dirname, user_dir, String(userId), imgs_dir),
     );
     dir.forEach((file) => {
         if (file.startsWith(img)) {
             ext = path.extname(file);
         }
     });
-    const directoryPath = '/' + String(userId) + '/' + 'imgs';
+    
+    const directoryPath = '/' + String(userId) + '/' + imgs_dir;
     const fullFileName = img + ext;
     const fullPath = directoryPath + '/' + fullFileName;
     console.log(fullPath);
@@ -154,6 +158,7 @@ app.route('/login')
             req.session.role = user.dataValues.role_id;
             req.session.email = user.dataValues.email;
             req.session.user_id = user.dataValues.id;
+            console.log(req.session);
             sendMessage(res, true);
         }
     });
@@ -370,6 +375,37 @@ app.route('/upload_tracks').post(isAuthenticated, async (req, res) => {
         res.send('File uploaded!');
     });
 });
+
+app.route('/colors')
+    .post(isAuthenticated, (req, res) => {
+        const directoryPath = path.join(
+            __dirname,
+            user_dir,
+            String(req.session.user_id),
+            user_settings
+        );
+        console.log(directoryPath);
+        if (!fs.existsSync(directoryPath)) {
+            fs.mkdirSync(directoryPath, { recursive: true }); // creates directory and any necessary subdirectories
+        }
+        const colors = req.body.colors;
+        fs.writeFileSync(path.join(directoryPath, 'color.json'), JSON.stringify(colors));
+    })
+    .get(isAuthenticated, (req, res) => {
+        try {
+            const directoryPath = path.join(
+                __dirname,
+                user_dir,
+                String(req.session.user_id),
+                user_settings
+            );
+            const data = fs.readFileSync(path.join(directoryPath, 'color.json'));
+            sendMessage(res, true, JSON.parse(data.toString()));
+        }
+        catch (err) {
+            sendMessage(res, false, err);
+        }
+    })
 
 app.post('/upload/:type', isAuthenticated, async (req, res) => {
     if (!req.files || Object.keys(req.files).length === 0) {

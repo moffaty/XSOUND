@@ -1,34 +1,40 @@
+:root {
+    --main-color: rgb(99, 39, 120);
+    --hover-color: rgb(87, 34, 97);
+    --light-color: rgb(186, 104, 200);
+}
+
 body {
-    background: rgb(99, 39, 120);
+    background: var(--main-color);
 }
 
 .form-control:focus {
     box-shadow: none;
-    border-color: #ba68c8;
+    border-color: var(--light-color);
 }
 
 .profile-button {
-    background: rgb(99, 39, 120);
+    background: var(--main-color);
     box-shadow: none;
     border: none;
 }
 
 .profile-button:hover {
-    background: #682773;
+    background: var(--hover-color);
 }
 
 .profile-button:focus {
-    background: #682773;
+    background: var(--hover-color);
     box-shadow: none;
 }
 
 .profile-button:active {
-    background: #682773;
+    background: var(--hover-color);
     box-shadow: none;
 }
 
 .back:hover {
-    color: #682773;
+    color: var(--hover-color);
     cursor: pointer;
 }
 
@@ -37,15 +43,15 @@ body {
 }
 
 .add-experience:hover {
-    background: #ba68c8;
+    background: var(--light-color);
     color: #fff;
     cursor: pointer;
-    border: solid 1px #ba68c8;
+    border: solid 1px var(--light-color);
 }
 
 .input-group-text {
     border-radius: 0 4px 4px 0;
-    background-color: #e9ecef; /* Цвет фона плейсхолдера */
+    background-color: var(--light-color); /* Цвет фона плейсхолдера */
     border-color: #ced4da; /* Цвет границы плейсхолдера */
 }
 
