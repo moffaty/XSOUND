@@ -36,7 +36,6 @@ async function fillMap() {
                 const closeButton = document.querySelector('#close');
                 const data = await getVenue(modalButton.id);
                 const schedule = await getSchedule(data.id);
-                console.log(schedule);
                 const header = document.getElementById('exampleModalLabel');
                 const body = document.getElementById('modal-body');
                 header.textContent = data.name;

@@ -87,6 +87,13 @@ async function getVenues() {
     }
 }
 
+async function createVenue() {
+    const data = await getFetch('/create-venue');
+    if (data.message) {
+        return data.message;
+    }
+}
+
 async function getStatus(status_id) {
     const data = await getFetch(`/status?status=${status_id}`);
     return data.message;

@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('./sequelize');
+const Organizer = require('./organizer');
 
 const Venue = sequelize.define('Venue', {
     id: {
@@ -22,6 +23,14 @@ const Venue = sequelize.define('Venue', {
     info: {
         type: DataTypes.TEXT,
         allowNull: true,
+    },
+    organizer_id: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        references: {
+            model: Organizer, // Модель, с которой устанавливается связь
+            key: 'id', // Поле, с которым устанавливается связь
+        },
     },
 });
 

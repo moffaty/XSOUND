@@ -75,28 +75,36 @@ const musicians = [
 
 const venues = [
     {
+        id: 0,
+        address: { x:0, y: 0 },
+        name: 'None',
+        capacity: 0,
+    },
+    {
         name: 'Baaar',
         address: { x: 59.955, y: 30.205 },
         capacity: 50,
         info: 'Классное место!',
+        organizer_id: 1,
     },
     {
         name: 'Cluub',
         address: { x: 59.934, y: 30.334 },
         capacity: 110,
         info: 'Улёт!)',
+        organizer_id: 2,
     },
 ];
 
 const organizers = [
-    { user_id: 2, organizer_name: 'NOO', venue_id: 1, phone: '+79770027002' },
-    { user_id: 3, organizer_name: 'YEE', venue_id: 2, phone: '+79770027002' },
+    { user_id: 2, organizer_name: 'NOO', phone: '+79770027002' },
+    { user_id: 3, organizer_name: 'YEE', phone: '+79770027002' },
 ];
 
 const events = [
     { name: 'Party1', venue_id: 1, user_id: 1, status_id: 1 },
     { name: 'Party2', venue_id: 1, user_id: 1, status_id: 2 },
-    { name: 'Party3', venue_id: 1, user_id: 1, status_id: 3 },
+    { name: 'Party3', venue_id: 2, user_id: 1, status_id: 3 },
     { name: 'Party4', venue_id: 2, user_id: 1, status_id: 4 },
 ];
 
@@ -119,8 +127,8 @@ async function fillTables() {
     await Role.bulkCreate(roles);
     await User.bulkCreate(users);
     await Musician.bulkCreate(musicians);
-    await Venue.bulkCreate(venues);
     await Organizer.bulkCreate(organizers);
+    await Venue.bulkCreate(venues);
     await Event.bulkCreate(events);
     await Profile.bulkCreate(profiles);
     await Schedule.bulkCreate(schedules);

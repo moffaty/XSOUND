@@ -5,6 +5,7 @@ const path = require('path');
 const fs = require('fs');
 const { send } = require('vite');
 const { dir } = require('console');
+const { or } = require('sequelize');
 const secret = 'zxc';
 const PORT = 3000;
 const app = express();
@@ -165,7 +166,12 @@ app.route('/login')
 
 app.route('/map')
     .get(isAuthenticated, (req, res) => {
-        res.sendFile(path.join(__dirname, 'public', 'views', 'map.html'));
+        if (req.session.role !== 2) {
+            res.sendFile(path.join(__dirname, 'public', 'views', 'map.html'));
+        }
+        else {
+            res.redirect('/event');
+        }
     })
     .post(async (req, res) => {
         if (req.session.username) {
@@ -219,7 +225,54 @@ app.route('/venue').post(async (req, res) => {
         const venue = await Venue.findByPk(venue_id);
         sendResponse(res, venue);
     }
-});
+}).get(isAuthenticated, async (req, res) => {
+    if (req.session.role === 2) {
+        const organizer = await Organizer.findOne({ where: { user_id: req.session.user_id }});
+        const venue = await Venue.findAll({ where: { organizer_id: organizer.dataValues.id }});
+        console.log(venue);
+        let result = [];
+        venue.forEach((element) => {
+            result.push(element);
+        });
+        console.log(result);
+        sendMessage(res, true, result);
+    }
+    else {
+        sendMessage(res, false);
+    }
+
+})
+
+app.get('/create-venue', isAuthenticated, async (req, res) => {
+    const organizer = await Organizer.findOne({ where: { user_id: req.session.user_id }});
+    const venue = await Venue.create({ name: 'Venue', address: {x: 0, y: 0}, capacity:0, info: 0, organizer_id: organizer.dataValues.id });
+    console.log(organizer);
+    organizer.venue_id = venue.dataValues.id;
+    organizer.save();
+    sendResponse(res, venue);
+})
+
+app.post('/delete-venue', async (req, res) => {
+    const venue_id = req.body.venue_id;
+    console.log(req.body);
+    if (venue_id) {
+        const venue = await Venue.findByPk(venue_id);
+        const events = await Event.findAll({ where: { venue_id }});
+        const schedules = await Schedule.findAll({ where: { venue_id }});
+        const organizers = await Organizer.findAll({ where: { venue_id }});
+        events.forEach(event => {
+            event.destroy();
+        });
+        schedules.forEach(schedule => {
+            schedule.destroy();
+        })
+        organizers.forEach(organizer => {
+            organizer.venue_id = 0;
+            organizer.save();
+        })
+        sendMessage(res, true);
+    }
+})
 
 app.route('/profile')
     .get(isAuthenticated, async (req, res) => {
@@ -270,17 +323,48 @@ app.post('/schedule', isAuthenticated, async (req, res) => {
 
 app.route('/event')
     .get(isAuthenticated, async (req, res) => {
-        if (req.query.get) {
-            const event = await Event.findAll({
-                where: { user_id: req.session.user_id },
-            });
-            let result = [];
-            event.forEach((element) => {
-                result.push(element);
-            });
-            sendMessage(res, true, result);
-        } else {
-            res.sendFile(path.join(__dirname, 'public', 'views', 'event.html'));
+        if (req.session.role === 2) {
+            if (req.query.get) {
+                try {
+                    const venues = await Venue.findAll({
+                        where: { organizer_id: req.session.user_id },
+                    });
+            
+                    // Собираем все промисы поиска событий для каждого venue
+                    const eventPromises = venues.map(async v => {
+                        const events = await Event.findAll({
+                            where: { venue_id: v.id }
+                        });
+                        return events;
+                    });
+            
+                    // Ждём завершения всех промисов и объединяем результаты
+                    const eventsArray = await Promise.all(eventPromises);
+                    const result = eventsArray.flat();
+            
+                    sendMessage(res, true, result);
+
+                } catch (error) {
+                    console.error(error);
+                    res.status(500).send('An error occurred');
+                }
+            } else {
+                res.sendFile(path.join(__dirname, 'public', 'views', 'event.html'));
+            }
+        }
+        else {
+            if (req.query.get) {
+                const event = await Event.findAll({
+                    where: { user_id: req.session.user_id },
+                });
+                let result = [];
+                event.forEach((element) => {
+                    result.push(element);
+                });
+                sendMessage(res, true, result);
+            } else {
+                res.sendFile(path.join(__dirname, 'public', 'views', 'event.html'));
+            }
         }
     })
     .post(isAuthenticated, async (req, res) => {
@@ -311,14 +395,14 @@ app.route('/create-chat-musician').post(isAuthenticated, async (req, res) => {
     if (venue_id === null) {
         res.json({ status: 'error' });
     }
-    const organizer = await Organizer.findOne({
-        where: { venue_id },
-        attributes: ['user_id'],
-    });
+    // const organizer = await Organizer.findOne({
+    //     where: { venue_id },
+    //     attributes: ['user_id'],
+    // });
     const musician = req.session.user_id;
     const [chat, created] = await Chat.findOrCreate({
-        where: { user_id_to: organizer.user_id, user_id_from: musician },
-        defaults: { user_id_to: organizer.user_id, user_id_from: musician },
+        where: { user_id_to: venue_id, user_id_from: musician },
+        defaults: { user_id_to: venue_id, user_id_from: musician },
     });
     sendResponse(res, chat);
 });
