@@ -528,7 +528,10 @@ app.get('/whoami', (req, res) => {
 });
 
 app.all('/logout', (req, res) => {
+    req.session.email = '';
+    req.session.user_id = '';
     req.session.username = '';
+    req.session.role_id = '';
     res.redirect('/');
 });
 

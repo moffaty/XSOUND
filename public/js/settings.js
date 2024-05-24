@@ -100,12 +100,16 @@ async function loadMusicianInformation() {
     const musician = await postFetch('/musician');
     if (musician.message !== true) {
         const links = musician.message.links;
-        document.getElementById('musician-name').value =
+        if (musician.message.musician_name) {
+            document.getElementById('musician-name').value =
             musician.message.musician_name;
-        document.getElementById('links_vk').value = checkUndefined(links.vk);
-        document.getElementById('links_ya').value = checkUndefined(links.ya);
-        document.getElementById('links_tg').value = checkUndefined(links.tg);
-        document.getElementById('links_yt').value = checkUndefined(links.yt);
+        }
+        if (links) {
+            document.getElementById('links_vk').value = checkUndefined(links.vk);
+            document.getElementById('links_ya').value = checkUndefined(links.ya);
+            document.getElementById('links_tg').value = checkUndefined(links.tg);
+            document.getElementById('links_yt').value = checkUndefined(links.yt);
+        }
     }
 }
 
@@ -136,10 +140,10 @@ async function updateColors() {
     const colorInput = document.getElementById('colorInput');
     if (colorInput) {
         const color = colors.message.mainColor;
-        const rgb = color.substring(color.indexOf('(') + 1, color.length - 1).split(',');
-        console.log(colors.message.mainColor);
-        colorInput.value = rgb2hex(rgb[0], rgb[1], rgb[2]);
-        console.log(rgb2hex(rgb[0], rgb[1], rgb[2]));
+        if (color) {
+            const rgb = color.substring(color.indexOf('(') + 1, color.length - 1).split(',');
+            colorInput.value = rgb2hex(rgb[0], rgb[1], rgb[2]);
+        }
     }
 }
 
