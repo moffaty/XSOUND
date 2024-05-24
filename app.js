@@ -223,7 +223,12 @@ app.route('/venue').post(async (req, res) => {
 
 app.route('/profile')
     .get(isAuthenticated, async (req, res) => {
-        res.sendFile(path.join(__dirname, 'public', 'views', 'profile.html'));
+        if (req.session.user_id === 1) {
+            res.sendFile(path.join(__dirname, 'public', 'views', 'musician-profile.html'));
+        } 
+        else {
+            res.sendFile(path.join(__dirname, 'public', 'views', 'organizer-profile.html'));
+        }
     })
     .post(isAuthenticated, async (req, res) => {
         const name = req.body.name;

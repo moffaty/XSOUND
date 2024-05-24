@@ -25,6 +25,12 @@ async function updateAccountImage() {
     }
 }
 
+async function loadUserInformation() {
+    const me = await getFetch('/whoami');
+    document.getElementById('username').textContent = me.username;
+    document.getElementById('email').textContent = me.email;
+}
+
 function hex2rgb(hex) {
     const r = parseInt(hex.slice(1, 3), 16);
     const g = parseInt(hex.slice(3, 5), 16);

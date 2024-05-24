@@ -10,7 +10,7 @@
         "full_rmk": "node rmk -y > dev-log && node db > dev-log && echo Таблицы очищены и заполнены.Бекап обновлен"
     },
     "nodemonConfig": {
-        "ignore": ["users_img//*"]
+        "ignore": ["users_img/*", "public/*"]
     },
     "author": "",
     "license": "ISC",

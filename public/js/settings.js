@@ -68,12 +68,6 @@ function uploadBackgroundImage() {
     });
 }
 
-async function loadUserInformation() {
-    const me = await getFetch('/whoami');
-    document.getElementById('username').textContent = me.username;
-    document.getElementById('email').textContent = me.email;
-}
-
 async function loadProfileInformation() {
     const profile = await postFetch('/profile');
     if (profile.message !== true) {
