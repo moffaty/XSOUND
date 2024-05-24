@@ -29,10 +29,10 @@ async function updateBackgroundImage() {
     const container = document.getElementById('background');
     const background_img = await getFetch('/get_image/background');
     console.log(container);
-        if (background_img.status === 'success') {
-            container.style.backgroundImage = `url(${background_img.message})`  ;
-            console.log(container.style);
-        }
+    if (background_img.status === 'success') {
+        container.style.backgroundImage = `url(${background_img.message})`;
+        console.log(container.style);
+    }
 }
 
 function checkUndefined(value) {

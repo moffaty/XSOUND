@@ -4,12 +4,15 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const { send } = require('vite');
+const { dir } = require('console');
 const secret = 'zxc';
 const PORT = 3000;
 const app = express();
 
-// Директория для картинок пользователя
-const img_dir = 'users_img';
+// Директория для данных пользователя
+const user_dir = 'users_img';
+// Директория для треков пользователя
+const track_dir = 'tracks';
 // Имя файлов для аватарок
 const img_icon = 'account';
 // Имя файлов для бекграундов
@@ -55,7 +58,6 @@ app.use(fileUpload());
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, img_dir)));
 
 // Middleware функция для проверки аутентификации пользователя
 function isAuthenticated(req, res, next) {
@@ -64,7 +66,7 @@ function isAuthenticated(req, res, next) {
         // Если пользователь аутентифицирован, передаем управление следующему обработчику
         next();
     } else {
-        req.session.redirect = (req.route.path);
+        req.session.redirect = req.route.path;
         // Если пользователь не аутентифицирован, перенаправляем на страницу логина
         res.redirect('/login');
     }
@@ -101,13 +103,15 @@ function getImage(userId, typeImage) {
             img = img_back;
             break;
     }
-    const dir = fs.readdirSync(path.join(__dirname, img_dir, String(userId)));
+    const dir = fs.readdirSync(
+        path.join(__dirname, user_dir, String(userId), 'imgs'),
+    );
     dir.forEach((file) => {
         if (file.startsWith(img)) {
             ext = path.extname(file);
         }
     });
-    const directoryPath = '/' + String(userId);
+    const directoryPath = '/' + String(userId) + '/' + 'imgs';
     const fullFileName = img + ext;
     const fullPath = directoryPath + '/' + fullFileName;
     console.log(fullPath);
@@ -129,11 +133,10 @@ app.get('/', (req, res) => {
 app.get('/get-redirect', (req, res) => {
     if (req.session.redirect) {
         sendMessage(res, true, req.session.redirect);
-    }
-    else {
+    } else {
         sendMessage(res, true, '/map');
     }
-})
+});
 
 app.route('/login')
     .get((req, res) => {
@@ -346,12 +349,22 @@ app.route('/upload_tracks').post(isAuthenticated, async (req, res) => {
     if (!req.files || Object.keys(req.files).length === 0) {
         return res.status(400).send('No files were uploaded.');
     }
-    // добавить надо в бд, чтобы в списке показывалось
+    // добавить надо в бд, чтобы в списке показывалось, а в итоге просто директорию считает
 
     console.log('FILE');
     const music = req.files.music;
+    const directoryPath = path.join(
+        __dirname,
+        user_dir,
+        String(req.session.user_id),
+        track_dir,
+    );
 
-    music.mv(path.join(__dirname, 'upload_tracks', music.name), function (err) {
+    if (!fs.existsSync(directoryPath)) {
+        fs.mkdirSync(directoryPath, { recursive: true }); // creates directory and any necessary subdirectories
+    }
+
+    music.mv(path.join(directoryPath, music.name), function (err) {
         if (err) return res.status(500).send(err);
 
         res.send('File uploaded!');
@@ -367,7 +380,7 @@ app.post('/upload/:type', isAuthenticated, async (req, res) => {
     const fileName = icon.name;
     const directoryPath = path.join(
         __dirname,
-        img_dir,
+        user_dir,
         String(req.session.user_id),
     );
 
@@ -386,28 +399,23 @@ app.post('/upload/:type', isAuthenticated, async (req, res) => {
             break;
     }
 
-    const fullFileName = fileType + fileName.substr(fileName.lastIndexOf('.'), fileName.length)
+    const fullFileName =
+        fileType + fileName.substr(fileName.lastIndexOf('.'), fileName.length);
 
     const dir = fs.readdirSync(directoryPath);
-    dir.forEach(file => {
+    dir.forEach((file) => {
         if (file.startsWith(fileType)) {
             fs.unlinkSync(path.join(directoryPath, file));
         }
-    })
+    });
 
-    icon.mv(
-        path.join(
-            directoryPath,
-            fullFileName,
-        ),
-        function (err) {
-            if (err) {
-                console.log(err);
-                return res.status(500).send(err);
-            }
-            res.send('File uploaded!');
-        },
-    );
+    icon.mv(path.join(directoryPath, fullFileName), function (err) {
+        if (err) {
+            console.log(err);
+            return res.status(500).send(err);
+        }
+        res.send('File uploaded!');
+    });
 });
 
 app.get('/get_image/:typeImage', isAuthenticated, (req, res) => {
@@ -429,6 +437,48 @@ app.get('/get_image/:typeImage', isAuthenticated, (req, res) => {
                 sendMessage(res, false, err);
             }
             break;
+    }
+});
+
+app.get('/get-tracks', isAuthenticated, (req, res) => {
+    try {
+        let list = [];
+        const fullPath = path.join(
+            __dirname,
+            user_dir,
+            String(req.session.user_id),
+            track_dir,
+        );
+        const dir = fs.readdirSync(fullPath);
+        dir.forEach((file) => {
+            list.push({
+                title: file,
+                src: '/' + req.session.user_id + '/' + track_dir + '/' + file,
+            });
+        });
+        sendMessage(res, true, list);
+    } catch (err) {
+        sendMessage(res, false, err);
+    }
+});
+
+app.get(`/:userId/:folder/:filename`, isAuthenticated, (req, res) => {
+    if (req.session.redirect === '/:userId/:filename') {
+        req.session.redirect = '/profile';
+        return res.redirect('/profile');
+    }
+    const dirPath = path.join(
+        __dirname,
+        user_dir,
+        req.params.userId,
+        req.params.folder,
+    );
+    console.log(dirPath);
+    console.log(req.params.filename);
+    if (fs.existsSync(path.join(dirPath, req.params.filename))) {
+        res.sendFile(path.join(dirPath, req.params.filename));
+    } else {
+        res.sendFile(path.join(__dirname, user_dir, '0', 'account.png'));
     }
 });
 
