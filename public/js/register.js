@@ -1,8 +1,6 @@
 const form = document.querySelector('.login');
 const alertField = document.querySelector('.alert');
 
-let isAnimating = false;
-
 function animateAlert(text) {
     if (isAnimating) return; // Если уже идет анимация, не создавать новую
     isAnimating = true;

@@ -1,8 +1,6 @@
 const form = document.querySelector('.login');
 const alertField = document.querySelector('.alert');
 
-let isAnimating = false;
-
 async function getFetch(url) {
     const response = await fetch(url);
     const data = await response.json();

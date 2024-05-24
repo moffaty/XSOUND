@@ -10,7 +10,10 @@
         "full_rmk": "node rmk -y > dev-log && node db > dev-log && echo Таблицы очищены и заполнены.Бекап обновлен"
     },
     "nodemonConfig": {
-        "ignore": ["users_img/*", "public/*"]
+        "ignore": [
+            "users_img/*",
+            "public/*"
+        ]
     },
     "author": "",
     "license": "ISC",
@@ -18,6 +21,7 @@
         "bootstrap": "^5.3.3",
         "express": "^4.19.2",
         "express-fileupload": "^1.5.0",
+        "express-handlebars": "^7.1.2",
         "express-session": "^1.18.0",
         "sequelize": "^6.37.3",
         "sqlite3": "^5.1.7",

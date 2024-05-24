@@ -1,5 +1,6 @@
 const session = require('express-session');
 const fileUpload = require('express-fileupload');
+const handlebars = require('express-handlebars');
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
@@ -62,6 +63,16 @@ app.use(fileUpload());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.engine(
+    'handlebars',
+    handlebars.engine({ defaultLayout: 'main' })
+);
+app.set('views', path.join('public', 'views'));
+app.set('view engine', 'handlebars');
+
+app.get('/test', (req, res) => {
+    res.render('test');
+})
 // Middleware функция для проверки аутентификации пользователя
 function isAuthenticated(req, res, next) {
     // Проверяем, существует ли username в сессии
