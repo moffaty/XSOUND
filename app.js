@@ -146,7 +146,7 @@ app.get('/', (req, res) => {
 app.get('/about', (req, res) => {
     res.render('about', { about: true });
     // res.sendFile(path.join(__dirname, 'public', 'views', 'about.html'));
-})
+});
 
 app.get('/get-redirect', (req, res) => {
     if (req.session.redirect) {

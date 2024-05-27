@@ -9,7 +9,6 @@ function setTransparent() {
 
 setTransparent();
 
-
 function scrollFunction() {
     const headder = document.querySelector('.navbar');
     const footer = document.querySelector('.footer');
