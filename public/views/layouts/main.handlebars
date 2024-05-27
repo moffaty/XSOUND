@@ -38,17 +38,32 @@
                     <ul class='navbar-nav'>
                         <li class='nav-item'>
                             <a
-                                class='nav-link'
+                                {{#if index}}
+                                    class='nav-link active'
+                                {{else}}
+                                    class='nav-link'
+                                {{/if}}
                                 aria-current='page'
                                 href='/#start'
                             >XSOUND</a>
                         </li>
                         <li class='nav-item' id='join'>
-                            <a class='nav-link' href='/register'>Присоединиться
-                                к команде</a>
+                            <a 
+                                {{#if register}}
+                                    class='nav-link active'
+                                {{else}}
+                                    class='nav-link'
+                                {{/if}}
+                                href='/register'>Присоединиться к команде</a>
                         </li>
                         <li class='nav-item'>
-                            <a class='nav-link active' href='#'>Узнать больше о нас</a>
+                            <a 
+                                {{#if about}}
+                                    class='nav-link active'
+                                {{else}}
+                                    class='nav-link'
+                                {{/if}}
+                                href='/about'>Узнать больше о нас</a>
                         </li>
                         <li class='nav-item dropdown'>
                             <a

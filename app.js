@@ -139,11 +139,12 @@ function getBackgroundImage(userId) {
 }
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'views', 'index.html'));
+    res.render('home', { scroll: true, index: true });
+    // res.sendFile(path.join(__dirname, 'public', 'views', 'index.html'));
 });
 
 app.get('/about', (req, res) => {
-    res.render('about');
+    res.render('about', { about: true });
     // res.sendFile(path.join(__dirname, 'public', 'views', 'about.html'));
 })
 

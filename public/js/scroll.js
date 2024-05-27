@@ -2,6 +2,14 @@ window.onscroll = function () {
     scrollFunction();
 };
 
+function setTransparent() {
+    const nav = document.querySelector('nav');
+    nav.classList.add('transparent');
+}
+
+setTransparent();
+
+
 function scrollFunction() {
     const headder = document.querySelector('.navbar');
     const footer = document.querySelector('.footer');
