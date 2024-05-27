@@ -63,16 +63,13 @@ app.use(fileUpload());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.engine(
-    'handlebars',
-    handlebars.engine({ defaultLayout: 'main' })
-);
+app.engine('handlebars', handlebars.engine({ defaultLayout: 'main' }));
 app.set('views', path.join('public', 'views'));
 app.set('view engine', 'handlebars');
 
 app.get('/test', (req, res) => {
     res.render('test');
-})
+});
 // Middleware функция для проверки аутентификации пользователя
 function isAuthenticated(req, res, next) {
     // Проверяем, существует ли username в сессии
@@ -125,7 +122,7 @@ function getImage(userId, typeImage) {
             ext = path.extname(file);
         }
     });
-    
+
     const directoryPath = '/' + String(userId) + '/' + imgs_dir;
     const fullFileName = img + ext;
     const fullPath = directoryPath + '/' + fullFileName;
@@ -235,10 +232,23 @@ app.route('/venue').post(async (req, res) => {
 app.route('/profile')
     .get(isAuthenticated, async (req, res) => {
         if (req.session.user_id === 1) {
-            res.sendFile(path.join(__dirname, 'public', 'views', 'musician-profile.html'));
-        } 
-        else {
-            res.sendFile(path.join(__dirname, 'public', 'views', 'organizer-profile.html'));
+            res.sendFile(
+                path.join(
+                    __dirname,
+                    'public',
+                    'views',
+                    'musician-profile.html',
+                ),
+            );
+        } else {
+            res.sendFile(
+                path.join(
+                    __dirname,
+                    'public',
+                    'views',
+                    'organizer-profile.html',
+                ),
+            );
         }
     })
     .post(isAuthenticated, async (req, res) => {
@@ -398,14 +408,17 @@ app.route('/colors')
             __dirname,
             user_dir,
             String(req.session.user_id),
-            user_settings
+            user_settings,
         );
         console.log(directoryPath);
         if (!fs.existsSync(directoryPath)) {
             fs.mkdirSync(directoryPath, { recursive: true }); // creates directory and any necessary subdirectories
         }
         const colors = req.body.colors;
-        fs.writeFileSync(path.join(directoryPath, 'color.json'), JSON.stringify(colors));
+        fs.writeFileSync(
+            path.join(directoryPath, 'color.json'),
+            JSON.stringify(colors),
+        );
     })
     .get(isAuthenticated, (req, res) => {
         try {
@@ -413,15 +426,16 @@ app.route('/colors')
                 __dirname,
                 user_dir,
                 String(req.session.user_id),
-                user_settings
+                user_settings,
             );
-            const data = fs.readFileSync(path.join(directoryPath, 'color.json'));
+            const data = fs.readFileSync(
+                path.join(directoryPath, 'color.json'),
+            );
             sendMessage(res, true, JSON.parse(data.toString()));
-        }
-        catch (err) {
+        } catch (err) {
             sendMessage(res, false, err);
         }
-    })
+    });
 
 app.post('/upload/:type', isAuthenticated, async (req, res) => {
     if (!req.files || Object.keys(req.files).length === 0) {

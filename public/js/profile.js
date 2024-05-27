@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             musicList.appendChild(trackElement);
         });
     }
-    if(venueList && venues.length > 0) {
+    if (venueList && venues.length > 0) {
         venues.forEach(async (venue) => {
             const trackElement = document.createElement('a');
             trackElement.classList.add(
@@ -48,7 +48,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             const inforElement = document.createElement('div');
             const address = document.createElement('p');
-            address.textContent = 'Адрес:' + await getAddress(venue.address.x, venue.address.y);
+            address.textContent =
+                'Адрес:' + (await getAddress(venue.address.x, venue.address.y));
             const capacity = document.createElement('p');
             capacity.textContent = 'Вместимость:' + venue.capacity;
             const info = document.createElement('p');

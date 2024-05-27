@@ -96,13 +96,21 @@ async function loadMusicianInformation() {
         const links = musician.message.links;
         if (musician.message.musician_name) {
             document.getElementById('musician-name').value =
-            musician.message.musician_name;
+                musician.message.musician_name;
         }
         if (links) {
-            document.getElementById('links_vk').value = checkUndefined(links.vk);
-            document.getElementById('links_ya').value = checkUndefined(links.ya);
-            document.getElementById('links_tg').value = checkUndefined(links.tg);
-            document.getElementById('links_yt').value = checkUndefined(links.yt);
+            document.getElementById('links_vk').value = checkUndefined(
+                links.vk,
+            );
+            document.getElementById('links_ya').value = checkUndefined(
+                links.ya,
+            );
+            document.getElementById('links_tg').value = checkUndefined(
+                links.tg,
+            );
+            document.getElementById('links_yt').value = checkUndefined(
+                links.yt,
+            );
         }
     }
 }
@@ -110,8 +118,8 @@ async function loadMusicianInformation() {
 async function changeMainColor() {
     const colorInput = document.getElementById('colorInput');
     if (colorInput) {
-        colorInput.addEventListener('change', async e => {
-            const color = (hex2rgb(colorInput.value));
+        colorInput.addEventListener('change', async (e) => {
+            const color = hex2rgb(colorInput.value);
             const root = document.documentElement;
             const mainColor = `rgb(${color.r},${color.g},${color.b})`;
             const hoverColor = `rgb(${color.r + 12},${color.g - 5},${color.b - 23})`;
@@ -119,9 +127,11 @@ async function changeMainColor() {
             root.style.setProperty('--main-color', mainColor);
             root.style.setProperty('--hover-color', hoverColor);
             root.style.setProperty('--light-color', lightColor);
-            const data = await postFetch('/colors', { colors: { mainColor, hoverColor, lightColor }});
+            const data = await postFetch('/colors', {
+                colors: { mainColor, hoverColor, lightColor },
+            });
             console.log(data);
-        })
+        });
     }
 }
 
@@ -135,7 +145,9 @@ async function updateColors() {
     if (colorInput) {
         const color = colors.message.mainColor;
         if (color) {
-            const rgb = color.substring(color.indexOf('(') + 1, color.length - 1).split(',');
+            const rgb = color
+                .substring(color.indexOf('(') + 1, color.length - 1)
+                .split(',');
             colorInput.value = rgb2hex(rgb[0], rgb[1], rgb[2]);
         }
     }
