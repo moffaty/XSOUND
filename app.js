@@ -142,6 +142,11 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'views', 'index.html'));
 });
 
+app.get('/about', (req, res) => {
+    res.render('about');
+    // res.sendFile(path.join(__dirname, 'public', 'views', 'about.html'));
+})
+
 app.get('/get-redirect', (req, res) => {
     if (req.session.redirect) {
         sendMessage(res, true, req.session.redirect);
