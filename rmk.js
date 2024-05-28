@@ -3,18 +3,18 @@ const readline = require('readline');
 // Определяем директорию моделей
 const modelDir = './models';
 // Подключаем модели
-const User = require(modelDir + '/user');
+const EventStatus = require(modelDir + '/eventStatus');
+const Genre = require(modelDir + '/genre');
 const Role = require(modelDir + '/roles');
 const Event = require(modelDir + '/event');
-const EventStatus = require(modelDir + '/eventStatus');
-const Musician = require(modelDir + '/musician');
-const Genre = require(modelDir + '/genre');
-const Venue = require(modelDir + '/venue');
 const Organizer = require(modelDir + '/organizer');
+const Schedule = require(modelDir + '/schedule');
+const Venue = require(modelDir + '/venue');
+const Musician = require(modelDir + '/musician');
 const Chat = require(modelDir + '/chat');
 const Message = require(modelDir + '/message');
 const Profile = require(modelDir + '/profile');
-const Schedule = require(modelDir + '/schedule');
+const User = require(modelDir + '/user');
 
 // Подключаем настройки Sequelize
 const sequelize = require(modelDir + '/sequelize');
@@ -26,6 +26,23 @@ const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
 });
+
+function linkModels() {
+    User.hasMany(Event, { foreignKey: 'user_id', onDelete: 'CASCADE' });
+    User.hasMany(Profile, { foreignKey: 'user_id', onDelete: 'CASCADE' });
+    User.hasMany(Musician, { foreignKey: 'user_id', onDelete: 'CASCADE' });
+    User.hasMany(Organizer, { foreignKey: 'user_id', onDelete: 'CASCADE' });
+
+    Role.hasMany(User, { foreignKey: 'role_id', onDelete: 'CASCADE' });
+
+    Chat.hasMany(Message, { foreignKey: 'chat_id', onDelete: 'CASCADE' });
+
+    Venue.hasMany(Event, { foreignKey: 'venue_id', onDelete: 'CASCADE' });
+    Venue.hasMany(Organizer, { foreignKey: 'venue_id', onDelete: 'CASCADE' });
+    Venue.hasMany(Schedule, { foreignKey: 'venue_id', onDelete: 'CASCADE' });
+}
+
+linkModels();
 
 function replaceBackup() {
     try {

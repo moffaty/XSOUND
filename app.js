@@ -4,8 +4,6 @@ const handlebars = require('express-handlebars');
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
-const { send } = require('vite');
-const { dir } = require('console');
 const secret = 'zxc';
 const PORT = 3000;
 const app = express();
@@ -80,6 +78,16 @@ function isAuthenticated(req, res, next) {
         req.session.redirect = req.route.path;
         // Если пользователь не аутентифицирован, перенаправляем на страницу логина
         res.redirect('/login');
+    }
+}
+
+function isAdmin(req, res, next) {
+    if (req.session.role === 3) {
+        next();
+    }
+    else {
+        req.session.redirect = '/';
+        res.redirect('/');
     }
 }
 
@@ -161,7 +169,6 @@ app.route('/login')
         res.sendFile(path.join(__dirname, 'public', 'views', 'login.html'));
     })
     .post(async (req, res) => {
-        console.log(req.body);
         const user = await User.findOne({
             where: { email: req.body.email, password: req.body.password },
         });
@@ -172,7 +179,9 @@ app.route('/login')
             req.session.role = user.dataValues.role_id;
             req.session.email = user.dataValues.email;
             req.session.user_id = user.dataValues.id;
-            console.log(req.session);
+            if (req.session.role === 3) {
+                req.session.redirect = '/admin/page';
+            }
             sendMessage(res, true);
         }
     });
@@ -228,7 +237,6 @@ app.route('/register')
 
 app.route('/venue').post(async (req, res) => {
     const venue_id = req.body.id;
-    console.log(venue_id);
     if (venue_id) {
         const venue = await Venue.findByPk(venue_id);
         sendResponse(res, venue);
@@ -534,7 +542,7 @@ app.get('/get-tracks', isAuthenticated, (req, res) => {
     }
 });
 
-app.get(`/:userId/:folder/:filename`, isAuthenticated, (req, res) => {
+app.get(`/file/:userId/:folder/:filename`, isAuthenticated, (req, res) => {
     if (req.session.redirect === '/:userId/:filename') {
         req.session.redirect = '/profile';
         return res.redirect('/profile');
@@ -562,6 +570,81 @@ app.get('/whoami', (req, res) => {
         username: req.session.username,
     });
 });
+
+app.get('/roles', isAdmin, async (req, res) => {
+    const role = await Role.findAll();
+    let result = [];
+    role.forEach((element) => {
+        result.push(element);
+    });
+    sendMessage(res, true, result);
+})
+
+app.route('/user/:type/:id')
+    .get(isAdmin, async (req,res) => {
+        if (req.params.type === 'update') {
+            const id = req.params.id;
+            if (id) {
+                const user = await User.findByPk(id);
+                sendMessage(res, true, user);
+            }
+            else {
+                sendMessage(res, false);
+            }
+        }
+        else if (req.params.type === 'delete') {
+            const id = req.params.id;
+            if (id) {
+                const user = await User.findByPk(id);
+                await user.destroy();
+                sendMessage(res, true);
+            }
+            else {
+                sendMessage(res, false);
+            }
+        }
+        else {
+            sendMessage(req, false);
+        }
+    })
+    .post(isAdmin, async (req, res) => {
+        if (req.params.type === 'update') {
+            const id = req.params.id;
+            if (id) {
+                const user = await User.findByPk(id);
+                const username = req.body.username;
+                const password = req.body.password;
+                const email = req.body.email;
+                if (username && password && email) {
+                    user.email = email;
+                    user.password = password;
+                    user.username = username;
+                    user.save();
+                }
+            }
+            sendMessage(res, true);
+        }
+        else {
+            sendMessage(req, false);
+        }
+    })
+
+app.route('/admin/:type')
+    .get(isAdmin, async (req, res) => {
+        if (req.params.type === 'page') {
+            res.render('admin', { page: true });
+        }
+        else if (req.params.type === 'users') {
+            const users = await User.findAll();
+            let result = [];
+            users.forEach((element) => {
+                if (element.id !== req.session.user_id) {
+                    result.push(element);
+                }
+            });
+            res.render('admin', { users: result, pageName: 'Изменить информацию о пользователе' });
+        }
+    })
 
 app.all('/logout', (req, res) => {
     req.session.email = '';
