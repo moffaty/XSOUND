@@ -4,8 +4,8 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
         "dev": "npx nodemon app",
+        "test": "mocha",
         "rmk": "node rmk -n > dev-log && node db > dev-log && echo Таблицы очищены и заполнены",
         "full_rmk": "node rmk -y > dev-log && node db > dev-log && echo Таблицы очищены и заполнены.Бекап обновлен"
     },
@@ -23,8 +23,10 @@
         "express-fileupload": "^1.5.0",
         "express-handlebars": "^7.1.2",
         "express-session": "^1.18.0",
+        "mocha": "^10.4.0",
         "sequelize": "^6.37.3",
         "sqlite3": "^5.1.7",
+        "supertest": "^7.0.0",
         "vite": "^5.2.11"
     },
     "devDependencies": {

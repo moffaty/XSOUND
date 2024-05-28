@@ -598,3 +598,6 @@ sequelize
     .catch((err) => {
         console.error('Ошибка при создании таблиц:', err);
     });
+
+// for tests
+module.exports.app = app;
