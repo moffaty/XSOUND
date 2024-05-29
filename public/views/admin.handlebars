@@ -1,8 +1,8 @@
 <div class="container">
     {{#if page}}
     <div class="d-flex justify-content-center flex-column align-items-center mt-5">
-        <button id="users" type="button" class="mt-5 btn btn-secondary">Пользователи</button>
-        <button id="venues" type="button" class="mt-5 btn btn-secondary">Площадки</button>
+        <button id="users" type="button" class="mt-5 btn btn-secondary form-control">Пользователи</button>
+        <button id="venues" type="button" class="mt-5 btn btn-secondary form-control">Площадки</button>
     </div>
     {{else}}
     <div class="d-flex flex-row justify-content-evenly align-items-baseline mt-5 mb-5">
@@ -12,50 +12,72 @@
     {{/if}}
 
     {{#if users}}
-    <form class="d-flex justify-content-center flex-column align-items-center">
-    <select id="userSelect" class="form-select" aria-label="Выберите пользователя...">
-        <option selected>Выберите пользователя...</option>
-    {{#each users}}
-        <option value="{{dataValues.id}}">{{dataValues.email}}</h1>
-    {{/each}}
-    </select>
-    </form>
-    <form id="userForm" class="d-none d-flex justify-content-center flex-column align-items-center">
-        <div class="input-group mb-2 mr-sm-2">
-            <input type="text" class="form-control" name="username" id="inlineFormInputGroupUsername2" placeholder="Username" >
-            <div class="input-group-prepend">
-                <div class="input-group-text" style="border-radius: 0 0.375rem 0.375rem 0px; !important">Username</div>
-            </div>
-        </div>
-        <div class="input-group mb-2 mr-sm-2">
-            <input type="text" class="form-control" name="email" id="inlineFormInputGroupUsername2" placeholder="Email" >
-            <div class="input-group-prepend">
-                <div class="input-group-text" style="border-radius: 0 0.375rem 0.375rem 0px; !important">Email</div>
-            </div>
-        </div>
-        <div class="input-group mb-2 mr-sm-2">
-            <input type="text" class="form-control" name="password" id="inlineFormInputGroupUsername2" placeholder="Password" >
-            <div class="input-group-prepend">
-                <div class="input-group-text" style="border-radius: 0 0.375rem 0.375rem 0px; !important">Password</div>
-            </div>
-        </div>
-        <div class="input-group mb-2 mr-sm-2">
-            <select id="role" class="form-select" name="role">
-            </select>
-            <div class="input-group-prepend">
-                <div class="input-group-text" style="border-radius: 0 0.375rem 0.375rem 0px; !important">Role</div>
-            </div>
-        </div>
-        <div class="input-group mb-2 mr-sm-2">
-            <input type="text" class="form-control" name="id" id="inlineFormInputGroupUsername2" placeholder="ID" disabled>
-            <div class="input-group-prepend">
-                <div class="input-group-text" style="border-radius: 0 0.375rem 0.375rem 0px; !important">ID</div>
-            </div>
-        </div>
-        <input type="submit" role="button" class="mt-2 form-control btn btn-secondary" value="Изменить">
-        <input id="delete" role="button" class="mt-2 form-control btn btn-warning text-muted" value="Удалить">
-    </form>
+        <form class="d-flex justify-content-center flex-column align-items-center">
+        <select id="userSelect" class="form-select" aria-label="Выберите пользователя...">
+            <option selected>Выберите пользователя...</option>
+        {{#each users}}
+            <option value="{{dataValues.id}}">{{dataValues.email}}</option>
+        {{/each}}
+        </select>
+        </form>
     {{/if}}
+    {{#if venues}}
+    <div class="form-group mb-2">
+        <input type="text" class="form-control" placeholder="Площадки" list="list-venues" id="input-datalist">
+        <datalist id="list-venues">
+        {{#each venues}}
+            <option data-id="{{dataValues.id}}" value="{{dataValues.name}}">Вместимость:{{dataValues.capacity}}</option>
+        {{/each}}
+        </datalist>
+    </div>
+    {{/if}}
+    <form id="Form" class="d-none d-flex justify-content-center flex-column align-items-center">
+    <div class="input-group mb-2 mr-sm-2">
+        <input type="text" class="form-control" name="{{#if users}}username{{else}}name{{/if}}" id="inlineFormInputGroupUsername2" placeholder="{{#if users}}Username{{else}}Name{{/if}}" >
+        <div class="input-group-prepend">
+            <div class="input-group-text" style="border-radius: 0 0.375rem 0.375rem 0px; !important">{{#if users}}Username{{else}}Name{{/if}}</div>
+        </div>
+    </div>
+    <div class="input-group mb-2 mr-sm-2">
+        <input type="text" class="form-control" name="{{#if users}}email{{else}}capacity{{/if}}" id="inlineFormInputGroupUsername2" placeholder="{{#if users}}Email{{else}}Capacity{{/if}}" >
+        <div class="input-group-prepend">
+            <div class="input-group-text" style="border-radius: 0 0.375rem 0.375rem 0px; !important">{{#if users}}Email{{else}}Capacity{{/if}}</div>
+        </div>
+    </div>
+    <div class="input-group mb-2 mr-sm-2">
+        <input type="text" class="form-control" name="{{#if users}}password{{else}}address{{/if}}" id="inlineFormInputGroupUsername2" placeholder="{{#if users}}Password{{else}}Address{{/if}}" >
+        <div class="input-group-prepend">
+            <div class="input-group-text" style="border-radius: 0 0.375rem 0.375rem 0px; !important">{{#if users}}Password{{else}}Address{{/if}}</div>
+        </div>
+    </div>
+    {{#if users}}
+    <div class="input-group mb-2 mr-sm-2">
+        <select id="role" class="form-select" name="role">
+        </select>
+        <div class="input-group-prepend">
+            <div class="input-group-text" style="border-radius: 0 0.375rem 0.375rem 0px; !important">Role</div>
+        </div>
+    </div>
+    {{/if}}
+    {{#if venues}}
+    <div class="input-group mb-2 mr-sm-2">
+        <input type="text" class="form-control" name="info" id="inlineFormInputGroupUsername2" placeholder="Info">
+        <div class="input-group-prepend">
+            <div class="input-group-text" style="border-radius: 0 0.375rem 0.375rem 0px; !important">Info</div>
+        </div>
+    </div>
+    {{/if}}
+    <div class="input-group mb-2 mr-sm-2">
+        <input type="text" class="form-control" name="id" id="inlineFormInputGroupUsername2" placeholder="ID" disabled>
+        <div class="input-group-prepend">
+            <div class="input-group-text" style="border-radius: 0 0.375rem 0.375rem 0px; !important">ID</div>
+        </div>
+    </div>
+    <input type="submit" role="button" class="mt-2 form-control btn btn-secondary" value="Изменить">
+    <input id="delete" role="button" class="mt-2 form-control btn btn-warning text-muted" value="Удалить">
+</form>
     <script src="/js/main.js"></script>
     <script src="/js/admin.js"></script>
+    <script src="/js/admin_user.js"></script>
+    <script src="/js/admin_venue.js"></script>
 </div>

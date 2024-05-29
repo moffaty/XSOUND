@@ -84,8 +84,7 @@ function isAuthenticated(req, res, next) {
 function isAdmin(req, res, next) {
     if (req.session.role === 3) {
         next();
-    }
-    else {
+    } else {
         req.session.redirect = '/';
         res.redirect('/');
     }
@@ -133,7 +132,7 @@ function getImage(userId, typeImage) {
 
     const directoryPath = '/' + String(userId) + '/' + imgs_dir;
     const fullFileName = img + ext;
-    const fullPath = directoryPath + '/' + fullFileName;
+    const fullPath = 'file' + directoryPath + '/' + fullFileName;
     console.log(fullPath);
     return fullPath;
 }
@@ -245,24 +244,41 @@ app.route('/venue').post(async (req, res) => {
 
 app.route('/profile')
     .get(isAuthenticated, async (req, res) => {
-        if (req.session.user_id === 1) {
-            res.sendFile(
-                path.join(
-                    __dirname,
-                    'public',
-                    'views',
-                    'musician-profile.html',
-                ),
-            );
-        } else {
-            res.sendFile(
-                path.join(
-                    __dirname,
-                    'public',
-                    'views',
-                    'organizer-profile.html',
-                ),
-            );
+        if (req.query.card) {
+            try {
+                const card = Number(req.query.card);
+                const musician = await Musician.findByPk(card);
+                if (musician) {
+                    res.render('card', { data: musician.dataValues });
+                }
+                else {
+                    res.redirect('/');
+                }
+            }
+            catch (err) {
+                res.redirect('/');
+            }
+        }
+        else {
+            if (req.session.role === 1) {
+                res.sendFile(
+                    path.join(
+                        __dirname,
+                        'public',
+                        'views',
+                        'musician-profile.html',
+                    ),
+                );
+            } else {
+                res.sendFile(
+                    path.join(
+                        __dirname,
+                        'public',
+                        'views',
+                        'organizer-profile.html',
+                    ),
+                );
+            }
         }
     })
     .post(isAuthenticated, async (req, res) => {
@@ -412,7 +428,7 @@ app.route('/upload_tracks').post(isAuthenticated, async (req, res) => {
     music.mv(path.join(directoryPath, music.name), function (err) {
         if (err) return res.status(500).send(err);
 
-        res.send('File uploaded!');
+        res.redirect('/profile');
     });
 });
 
@@ -462,6 +478,7 @@ app.post('/upload/:type', isAuthenticated, async (req, res) => {
         __dirname,
         user_dir,
         String(req.session.user_id),
+        imgs_dir,
     );
 
     if (!fs.existsSync(directoryPath)) {
@@ -533,7 +550,13 @@ app.get('/get-tracks', isAuthenticated, (req, res) => {
         dir.forEach((file) => {
             list.push({
                 title: file,
-                src: '/' + req.session.user_id + '/' + track_dir + '/' + file,
+                src:
+                    '/file/' +
+                    req.session.user_id +
+                    '/' +
+                    track_dir +
+                    '/' +
+                    file,
             });
         });
         sendMessage(res, true, list);
@@ -578,73 +601,117 @@ app.get('/roles', isAdmin, async (req, res) => {
         result.push(element);
     });
     sendMessage(res, true, result);
-})
+});
 
-app.route('/user/:type/:id')
-    .get(isAdmin, async (req,res) => {
-        if (req.params.type === 'update') {
-            const id = req.params.id;
-            if (id) {
-                const user = await User.findByPk(id);
-                sendMessage(res, true, user);
+app.route('/admin/:model/:type/:id')
+    .get(isAdmin, async (req, res) => {
+        const model = req.params.model;
+        const type = req.params.type;
+        const id = req.params.id;
+
+        // Маппинг моделей на соответствующие классы
+        const modelMap = {
+            'user': User,
+            'venue': Venue,
+        };
+
+        if (modelMap.hasOwnProperty(model)) {
+            const Model = modelMap[model];
+            if (type === 'update' || type === 'delete') {
+                if (id) {
+                    try {
+                        const instance = await Model.findByPk(id);
+                        if (instance) {
+                            if (type === 'update') {
+                                sendMessage(res, true, instance);
+                            } else {
+                                await instance.destroy();
+                                sendMessage(res, true);
+                            }
+                        } else {
+                            sendMessage(res, false, 'Instance not found');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        sendMessage(res, false, 'Error occurred');
+                    }
+                } else {
+                    sendMessage(res, false, 'Invalid ID');
+                }
+            } else {
+                sendMessage(res, false, 'Invalid operation type');
             }
-            else {
-                sendMessage(res, false);
-            }
-        }
-        else if (req.params.type === 'delete') {
-            const id = req.params.id;
-            if (id) {
-                const user = await User.findByPk(id);
-                await user.destroy();
-                sendMessage(res, true);
-            }
-            else {
-                sendMessage(res, false);
-            }
-        }
-        else {
-            sendMessage(req, false);
+        } else {
+            sendMessage(res, false, 'Invalid model');
         }
     })
     .post(isAdmin, async (req, res) => {
         if (req.params.type === 'update') {
             const id = req.params.id;
             if (id) {
-                const user = await User.findByPk(id);
-                const username = req.body.username;
-                const password = req.body.password;
-                const email = req.body.email;
-                if (username && password && email) {
-                    user.email = email;
-                    user.password = password;
-                    user.username = username;
-                    user.save();
+                switch(req.params.model) {
+                    case 'user':
+                        const user = await User.findByPk(id);
+                        const username = req.body.username;
+                        const password = req.body.password;
+                        const email = req.body.email;
+                        if (username && password && email) {
+                            user.email = email;
+                            user.password = password;
+                            user.username = username;
+                            user.save();
+                        }
+                        break;
+                    case 'venue':
+                        const venue = await Venue.findByPk(id);
+                        const name = req.body.name;
+                        const capacity = req.body.capacity;
+                        const info = req.body.info;
+                        if (name && capacity && info) {
+                            venue.name = name;
+                            venue.capacity = capacity;
+                            venue.info = info;
+                            venue.save();
+                        }
+                        break;
                 }
+               
             }
             sendMessage(res, true);
-        }
-        else {
+        } else {
             sendMessage(req, false);
         }
-    })
+    });
 
-app.route('/admin/:type')
-    .get(isAdmin, async (req, res) => {
-        if (req.params.type === 'page') {
-            res.render('admin', { page: true });
-        }
-        else if (req.params.type === 'users') {
-            const users = await User.findAll();
-            let result = [];
-            users.forEach((element) => {
-                if (element.id !== req.session.user_id) {
-                    result.push(element);
-                }
-            });
-            res.render('admin', { users: result, pageName: 'Изменить информацию о пользователе' });
-        }
-    })
+app.route('/admin/:type').get(isAdmin, async (req, res) => {
+    if (req.params.type === 'page') {
+        res.render('admin', { page: true });
+    } else if (req.params.type === 'users') {
+        const users = await User.findAll();
+        let result = [];
+        users.forEach((element) => {
+            if (element.id !== req.session.user_id) {
+                result.push(element);
+            }
+        });
+        res.render('admin', {
+            users: result,
+            pageName: 'Изменить информацию о пользователе',
+        });
+    } else if (req.params.type === 'venues') {
+        const venue = await Venue.findAll();
+        let result = [];
+        venue.forEach((element) => {
+            if (element.id !== req.session.user_id) {
+                result.push(element);
+            }
+        });
+        res.render('admin', {
+            venues: result,
+            pageName: 'Изменить информацию о площадках',
+        });
+    }
+});
 
 app.all('/logout', (req, res) => {
     req.session.email = '';

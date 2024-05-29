@@ -71,9 +71,9 @@ function uploadBackgroundImage() {
 async function loadProfileInformation() {
     const profile = await postFetch('/profile');
     if (profile.message !== true) {
-        document.getElementById('name').value = profile.message.name;
-        document.getElementById('surname').value = profile.message.surname;
-        document.getElementById('about').value = profile.message.about;
+        document.getElementById('name').value = checkUndefined(profile.message.name);
+        document.getElementById('surname').value = checkUndefined(profile.message.surname);
+        document.getElementById('about').value = checkUndefined(profile.message.about);
     }
 }
 
@@ -138,17 +138,19 @@ async function changeMainColor() {
 async function updateColors() {
     const colors = await getFetch('/colors');
     const root = document.documentElement;
-    root.style.setProperty('--main-color', colors.message.mainColor);
-    root.style.setProperty('--hover-color', colors.message.hoverColor);
-    root.style.setProperty('--light-color', colors.message.lightColor);
-    const colorInput = document.getElementById('colorInput');
-    if (colorInput) {
-        const color = colors.message.mainColor;
-        if (color) {
-            const rgb = color
-                .substring(color.indexOf('(') + 1, color.length - 1)
-                .split(',');
-            colorInput.value = rgb2hex(rgb[0], rgb[1], rgb[2]);
+    if (colors.status !== 'error') {
+        root.style.setProperty('--main-color', colors.message.mainColor);
+        root.style.setProperty('--hover-color', colors.message.hoverColor);
+        root.style.setProperty('--light-color', colors.message.lightColor);
+        const colorInput = document.getElementById('colorInput');
+        if (colorInput) {
+            const color = colors.message.mainColor;
+            if (color) {
+                const rgb = color
+                    .substring(color.indexOf('(') + 1, color.length - 1)
+                    .split(',');
+                colorInput.value = rgb2hex(rgb[0], rgb[1], rgb[2]);
+            }
         }
     }
 }
