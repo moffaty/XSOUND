@@ -1,0 +1,364 @@
+const { DataTypes } = require('sequelize');
+const sequelize = require('./sequelize');
+
+const Chat = sequelize.define('Chat', {
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+    },
+    user_id_to: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+    user_id_from: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+});
+
+module.exports = Chat;
+const { DataTypes } = require('sequelize');
+const sequelize = require('./sequelize');
+const Status = require('./eventStatus');
+const Venue = require('./venue');
+const User = require('./user');
+
+// Определите модель пользователя
+const Event = sequelize.define('Event', {
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+    },
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    date: {
+        type: DataTypes.DATE,
+        allowNull: true,
+    },
+    venue_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: Venue,
+            key: 'id',
+        },
+    },
+    user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: User,
+            key: 'id',
+        },
+    },
+    status_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: Status, // Модель, с которой устанавливается связь
+            key: 'status_id', // Поле, с которым устанавливается связь
+        },
+    },
+});
+
+module.exports = Event;
+const { DataTypes } = require('sequelize');
+const sequelize = require('./sequelize');
+
+// Определите модель роли
+const Status = sequelize.define('Status', {
+    status_id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+    },
+    status_name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+});
+
+module.exports = Status;
+const { DataTypes } = require('sequelize');
+const sequelize = require('./sequelize');
+
+const Genre = sequelize.define('Genre', {
+    genre_id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+    },
+    genre_name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+});
+
+module.exports = Genre;
+const { DataTypes } = require('sequelize');
+const sequelize = require('./sequelize');
+const Chat = require('./chat');
+
+const Message = sequelize.define('Message', {
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+    },
+    user_id_to: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+    user_id_from: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+    chat_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: Chat,
+            key: 'id',
+        },
+    },
+    message: {
+        type: DataTypes.TEXT, // Используйте TEXT для хранения более длинных сообщений
+        allowNull: false,
+    },
+});
+
+module.exports = Message;
+const { DataTypes } = require('sequelize');
+const sequelize = require('./sequelize');
+const User = require('./user');
+const Genre = require('./genre');
+
+const Musician = sequelize.define('Musician', {
+    id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true,
+    },
+    user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: User, // Модель, с которой устанавливается связь
+            key: 'id', // Поле, с которым устанавливается связь
+        },
+    },
+    musician_name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    genre_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: Genre, // Модель, с которой устанавливается связь
+            key: 'genre_id', // Поле, с которым устанавливается связь
+        },
+    },
+    links: {
+        type: DataTypes.JSON,
+        allowNull: true,
+    },
+});
+
+module.exports = Musician;
+const { DataTypes } = require('sequelize');
+const sequelize = require('./sequelize');
+const User = require('./user');
+const Venue = require('./venue');
+
+const Organizer = sequelize.define('Organizer', {
+    id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true,
+    },
+    user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: User, // Модель, с которой устанавливается связь
+            key: 'id', // Поле, с которым устанавливается связь
+        },
+    },
+    organizer_name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    venue_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: Venue, // Модель, с которой устанавливается связь
+            key: 'id', // Поле, с которым устанавливается связь
+        },
+    },
+    phone: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
+});
+
+module.exports = Organizer;
+const { DataTypes } = require('sequelize');
+const sequelize = require('./sequelize');
+const User = require('./user');
+
+// Определите модель пользователя
+const Profile = sequelize.define('Profile', {
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+    },
+    name: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
+    surname: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
+    about: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+        unique: true,
+    },
+    user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: User, // Модель, с которой устанавливается связь
+            key: 'id', // Поле, с которым устанавливается связь
+        },
+    },
+});
+
+module.exports = Profile;
+const { DataTypes } = require('sequelize');
+const sequelize = require('./sequelize');
+
+// Определите модель роли
+const Role = sequelize.define('Role', {
+    role_id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+    },
+    role_name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+});
+
+module.exports = Role;
+const { DataTypes } = require('sequelize');
+const sequelize = require('./sequelize');
+const Venue = require('./venue');
+
+// Определите модель пользователя
+const Schedule = sequelize.define('Schedule', {
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+    },
+    venue_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: Venue,
+            key: 'id',
+        },
+    },
+    date: {
+        type: DataTypes.DATE,
+        allowNull: false,
+    },
+});
+
+module.exports = Schedule;
+const Sequelize = require('sequelize');
+
+// Инициализируйте Sequelize с параметрами для SQLite
+const sequelize = new Sequelize({
+    dialect: 'sqlite',
+    // disable logging; default: console.log
+    logging: false,
+    storage: 'database.sqlite', // Имя файла базы данных SQLite
+});
+
+module.exports = sequelize;
+const { DataTypes } = require('sequelize');
+const sequelize = require('./sequelize');
+const Role = require('./roles');
+
+// Определите модель пользователя
+const User = sequelize.define('User', {
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+    },
+    username: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+    },
+    role_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: Role, // Модель, с которой устанавливается связь
+            key: 'role_id', // Поле, с которым устанавливается связь
+        },
+    },
+});
+
+module.exports = User;
+const { DataTypes } = require('sequelize');
+const sequelize = require('./sequelize');
+
+const Venue = sequelize.define('Venue', {
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+    },
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    address: {
+        type: DataTypes.JSON,
+        allowNull: false,
+    },
+    capacity: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+    },
+    info: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+    },
+});
+
+module.exports = Venue;
