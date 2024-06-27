@@ -20,11 +20,11 @@ const Musician = sequelize.define('Musician', {
     },
     musician_name: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
     },
     genre_id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
             model: Genre, // Модель, с которой устанавливается связь
             key: 'genre_id', // Поле, с которым устанавливается связь

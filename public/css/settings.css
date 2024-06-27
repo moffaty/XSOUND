@@ -2,6 +2,7 @@
     --main-color: rgb(99, 39, 120);
     --hover-color: rgb(87, 34, 97);
     --light-color: rgb(186, 104, 200);
+    --text-color: #000000;
 }
 
 body {
@@ -15,6 +16,7 @@ body {
 
 .profile-button {
     background: var(--main-color);
+    color: var(--text-color);
     box-shadow: none;
     border: none;
 }
@@ -51,8 +53,10 @@ body {
 
 .input-group-text {
     border-radius: 0 4px 4px 0;
-    background-color: var(--light-color); /* Цвет фона плейсхолдера */
-    border-color: #ced4da; /* Цвет границы плейсхолдера */
+    background-color: var(--light-color);
+    /* Цвет фона плейсхолдера */
+    border-color: #ced4da;
+    /* Цвет границы плейсхолдера */
 }
 
 .custom-file-upload {

@@ -11,7 +11,7 @@ async function loadProfile() {
     await updateColors();
 }
 
-function loadBackgroundImage() {}
+function loadBackgroundImage() { }
 
 function uploadAccountImage() {
     console.log(document.getElementById('accountImage'));
@@ -127,6 +127,12 @@ async function changeMainColor() {
             root.style.setProperty('--main-color', mainColor);
             root.style.setProperty('--hover-color', hoverColor);
             root.style.setProperty('--light-color', lightColor);
+
+            // Вычисление яркости и установка цвета текста
+            const brightness = getBrightness(color.r, color.g, color.b);
+            const textColor = brightness > 128 ? '#000000' : '#FFFFFF';
+            root.style.setProperty('--text-color', textColor);
+
             const data = await postFetch('/colors', {
                 colors: { mainColor, hoverColor, lightColor },
             });
@@ -135,21 +141,33 @@ async function changeMainColor() {
     }
 }
 
+function getBrightness(r, g, b) {
+    // Преобразование в яркость по формуле:
+    return (r * 299 + g * 587 + b * 114) / 1000;
+}
+
 async function updateColors() {
     const colors = await getFetch('/colors');
     const root = document.documentElement;
     if (colors.status !== 'error') {
-        root.style.setProperty('--main-color', colors.message.mainColor);
+        const mainColor = colors.message.mainColor;
+        root.style.setProperty('--main-color', mainColor);
         root.style.setProperty('--hover-color', colors.message.hoverColor);
         root.style.setProperty('--light-color', colors.message.lightColor);
+
         const colorInput = document.getElementById('colorInput');
         if (colorInput) {
-            const color = colors.message.mainColor;
+            const color = mainColor;
             if (color) {
                 const rgb = color
                     .substring(color.indexOf('(') + 1, color.length - 1)
                     .split(',');
                 colorInput.value = rgb2hex(rgb[0], rgb[1], rgb[2]);
+
+                const brightness = getBrightness(rgb[0], rgb[1], rgb[2]);
+                const textColor = brightness > 128 ? '#000000' : '#FFFFFF';
+                console.log(textColor);
+                root.style.setProperty('--text-color', textColor);
             }
         }
     }
@@ -162,10 +180,18 @@ saveChanges.addEventListener('click', async () => {
     const name = document.getElementById('name').value;
     const surname = document.getElementById('surname').value;
     const about = document.getElementById('about').value;
+    const vk = document.getElementById('links_vk').value;
+    const ya = document.getElementById('links_ya').value;
+    const tg = document.getElementById('links_tg').value;
+    const yt = document.getElementById('links_yt').value;
+    const links = JSON.stringify({ vk, ya, tg, yt });
+    const musicianName = document.getElementById('musician-name') ? document.getElementById('musician-name').value : '';
     const profile = await postFetch('/profile', {
         name,
         surname,
         about,
+        links,
+        musicianName
     });
     if (profile.status === 'success') {
         animateAlert('Профиль успешно обновлен!');

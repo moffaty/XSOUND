@@ -5,14 +5,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/css/login.css" rel="stylesheet" />
+    <link href="/css/event.css" rel="stylesheet" />
     <link href="/css/main.css" rel="stylesheet" />
-    <link href="/css/profile.css" rel="stylesheet" />
     <link rel="icon" type="image/png" href="/img/icon.png" />
     <script src="/dist/js/bootstrap.bundle.min.js"></script>
-    <title>Профиль музыканта</title>
+    <title>Мероприятия</title>
 </head>
 
-<body>
+<body class="bg-dark bg-gradient">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" aria-label="Tenth navbar example">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample08"
@@ -26,10 +27,10 @@
                         <a class="nav-link" aria-current="page" href="/">XSOUND</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="/profile">Профиль</a>
+                        <a class="nav-link" href="/profile">Профиль</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/event">Мероприятия</a>
+                        <a class="nav-link active" href="/event">Мероприятия</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="dropdown08" data-bs-toggle="dropdown"
@@ -47,22 +48,47 @@
             </div>
         </div>
     </nav>
-    <div class="profile-container container mt-5">
-        <div class="row pt-5">
-            <div class="col-md-4 text-center">
-                <img id="account" src="/img/icon.png" alt="Фото музыканта" class="img-fluid rounded-circle" />
-                <h1 class="mt-3" id="username">Имя организатора</h1>
-                <h4 class="mt-3 text-muted" id="email">Имя организатора</h4>
+    <div class="container row" id="container" style="margin-top: 70px"></div>
+    <div class="card chat-fixed transparent">
+        <div class="card-header d-flex justify-content-between align-items-center p-3"
+            style="border-top: 4px solid #ffa900; background-color: white">
+            <h5 id="headerChat" class="mb-0">Чат</h5>
+            <div class="d-flex flex-row align-items-center">
+                <i class="fas fa-minus me-3 text-muted fa-xs"></i>
+                <i class="fas fa-comments me-3 text-muted fa-xs"></i>
+                <i class="fas fa-times text-muted fa-xs"></i>
+                <button class="fas fa-times text-muted fa-xs text-decoration-none border-0 bg-white" id="closeChat">
+                    X
+                </button>
             </div>
-            <div class="col-md-8">
-                <h2>Площадки</h2>
-                <div id="venue-list" class="list-group">
-                    <!-- Список треков будет добавлен динамически -->
-                </div>
+        </div>
+        <div id="chat-body" class="card-body" data-mdb-perfect-scrollbar="true" style="
+                    position: relative;
+                    height: 400px;
+                    width: 400px;
+                    background-color: white;
+                ">
+            <!-- Содержимое чата -->
+        </div>
+        <div class="card-footer text-muted d-flex justify-content-start align-items-center p-3"
+            style="background-color: white; border-radius: 1px">
+            <div class="input-group mb-0">
+                <input id="chatInput" type="text" class="form-control" placeholder="Наберите сообщение..."
+                    aria-label="Recipient's username" aria-describedby="button-addon2" />
+                <button data-mdb-button-init data-mdb-ripple-init class="btn btn-warning" type="button"
+                    id="button-addon2" style="padding-top: 0.55rem">
+                    Отправить
+                </button>
             </div>
         </div>
     </div>
-    <div class="footer fixed-bottom transparent">
+    <div id="openChat" class="chat-icon d-flex justify-content-center align-items-center chat-fixed">
+        <div class="circle bg-info bg-gradient">
+            <img src="/img/chat.png" alt="icon" class="icon" alt="Чат" />
+        </div>
+    </div>
+
+    <div class="footer fixed-bottom">
         <footer>
             <div id="line-container">
                 <div id="line">
@@ -78,9 +104,10 @@
             </div>
         </footer>
     </div>
-    <script src="/js/main.js"></script>
     <script src="/js/anim.js"></script>
-    <script src="/js/profile.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/event.js"></script>
+    <script src="/js/chat.js"></script>
 </body>
 
 </html>

@@ -2,11 +2,16 @@ const loadingSpinner = document.getElementById('loadingSpinner');
 
 function fillSchedules(data) {
     let res = '<select id="schedule" required>';
-    data.forEach((schedule) => {
-        res += `<option value="${schedule.date}">${getDate(schedule.date)}</option>`;
-    });
-    res += '</select>';
-    return res;
+    if (data.length > 1) {
+        data.forEach((schedule) => {
+            res += `<option value="${schedule.date}">${getDate(schedule.date)}</option>`;
+        });
+        res += '</select>';
+        return res;
+    }
+    else {
+        return 'Свободного времени нет';
+    }
 }
 
 async function fillMap() {
@@ -40,13 +45,23 @@ async function fillMap() {
                 const header = document.getElementById('exampleModalLabel');
                 const body = document.getElementById('modal-body');
                 header.textContent = data.name;
+                const filledSchedule = fillSchedules(schedule);
                 body.innerHTML = `
                     <p>Вместимость точки: ${data.capacity} </p>
                     <p>Адрес: ${await getAddress(data.address.x, data.address.y)} </p>
                     <p> ${data.info ? 'Дополнительная информация: ' + data.info : ''} </p>
                     <p> Свободное расписание площадки: </p>
-                    <p> ${fillSchedules(schedule)} </p>
+                    <p> ${filledSchedule} </p>
                 `;
+                console.log(filledSchedule);
+                if (filledSchedule === 'Свободного времени нет') {
+                    submitButton.disabled = true;
+                    submitButton.classList.add('opacity-25');
+                }
+                else {
+                    submitButton.disabled = false;
+                    submitButton.classList.remove('opacity-25');
+                }
 
                 submitButton.addEventListener('click', async () => {
                     const date = document.getElementById('schedule').value;

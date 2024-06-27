@@ -60,6 +60,7 @@ app.use(
         },
     })
 );
+
 app.set('enable proxy');
 
 app.use(fileUpload());
@@ -291,10 +292,24 @@ app.route('/profile')
         const name = req.body.name;
         const surname = req.body.surname;
         const about = req.body.about;
+        const musicianName = req.body.musicianName;
+        const links = req.body.links;
         const [profile, created] = await Profile.findOrCreate({
             where: { user_id: req.session.user_id },
             defaults: { user_id: req.session.user_id },
         });
+        const [musician, createdMusician] = await Musician.findOrCreate({
+            where: { user_id: req.session.user_id },
+            defaults: { user_id: req.session.user_id },
+        });
+        if (musicianName) {
+            musician.musician_name = musicianName;
+            await musician.save();
+        }
+        if (links) {
+            musician.links = JSON.parse(links);
+            await musician.save();
+        }
         if (name && surname && about) {
             profile.name = name;
             profile.surname = surname;
@@ -311,7 +326,12 @@ app.post('/musician', isAuthenticated, async (req, res) => {
 });
 
 app.route('/settings').get(isAuthenticated, async (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'views', 'settings.html'));
+    if (req.session.role === 1) {
+        res.sendFile(path.join(__dirname, 'public', 'views', 'settings.html'));
+    }
+    else {
+        res.sendFile(path.join(__dirname, 'public', 'views', 'settings_organizer.html'));
+    }
 });
 
 app.post('/schedule', isAuthenticated, async (req, res) => {
@@ -337,7 +357,12 @@ app.route('/event')
             });
             sendMessage(res, true, result);
         } else {
-            res.sendFile(path.join(__dirname, 'public', 'views', 'event.html'));
+            if (req.session.role === 1) {
+                res.sendFile(path.join(__dirname, 'public', 'views', 'event.html'));
+            }
+            else {
+                res.sendFile(path.join(__dirname, 'public', 'views', 'event_organizer.html'));
+            }
         }
     })
     .post(isAuthenticated, async (req, res) => {

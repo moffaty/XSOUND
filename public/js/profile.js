@@ -55,6 +55,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const info = document.createElement('p');
             info.textContent = 'Доп информация:' + venue.info ? venue.info : '';
             const change = document.createElement('button');
+            change.className = 'btn btn-info';
             change.textContent = 'Изменить информацию';
 
             inforElement.appendChild(address);

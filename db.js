@@ -86,6 +86,24 @@ const venues = [
         capacity: 110,
         info: 'Улёт!)',
     },
+    {
+        name: 'Арка',
+        address: { x: 59.914, y: 30.324 },
+        capacity: 310,
+        info: 'Уютненько',
+    },
+    {
+        name: 'Nigth',
+        address: { x: 59.912, y: 30.314 },
+        capacity: 165,
+        info: 'Club',
+    },
+    {
+        name: 'Окна',
+        address: { x: 60.004, y: 30.134 },
+        capacity: 500,
+        info: 'Просторно',
+    },
 ];
 
 const organizers = [
