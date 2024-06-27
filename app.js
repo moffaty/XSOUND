@@ -49,15 +49,18 @@ app.use(
         email: '',
         redirect: '',
         secret: secret,
+        proxy: true,
+        name: 'XSOUND',
         resave: false,
         saveUninitialized: true,
         cookie: {
             maxAge: 600000,
-            secure: true, // Используйте secure: true, если ваш сайт работает по HTTPS
-            sameSite: 'lax', // Можно использовать 'strict', 'lax' или 'none'
+            secure: false, // Используйте secure: true, если ваш сайт работает по HTTPS
+            sameSite: 'strict', // Можно использовать 'strict', 'lax' или 'none'
         },
     })
 );
+app.set('enable proxy');
 
 app.use(fileUpload());
 
@@ -170,16 +173,13 @@ app.route('/login')
     .get((req, res) => {
         res.sendFile(path.join(__dirname, 'public', 'views', 'login.html'));
     })
-    .post('/login', async (req, res) => {
-        console.log('Login attempt:', req.body);
+    .post(async (req, res) => {
         const user = await User.findOne({
             where: { email: req.body.email, password: req.body.password },
         });
         if (user === null) {
-            console.log('User not found');
             sendMessage(res, false);
         } else {
-            console.log('User found:', user.dataValues);
             req.session.username = user.dataValues.username;
             req.session.role = user.dataValues.role_id;
             req.session.email = user.dataValues.email;
@@ -187,13 +187,7 @@ app.route('/login')
             if (req.session.role === 3) {
                 req.session.redirect = '/admin/page';
             }
-            req.session.save((err) => {
-                if (err) {
-                    console.error('Session save error:', err);
-                }
-                console.log('Session saved:', req.session);
-                sendMessage(res, true);
-            });
+            sendMessage(res, true);
         }
     });
 
