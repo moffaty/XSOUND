@@ -50,10 +50,13 @@ app.use(
         redirect: '',
         secret: secret,
         resave: false,
-        isAuth: false,
-        cookie: { maxAge: 600000 },
         saveUninitialized: true,
-    }),
+        cookie: {
+            maxAge: 600000,
+            secure: true, // Используйте secure: true, если ваш сайт работает по HTTPS
+            sameSite: 'lax', // Можно использовать 'strict', 'lax' или 'none'
+        },
+    })
 );
 
 app.use(fileUpload());
@@ -649,7 +652,7 @@ app.route('/admin/:model/:type/:id')
         if (req.params.type === 'update') {
             const id = req.params.id;
             if (id) {
-                switch(req.params.model) {
+                switch (req.params.model) {
                     case 'user':
                         const user = await User.findByPk(id);
                         const username = req.body.username;
@@ -675,7 +678,7 @@ app.route('/admin/:model/:type/:id')
                         }
                         break;
                 }
-               
+
             }
             sendMessage(res, true);
         } else {
