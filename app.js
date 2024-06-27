@@ -170,13 +170,16 @@ app.route('/login')
     .get((req, res) => {
         res.sendFile(path.join(__dirname, 'public', 'views', 'login.html'));
     })
-    .post(async (req, res) => {
+    .post('/login', async (req, res) => {
+        console.log('Login attempt:', req.body);
         const user = await User.findOne({
             where: { email: req.body.email, password: req.body.password },
         });
         if (user === null) {
+            console.log('User not found');
             sendMessage(res, false);
         } else {
+            console.log('User found:', user.dataValues);
             req.session.username = user.dataValues.username;
             req.session.role = user.dataValues.role_id;
             req.session.email = user.dataValues.email;
@@ -184,7 +187,13 @@ app.route('/login')
             if (req.session.role === 3) {
                 req.session.redirect = '/admin/page';
             }
-            sendMessage(res, true);
+            req.session.save((err) => {
+                if (err) {
+                    console.error('Session save error:', err);
+                }
+                console.log('Session saved:', req.session);
+                sendMessage(res, true);
+            });
         }
     });
 
